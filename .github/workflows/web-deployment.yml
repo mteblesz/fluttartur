@@ -5,13 +5,15 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+    
 jobs:
   build:
     name: Build Web
+    env:
+      my_secret: ${{secrets.commit_secret}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.16.7"
@@ -21,14 +23,13 @@ jobs:
       - run: flutter pub get
       - run: flutter gen-l10n
       - run: flutter build web --release
-      - name: Deploy to GitHub Pages
-        run: |
+      - run: |
           cd build/web
           git init
           git config --global user.email mteblesz@gmail.com
           git config --global user.name teblesz
           git status
-          git remote add origin https://github.com/teblesz/frontartur.git
+          git remote add origin https://${{secrets.commit_secret}}@github.com/teblesz/frontartur.git
           git checkout -b gh-pages
           git add --all
           git commit -m "update"
