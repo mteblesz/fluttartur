@@ -7,10 +7,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
-//TODO logowanie przez github
-// TODO logowanie Email link (passwordless sign-in)
-// TODO logowanie anonimowe
-
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown if during the sign up process if a failure occurs.
 /// {@endtemplate}
@@ -188,8 +184,9 @@ class AuthenticationRepository {
   ///
   /// Emits [User.empty] if the user is not authenticated.
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+    return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
+      final user =
+          firebaseUser == null ? User.empty : await firebaseUser.toUser();
       _cache.write(key: userCacheKey, value: user);
       return user;
     });
@@ -281,8 +278,9 @@ class AuthenticationRepository {
   }
 }
 
-extension on firebase_auth.User {
-  User get toUser {
-    return User(id: uid, email: email, name: displayName);
+extension FirebaseUserExtension on firebase_auth.User {
+  Future<User> toUser() async {
+    String idToken = await getIdToken();
+    return User(id: uid, email: email, name: displayName, token: idToken);
   }
 }
