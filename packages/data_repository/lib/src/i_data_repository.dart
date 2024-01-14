@@ -1,11 +1,14 @@
 import 'dart:async';
-import 'package:data_api_repository/models/models.dart';
+import 'package:data_repository/models/models.dart';
 
 abstract class IDataRepository {
+  Future<void> createRoom();
+
+  //  old stuff for backwards-compatibility during changes (to be removed)
+
   Room get currentRoom;
   Future<void> refreshRoomCache();
   Stream<Room> streamRoom();
-  Future<void> createRoom({required String userId});
   Future<void> joinRoom({required String roomId});
   Future<void> startGame();
   void subscribeGameStartedWith({required void Function(bool) doLogic});

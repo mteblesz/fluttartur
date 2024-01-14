@@ -1,18 +1,17 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_repository/models/member.dart';
 import 'package:data_repository/models/models.dart';
 import 'package:cache/cache.dart';
 import 'package:flutter/material.dart';
 
-part 'data_failures.dart';
+part 'old_data_failures.dart';
 // TODO unique room name (kahoot-like) https://stackoverflow.com/questions/47543251/firestore-unique-index-or-unique-constraint
 // TODO divide this moloch (mixins?, extension methods?) separate classes?
 // TODO limit number of players in room
 
-class DataRepository {
-  DataRepository({
+class OldDataRepository {
+  OldDataRepository({
     CacheClient? cache,
     FirebaseFirestore? firestore,
   })  : _cache = cache ?? CacheClient(),

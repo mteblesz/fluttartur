@@ -9,7 +9,7 @@ part 'lobby_state.dart';
 class LobbyCubit extends Cubit<LobbyState> {
   LobbyCubit(this._dataRepository) : super(const LobbyState());
 
-  final DataRepository _dataRepository;
+  final OldDataRepository _dataRepository;
 
   void roomIdChanged(String value) {
     final roomId = RoomId.dirty(value);

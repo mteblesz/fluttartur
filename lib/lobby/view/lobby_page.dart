@@ -28,7 +28,7 @@ class LobbyPage extends StatelessWidget {
             actions: <Widget>[_LogOutButton()],
           ),
           body: BlocProvider(
-            create: (_) => LobbyCubit(context.read<DataRepository>()),
+            create: (_) => LobbyCubit(context.read<OldDataRepository>()),
             child: const LobbyForm(),
           ),
         ),

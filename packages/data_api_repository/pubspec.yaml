@@ -9,6 +9,8 @@ environment:
 dependencies:
   authentication_repository:
     path: ../authentication_repository
+  data_repository:
+    path: ../data_repository
   cache:
     path: ../cache
   equatable: ^2.0.3

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
-  final DataRepository _dataRepository;
+  final OldDataRepository _dataRepository;
 
   GameCubit(this._dataRepository) : super(const GameState()) {
     _dataRepository.subscribeSquadIsSubmittedWith(

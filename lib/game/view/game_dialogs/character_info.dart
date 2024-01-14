@@ -44,7 +44,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final player = context.read<DataRepository>().currentPlayer;
+    final player = context.read<OldDataRepository>().currentPlayer;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

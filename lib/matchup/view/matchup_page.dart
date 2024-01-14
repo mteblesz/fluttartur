@@ -33,7 +33,7 @@ class MatchupPage extends StatelessWidget {
             actions: <Widget>[_MatchupAppBarActions()],
           ),
           body: BlocProvider(
-            create: (_) => MatchupCubit(context.read<DataRepository>()),
+            create: (_) => MatchupCubit(context.read<OldDataRepository>()),
             child: const MatchupForm(),
           ),
         ),
@@ -50,7 +50,7 @@ class _MatchupAppBarActions extends StatelessWidget {
         PopupMenuItem(
           child: Text(AppLocalizations.of(context)!.copyRoomsId),
           onTap: () async {
-            final roomId = context.read<DataRepository>().currentRoom.id;
+            final roomId = context.read<OldDataRepository>().currentRoom.id;
             await Clipboard.setData(ClipboardData(text: roomId));
           },
         ),

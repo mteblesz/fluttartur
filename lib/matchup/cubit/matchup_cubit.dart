@@ -11,7 +11,7 @@ part 'matchup_state.dart';
 class MatchupCubit extends Cubit<MatchupState> {
   MatchupCubit(this._dataRepository) : super(const MatchupState());
 
-  final DataRepository _dataRepository;
+  final OldDataRepository _dataRepository;
 
   void playerCountChanged(List<Player>? players) {
     if (players == null) return;

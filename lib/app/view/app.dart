@@ -12,12 +12,12 @@ class App extends StatelessWidget {
   const App({
     super.key,
     required AuthenticationRepository authenticationRepository,
-    required DataRepository dataRepository,
+    required IDataRepository dataRepository,
   })  : _authenticationRepository = authenticationRepository,
         _dataRepository = dataRepository;
 
   final AuthenticationRepository _authenticationRepository;
-  final DataRepository _dataRepository;
+  final IDataRepository _dataRepository;
 
   @override
   Widget build(BuildContext context) {
