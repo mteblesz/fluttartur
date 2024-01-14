@@ -9,7 +9,7 @@ part 'lobby_state.dart';
 class LobbyCubit extends Cubit<LobbyState> {
   LobbyCubit(this._dataRepository) : super(const LobbyState());
 
-  final OldDataRepository _dataRepository;
+  final IDataRepository _dataRepository;
 
   void roomIdChanged(String value) {
     final roomId = RoomId.dirty(value);
@@ -41,7 +41,7 @@ class LobbyCubit extends Cubit<LobbyState> {
   Future<void> createRoom({required String userId}) async {
     emit(state.copyWith(statusOfCreate: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.createRoom(userId: userId);
+      await _dataRepository.createRoom();
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
     } catch (_) {
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionFailure));

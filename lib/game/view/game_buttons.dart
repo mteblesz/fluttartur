@@ -6,7 +6,7 @@ class _GameButtons extends StatelessWidget {
     // streamBuilder is here to start streaming player for bussiness logic (?)
     // TODO this /\ is stupid
     return StreamBuilder<Player>(
-        stream: context.read<OldDataRepository>().streamPlayer(),
+        stream: context.read<IDataRepository>().streamPlayer(),
         builder: (context, snapshot) {
           var player = snapshot.data ?? Player.empty;
           return BlocBuilder<GameCubit, GameState>(

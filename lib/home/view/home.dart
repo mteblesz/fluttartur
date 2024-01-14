@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dataRepository = context.read<OldDataRepository>();
+    final dataRepository = context.read<IDataRepository>();
     return BlocProvider(
       create: (_) => RoomCubit(dataRepository),
       child: Builder(builder: (context) {
