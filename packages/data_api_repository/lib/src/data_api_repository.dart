@@ -40,7 +40,8 @@ class DataApiRepository implements IDataRepository {
     }
   }
 
-  //  old stuff for backwards-compatibility during changes (to be removed)
+  // TODO old stuff for backwards-compatibility during changes (to be removed)
+
   @override
   String currentSquadId = "";
 

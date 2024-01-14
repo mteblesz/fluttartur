@@ -4,7 +4,7 @@ import 'package:data_repository/models/models.dart';
 abstract class IDataRepository {
   Future<void> createRoom();
 
-  //  old stuff for backwards-compatibility during changes (to be removed)
+  // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Room get currentRoom;
   Future<void> refreshRoomCache();
