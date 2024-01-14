@@ -7,7 +7,6 @@ import 'package:data_api_repository/api_config.dart';
 
 part 'data_failures.dart';
 
-// TODO make it an interface implementation, use DIP
 class DataRepo {
   DataRepo({
     CacheClient? cache,

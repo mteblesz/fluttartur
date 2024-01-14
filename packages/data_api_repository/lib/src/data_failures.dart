@@ -1,4 +1,4 @@
-part of 'data_repo.dart';
+part of 'data_api_repository.dart';
 
 class CreateRoomFailure implements Exception {
   const CreateRoomFailure([this.message = 'An unknown exception occurred.']);
