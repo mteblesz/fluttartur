@@ -34,9 +34,11 @@ class DataApiRepository implements IDataRepository {
     try {
       final response = await http.post(uri, headers: getHeaders());
 
-      if (response.statusCode != 201) {}
+      if (response.statusCode != 201) {
+        throw CreateRoomFailure(response.statusCode);
+      }
     } catch (e) {
-      print('Error creating room: $e');
+      rethrow;
     }
   }
 

@@ -34,6 +34,8 @@ dependencies:
     path: packages/data_repository
   data_api_repository:
     path: packages/data_api_repository
+  cache:
+    path: packages/cache
   bloc: ^8.1.0
   equatable: ^2.0.3
   firebase_core: ^2.4.1
