@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:data_repository/data_repository.dart';
-import 'package:http/http.dart' as http;
 import './api_config.dart';
+import './http_sender.dart';
 
 class DataApiRepository implements IDataRepository {
   DataApiRepository({
@@ -14,14 +15,14 @@ class DataApiRepository implements IDataRepository {
   final CacheClient _cache;
 
   //----------------------- token -----------------------
-  static const userCacheKey = '__user_cache_key__';
+  static const _userCacheKey = '__user_cache_key__';
 
   String get _authToken {
-    User user = _cache.read<User>(key: userCacheKey) ?? User.empty;
+    User user = _cache.read<User>(key: _userCacheKey) ?? User.empty;
     return user.token ?? "";
   }
 
-  Map<String, String> getHeaders() => <String, String>{
+  Map<String, String> getAuthHeaders() => <String, String>{
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $_authToken',
       };
@@ -29,14 +30,20 @@ class DataApiRepository implements IDataRepository {
   //----------------------- matchup -----------------------
   @override
   Future<void> createRoom() async {
-    final uri = Uri.parse(ApiConfig.createRoomUrl());
-
     try {
-      final response = await http.post(uri, headers: getHeaders());
+      final response = await HttpSender.post(
+        ApiConfig.createRoomUrl(),
+        getAuthHeaders(),
+      );
 
       if (response.statusCode != 201) {
         throw CreateRoomFailure(response.statusCode);
       }
+
+      final locationHeader = response.headers[HttpHeaders.locationHeader]!;
+      String roomId = locationHeader.first.split('/').last;
+
+      print('Room created with ID: $roomId');
     } catch (e) {
       rethrow;
     }
