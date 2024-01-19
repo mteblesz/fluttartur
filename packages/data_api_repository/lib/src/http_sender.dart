@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 enum HttpMethod {
-  get,
+  get_,
   post,
   put,
+  patch,
   delete,
 }
 
@@ -13,7 +14,7 @@ class HttpSender {
 
   static Future<HttpClientResponse> get(String url,
       [Map<String, String>? headers]) async {
-    return await _send(HttpMethod.get, url, headers);
+    return await _send(HttpMethod.get_, url, headers);
   }
 
   static Future<HttpClientResponse> post(String url,
@@ -24,6 +25,11 @@ class HttpSender {
   static Future<HttpClientResponse> put(String url,
       [Map<String, String>? headers]) async {
     return await _send(HttpMethod.put, url, headers);
+  }
+
+  static Future<HttpClientResponse> patch(String url,
+      [Map<String, String>? headers]) async {
+    return await _send(HttpMethod.patch, url, headers);
   }
 
   static Future<HttpClientResponse> delete(String url,
@@ -45,7 +51,7 @@ class HttpSender {
 
     late HttpClientRequest request;
     switch (httpMethod) {
-      case HttpMethod.get:
+      case HttpMethod.get_:
         request = await httpClient.getUrl(uri);
         break;
       case HttpMethod.post:
@@ -53,6 +59,9 @@ class HttpSender {
         break;
       case HttpMethod.put:
         request = await httpClient.putUrl(uri);
+        break;
+      case HttpMethod.patch:
+        request = await httpClient.patchUrl(uri);
         break;
       case HttpMethod.delete:
         request = await httpClient.deleteUrl(uri);
