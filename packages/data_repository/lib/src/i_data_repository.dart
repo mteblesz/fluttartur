@@ -9,7 +9,7 @@ abstract class IDataRepository {
 
   Room get currentRoom;
   Stream<Room> streamRoom();
-  Future<void> joinRoom({required String roomId});
+  Future<void> joinRoom();
   Future<void> startGame();
   void subscribeGameStartedWith({required void Function(bool) doLogic});
   void unsubscribeGameStarted();

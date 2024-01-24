@@ -34,12 +34,38 @@ class DataRepository implements IDataRepository {
         'Authorization': 'Bearer $_authToken',
       };
 
-  //----------------------- matchup -----------------------
+  //----------------------- caches -----------------------
   static const invalidId = -1;
-  static const roomIdCacheKey = '__room_id_cache_key__';
-  int get roomId {
-    return _cache.read<int>(key: roomIdCacheKey) ?? invalidId;
+  static const currentRoomIdCacheKey = '__room_id_cache_key__';
+  static const currentPlayerIdCacheKey = '__player_id_cache_key__';
+
+  int get currentRoomId {
+    return _cache.read<int>(key: currentRoomIdCacheKey) ?? invalidId;
   }
+
+  int get currentPlayerId {
+    return _cache.read<int>(key: currentPlayerIdCacheKey) ?? invalidId;
+  }
+
+  //----------------------- info -----------------------
+  @override
+  Future<RoomInfoDto> getRoomById() async {
+    try {
+      final response = await HttpSender.get(
+        Uri.parse(ApiConfig.getRoomByIdUrl(currentRoomId)),
+        headers: getAuthHeaders(),
+      );
+      if (response.statusCode != 200) {
+        throw GetRoomByIdFailure(response.statusCode);
+      }
+      Map<String, dynamic> jsonBody = jsonDecode(response.body);
+
+      return RoomInfoDto.fromJson(jsonBody);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+  //----------------------- matchup -----------------------
 
   @override
   Future<void> createRoom() async {
@@ -55,51 +81,55 @@ class DataRepository implements IDataRepository {
       final locationHeader = response.headers[HttpHeaders.locationHeader];
       String roomId = Uri.parse(locationHeader!).pathSegments.last;
 
-      _cache.write(key: roomIdCacheKey, value: int.parse(roomId));
+      _cache.write(key: currentRoomIdCacheKey, value: int.parse(roomId));
     } on Exception catch (_) {
       rethrow;
     }
   }
 
   @override
-  Future<RoomInfoDto> getRoomById() async {
+  Future<void> joinRoom() async {
     try {
-      final response = await HttpSender.get(
-        Uri.parse(ApiConfig.getRoomByIdUrl(roomId)),
+      final response = await HttpSender.post(
+        Uri.parse(ApiConfig.joinRoomUrl(currentRoomId)),
         headers: getAuthHeaders(),
       );
-      if (response.statusCode != 200) {
-        throw GetRoomByIdFailure(response.statusCode);
-      }
-      Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
-      return RoomInfoDto.fromJson(jsonBody);
+      if (response.statusCode != 201) {
+        throw CreateRoomFailure(response.statusCode);
+      }
+      final locationHeader = response.headers[HttpHeaders.locationHeader];
+      String playerId = Uri.parse(locationHeader!).pathSegments.last;
+
+      _cache.write(key: currentPlayerIdCacheKey, value: int.parse(playerId));
     } on Exception catch (_) {
       rethrow;
     }
-  }
-
-  @override
-  Future<void> joinRoom({required String roomId}) {
-    // : implement joinRoom
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> leaveRoom() {
-    // : implement leaveRoom
-    throw UnimplementedError();
   }
 
   @override
   Future<void> addPlayer(
-      {required String userId, required String nick, bool isLeader = false}) {
+      {required String userId,
+      required String nick,
+      bool isLeader = false}) async {
     // : implement addPlayer
     throw UnimplementedError();
   }
 
   @override
-  Future<void> startGame() {
+  Future<void> leaveRoom() async {
+    // : implement leaveRoom
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removePlayer({required String playerId}) {
+    // : implement removePlayer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> startGame() async {
     // : implement startGame
     throw UnimplementedError();
   }
@@ -232,12 +262,6 @@ class DataRepository implements IDataRepository {
   Future<void> removeMember(
       {required int questNumber, required String memberId}) {
     // : implement removeMember
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> removePlayer({required String playerId}) {
-    // : implement removePlayer
     throw UnimplementedError();
   }
 
