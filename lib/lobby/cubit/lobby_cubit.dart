@@ -42,7 +42,8 @@ class LobbyCubit extends Cubit<LobbyState> {
     emit(state.copyWith(statusOfCreate: FormzStatus.submissionInProgress));
     try {
       await _dataRepository.createRoom();
-      emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
+      //emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
+      emit(state.copyWith(statusOfCreate: FormzStatus.pure));
     } catch (_) {
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionFailure));
     }

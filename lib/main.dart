@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttartur/app/app.dart';
 import 'package:fluttartur/firebase_options.dart';
-import 'package:data_api_repository/data_api_repository.dart';
 import 'package:cache/cache.dart';
+import 'package:data_repository/data_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final cacheClient = CacheClient();
-  final dataRepository = DataApiRepository(cache: cacheClient);
+  final dataRepository = DataRepository(cache: cacheClient);
   final authenticationRepository = AuthenticationRepository(cache: cacheClient);
   await authenticationRepository.user.first;
 

@@ -3,11 +3,11 @@ import 'package:data_repository/models/models.dart';
 
 abstract class IDataRepository {
   Future<void> createRoom();
+  Future<RoomInfoDto> getRoomById();
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Room get currentRoom;
-  Future<void> refreshRoomCache();
   Stream<Room> streamRoom();
   Future<void> joinRoom({required String roomId});
   Future<void> startGame();

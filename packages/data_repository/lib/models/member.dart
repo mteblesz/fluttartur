@@ -1,7 +1,4 @@
 // ignore_for_file: unnecessary_null_comparison
-
-import 'package:data_repository/models/models.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Member extends Equatable {
@@ -28,22 +25,4 @@ class Member extends Equatable {
 
   @override
   List<Object?> get props => [id, playerId, nick, vote];
-
-  factory Member.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data();
-    return Member(
-      id: doc.id,
-      playerId: data?["player_id"],
-      nick: data?['nick'],
-      vote: data?['secret_vote'],
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      "player_id": playerId,
-      "nick": nick,
-      if (vote != null) "secret_vote": vote,
-    };
-  }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
@@ -7,8 +8,13 @@ import 'package:data_repository/data_repository.dart';
 import './api_config.dart';
 import './http_sender.dart';
 
-class DataApiRepository implements IDataRepository {
-  DataApiRepository({
+class CacheNullException implements Exception {
+  const CacheNullException([this.message = 'The cache is unexpectedly null.']);
+  final String message;
+}
+
+class DataRepository implements IDataRepository {
+  DataRepository({
     CacheClient? cache,
   }) : _cache = cache ?? CacheClient();
 
@@ -28,25 +34,125 @@ class DataApiRepository implements IDataRepository {
       };
 
   //----------------------- matchup -----------------------
+  static const invalidId = -1;
+  static const roomIdCacheKey = '__room_id_cache_key__';
+  int get roomId {
+    return _cache.read<int>(key: roomIdCacheKey) ?? invalidId;
+  }
+
   @override
   Future<void> createRoom() async {
-    try {
-      final response = await HttpSender.post(
-        ApiConfig.createRoomUrl(),
-        getAuthHeaders(),
-      );
+    final response = await HttpSender.post(
+      ApiConfig.createRoomUrl(),
+      getAuthHeaders(),
+    );
 
-      if (response.statusCode != 201) {
-        throw CreateRoomFailure(response.statusCode);
-      }
-
-      final locationHeader = response.headers[HttpHeaders.locationHeader]!;
-      String roomId = locationHeader.first.split('/').last;
-
-      print('Room created with ID: $roomId');
-    } catch (e) {
-      rethrow;
+    if (response.statusCode != 201) {
+      throw CreateRoomFailure(response.statusCode);
     }
+
+    final locationHeader = response.headers[HttpHeaders.locationHeader]!;
+    String roomId = locationHeader.first.split('/').last;
+
+    _cache.write(key: roomIdCacheKey, value: int.parse(roomId));
+  }
+
+  @override
+  Future<RoomInfoDto> getRoomById() async {
+    final response = await HttpSender.get(
+      ApiConfig.getRoomByIdUrl(this.roomId),
+      getAuthHeaders(),
+    );
+    if (response.statusCode != 200) {
+      throw CreateRoomFailure(response.statusCode);
+    }
+    final String responseBody = await response.transform(utf8.decoder).join();
+    final Map<String, dynamic> jsonBody = json.decode(responseBody);
+
+    return RoomInfoDto.fromJson(jsonBody);
+  }
+
+  @override
+  Future<void> joinRoom({required String roomId}) {
+    // TODO: implement joinRoom
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> leaveRoom() {
+    // TODO: implement leaveRoom
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addPlayer(
+      {required String userId, required String nick, bool isLeader = false}) {
+    // TODO: implement addPlayer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> startGame() {
+    // TODO: implement startGame
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> assignCharacters(List<String> characters) {
+    // TODO: implement assignCharacters
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<String>> getSpecialCharacters() {
+    // TODO: implement getSpecialCharacters
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> assignSpecialCharacters(Map<String, Player> map) {
+    // TODO: implement assignSpecialCharacters
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setSpecialCharacters(List<String> specialCharacters) {
+    // TODO: implement setSpecialCharacters
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Player>> playersList() {
+    // TODO: implement playersList
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<Player> streamPlayer() {
+    // TODO: implement streamPlayer
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<Player>> streamPlayersList() {
+    // TODO: implement streamPlayersList
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<Room> streamRoom() {
+    // TODO: implement streamRoom
+    throw UnimplementedError();
+  }
+
+  @override
+  void subscribeGameStartedWith({required void Function(bool p1) doLogic}) {
+    // TODO: implement subscribeGameStartedWith
+  }
+
+  @override
+  void unsubscribeGameStarted() {
+    // TODO: implement unsubscribeGameStarted
   }
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
@@ -64,27 +170,8 @@ class DataApiRepository implements IDataRepository {
   }
 
   @override
-  Future<void> addPlayer(
-      {required String userId, required String nick, bool isLeader = false}) {
-    // TODO: implement addPlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignCharacters(List<String> characters) {
-    // TODO: implement assignCharacters
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> assignLeader(int leaderIndex) {
     // TODO: implement assignLeader
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignSpecialCharacters(Map<String, Player> map) {
-    // TODO: implement assignSpecialCharacters
     throw UnimplementedError();
   }
 
@@ -103,26 +190,8 @@ class DataApiRepository implements IDataRepository {
   }
 
   @override
-  Future<List<String>> getSpecialCharacters() {
-    // TODO: implement getSpecialCharacters
-    throw UnimplementedError();
-  }
-
-  @override
   Future<bool> isCurrentPlayerAMember() {
     // TODO: implement isCurrentPlayerAMember
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> joinRoom({required String roomId}) {
-    // TODO: implement joinRoom
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> leaveRoom() {
-    // TODO: implement leaveRoom
     throw UnimplementedError();
   }
 
@@ -147,20 +216,8 @@ class DataApiRepository implements IDataRepository {
   Future<int> get playersCount => throw UnimplementedError();
 
   @override
-  Future<List<Player>> playersList() {
-    // TODO: implement playersList
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<bool>> questVotesInfo(int questNumber) {
     // TODO: implement questVotesInfo
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> refreshRoomCache() {
-    // TODO: implement refreshRoomCache
     throw UnimplementedError();
   }
 
@@ -174,18 +231,6 @@ class DataApiRepository implements IDataRepository {
   @override
   Future<void> removePlayer({required String playerId}) {
     // TODO: implement removePlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> setSpecialCharacters(List<String> specialCharacters) {
-    // TODO: implement setSpecialCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> startGame() {
-    // TODO: implement startGame
     throw UnimplementedError();
   }
 
@@ -208,24 +253,6 @@ class DataApiRepository implements IDataRepository {
   }
 
   @override
-  Stream<Player> streamPlayer() {
-    // TODO: implement streamPlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<Player>> streamPlayersList() {
-    // TODO: implement streamPlayersList
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<Room> streamRoom() {
-    // TODO: implement streamRoom
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> submitSquad() {
     // TODO: implement submitSquad
     throw UnimplementedError();
@@ -235,11 +262,6 @@ class DataApiRepository implements IDataRepository {
   void subscribeCurrentSquadIdWith(
       {required void Function(String p1) doLogic}) {
     // TODO: implement subscribeCurrentSquadIdWith
-  }
-
-  @override
-  void subscribeGameStartedWith({required void Function(bool p1) doLogic}) {
-    // TODO: implement subscribeGameStartedWith
   }
 
   @override
@@ -263,11 +285,6 @@ class DataApiRepository implements IDataRepository {
   @override
   void unsubscribeCurrentSquadId() {
     // TODO: implement unsubscribeCurrentSquadId
-  }
-
-  @override
-  void unsubscribeGameStarted() {
-    // TODO: implement unsubscribeGameStarted
   }
 
   @override

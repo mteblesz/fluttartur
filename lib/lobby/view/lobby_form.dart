@@ -112,10 +112,10 @@ class _CreateRoomButton extends StatelessWidget {
             ? const CircularProgressIndicator()
             : FilledButton.tonal(
                 onPressed: () {
-                  // TODO rework this
-                  context.read<LobbyCubit>().createRoom(userId: user.id).then(
-                        (_) => context.read<RoomCubit>().goToMatchup(),
-                      );
+                  // TODO rework this (go to matchup after create room status is succ)
+                  context.read<LobbyCubit>().createRoom(userId: user.id)
+                      //.then((_) => context.read<RoomCubit>().goToMatchup())
+                      ;
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
