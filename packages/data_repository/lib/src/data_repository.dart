@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
@@ -42,32 +43,40 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> createRoom() async {
-    final response = await HttpSender.post(
-      ApiConfig.createRoomUrl(),
-      getAuthHeaders(),
-    );
-    if (response.statusCode != 201) {
-      throw CreateRoomFailure(response.statusCode);
-    }
-    final locationHeader = response.headers[HttpHeaders.locationHeader]!;
-    String roomId = locationHeader.first.split('/').last;
+    try {
+      final response = await HttpSender.post(
+        Uri.parse(ApiConfig.createRoomUrl()),
+        headers: getAuthHeaders(),
+      );
 
-    _cache.write(key: roomIdCacheKey, value: int.parse(roomId));
+      if (response.statusCode != 201) {
+        throw CreateRoomFailure(response.statusCode);
+      }
+      final locationHeader = response.headers[HttpHeaders.locationHeader];
+      String roomId = Uri.parse(locationHeader!).pathSegments.last;
+
+      _cache.write(key: roomIdCacheKey, value: int.parse(roomId));
+    } on Exception catch (_) {
+      rethrow;
+    }
   }
 
   @override
   Future<RoomInfoDto> getRoomById() async {
-    final response = await HttpSender.get(
-      ApiConfig.getRoomByIdUrl(roomId),
-      getAuthHeaders(),
-    );
-    if (response.statusCode != 200) {
-      throw GetRoomByIdFailure(response.statusCode);
-    }
-    final String responseBody = await response.transform(utf8.decoder).join();
-    final Map<String, dynamic> jsonBody = json.decode(responseBody);
+    try {
+      final response = await HttpSender.get(
+        Uri.parse(ApiConfig.getRoomByIdUrl(roomId)),
+        headers: getAuthHeaders(),
+      );
+      if (response.statusCode != 200) {
+        throw GetRoomByIdFailure(response.statusCode);
+      }
+      Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
-    return RoomInfoDto.fromJson(jsonBody);
+      return RoomInfoDto.fromJson(jsonBody);
+    } on Exception catch (_) {
+      rethrow;
+    }
   }
 
   @override
