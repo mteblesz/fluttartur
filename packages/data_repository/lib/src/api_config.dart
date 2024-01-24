@@ -1,5 +1,17 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+
 class ApiConfig {
-  static const String baseUrl = 'https://10.0.2.2:7146/api';
+  static String get baseUrl {
+    if (Platform.isAndroid) {
+      return 'https://10.0.2.2:7146/api';
+    } else if (Platform.isIOS) {
+      throw UnimplementedError();
+    } else if (kIsWeb) {
+      return 'https://localhost:7146/api';
+    }
+    return 'https://localhost:7146/api';
+  }
 
   static String createRoomUrl() => '$baseUrl/matchup/room';
   static String joinRoomUrl(int id) => '$baseUrl/matchup/join/$id';
