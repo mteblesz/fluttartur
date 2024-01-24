@@ -19,7 +19,13 @@ class AddPlayerFailure implements Exception {
 
 // TODO old stuff for backwards-compatibility during changes (to be removed)
 
-class GetRoomByIdFailure implements Exception {}
+class GetRoomByIdFailure implements Exception {
+  GetRoomByIdFailure([statusCode]) {
+    message = "Failed to create room.${codeMessage(statusCode)}";
+  }
+
+  late String message;
+}
 
 class StreamingRoomFailure implements Exception {
   const StreamingRoomFailure([this.message = 'An unknown exception occurred.']);
