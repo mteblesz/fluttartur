@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 
-enum HttpMethod {
+enum HttpVerb {
   get_,
   post,
   put,
@@ -11,36 +11,39 @@ enum HttpMethod {
   delete,
 }
 
+/// A utility class for making HTTP requests using Dart's [HttpClient].
+/// It replaces http.verb() calls from http library, but it does not check for server certificate on handshake
+/// For certificate check simply replace HttpSender.verb() calls with http.verb() [import 'package:http/http.dart' as http;]
 class HttpSender {
   HttpSender._();
 
   static Future<http.Response> get(Uri uri,
       {required Map<String, String>? headers}) async {
-    return await _send(HttpMethod.get_, uri, headers);
+    return await _send(HttpVerb.get_, uri, headers);
   }
 
   static Future<http.Response> post(Uri uri,
       {required Map<String, String>? headers}) async {
-    return await _send(HttpMethod.post, uri, headers);
+    return await _send(HttpVerb.post, uri, headers);
   }
 
   static Future<http.Response> put(Uri uri,
       {required Map<String, String>? headers}) async {
-    return await _send(HttpMethod.put, uri, headers);
+    return await _send(HttpVerb.put, uri, headers);
   }
 
   static Future<http.Response> patch(Uri uri,
       {required Map<String, String>? headers}) async {
-    return await _send(HttpMethod.patch, uri, headers);
+    return await _send(HttpVerb.patch, uri, headers);
   }
 
   static Future<http.Response> delete(Uri uri,
       {required Map<String, String>? headers}) async {
-    return await _send(HttpMethod.delete, uri, headers);
+    return await _send(HttpVerb.delete, uri, headers);
   }
 
   static Future<http.Response> _send(
-    HttpMethod httpMethod,
+    HttpVerb httpMethod,
     Uri uri, [
     Map<String, String>? headers,
   ]) async {
@@ -52,19 +55,19 @@ class HttpSender {
 
       late HttpClientRequest request;
       switch (httpMethod) {
-        case HttpMethod.get_:
+        case HttpVerb.get_:
           request = await httpClient.getUrl(uri);
           break;
-        case HttpMethod.post:
+        case HttpVerb.post:
           request = await httpClient.postUrl(uri);
           break;
-        case HttpMethod.put:
+        case HttpVerb.put:
           request = await httpClient.putUrl(uri);
           break;
-        case HttpMethod.patch:
+        case HttpVerb.patch:
           request = await httpClient.patchUrl(uri);
           break;
-        case HttpMethod.delete:
+        case HttpVerb.delete:
           request = await httpClient.deleteUrl(uri);
           break;
       }
