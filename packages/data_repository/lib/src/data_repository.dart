@@ -46,11 +46,9 @@ class DataRepository implements IDataRepository {
       ApiConfig.createRoomUrl(),
       getAuthHeaders(),
     );
-
     if (response.statusCode != 201) {
       throw CreateRoomFailure(response.statusCode);
     }
-
     final locationHeader = response.headers[HttpHeaders.locationHeader]!;
     String roomId = locationHeader.first.split('/').last;
 
@@ -60,11 +58,11 @@ class DataRepository implements IDataRepository {
   @override
   Future<RoomInfoDto> getRoomById() async {
     final response = await HttpSender.get(
-      ApiConfig.getRoomByIdUrl(this.roomId),
+      ApiConfig.getRoomByIdUrl(roomId),
       getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw CreateRoomFailure(response.statusCode);
+      throw GetRoomByIdFailure(response.statusCode);
     }
     final String responseBody = await response.transform(utf8.decoder).join();
     final Map<String, dynamic> jsonBody = json.decode(responseBody);
@@ -74,88 +72,88 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> joinRoom({required String roomId}) {
-    // TODO: implement joinRoom
+    // : implement joinRoom
     throw UnimplementedError();
   }
 
   @override
   Future<void> leaveRoom() {
-    // TODO: implement leaveRoom
+    // : implement leaveRoom
     throw UnimplementedError();
   }
 
   @override
   Future<void> addPlayer(
       {required String userId, required String nick, bool isLeader = false}) {
-    // TODO: implement addPlayer
+    // : implement addPlayer
     throw UnimplementedError();
   }
 
   @override
   Future<void> startGame() {
-    // TODO: implement startGame
+    // : implement startGame
     throw UnimplementedError();
   }
 
   @override
   Future<void> assignCharacters(List<String> characters) {
-    // TODO: implement assignCharacters
+    // : implement assignCharacters
     throw UnimplementedError();
   }
 
   @override
   Future<List<String>> getSpecialCharacters() {
-    // TODO: implement getSpecialCharacters
+    // : implement getSpecialCharacters
     throw UnimplementedError();
   }
 
   @override
   Future<void> assignSpecialCharacters(Map<String, Player> map) {
-    // TODO: implement assignSpecialCharacters
+    // : implement assignSpecialCharacters
     throw UnimplementedError();
   }
 
   @override
   Future<void> setSpecialCharacters(List<String> specialCharacters) {
-    // TODO: implement setSpecialCharacters
+    // : implement setSpecialCharacters
     throw UnimplementedError();
   }
 
   @override
   Future<List<Player>> playersList() {
-    // TODO: implement playersList
+    // : implement playersList
     throw UnimplementedError();
   }
 
   @override
   Stream<Player> streamPlayer() {
-    // TODO: implement streamPlayer
+    // : implement streamPlayer
     throw UnimplementedError();
   }
 
   @override
   Stream<List<Player>> streamPlayersList() {
-    // TODO: implement streamPlayersList
+    // : implement streamPlayersList
     throw UnimplementedError();
   }
 
   @override
   Stream<Room> streamRoom() {
-    // TODO: implement streamRoom
+    // : implement streamRoom
     throw UnimplementedError();
   }
 
   @override
   void subscribeGameStartedWith({required void Function(bool p1) doLogic}) {
-    // TODO: implement subscribeGameStartedWith
+    // : implement subscribeGameStartedWith
   }
 
   @override
   void unsubscribeGameStarted() {
-    // TODO: implement unsubscribeGameStarted
+    // : implement unsubscribeGameStarted
   }
 
-  // TODO old stuff for backwards-compatibility during changes (to be removed)
+  //  old stuff for backwards-compatibility during changes (to be removed)
 
   @override
   String currentSquadId = "";
@@ -165,170 +163,170 @@ class DataRepository implements IDataRepository {
       {required int questNumber,
       required String playerId,
       required String nick}) {
-    // TODO: implement addMember
+    // : implement addMember
     throw UnimplementedError();
   }
 
   @override
   Future<void> assignLeader(int leaderIndex) {
-    // TODO: implement assignLeader
+    // : implement assignLeader
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement currentPlayer
+  // : implement currentPlayer
   Player get currentPlayer => throw UnimplementedError();
 
   @override
-  // TODO: implement currentRoom
+  // : implement currentRoom
   Room get currentRoom => throw UnimplementedError();
 
   @override
   Future<List<Squad>> getApprovedSquads() {
-    // TODO: implement getApprovedSquads
+    // : implement getApprovedSquads
     throw UnimplementedError();
   }
 
   @override
   Future<bool> isCurrentPlayerAMember() {
-    // TODO: implement isCurrentPlayerAMember
+    // : implement isCurrentPlayerAMember
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement membersCount
+  // : implement membersCount
   Future<int> get membersCount => throw UnimplementedError();
 
   @override
   Future<void> nextLeader() {
-    // TODO: implement nextLeader
+    // : implement nextLeader
     throw UnimplementedError();
   }
 
   @override
   Future<void> nextSquad({required int questNumber}) {
-    // TODO: implement nextSquad
+    // : implement nextSquad
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement playersCount
+  // : implement playersCount
   Future<int> get playersCount => throw UnimplementedError();
 
   @override
   Future<List<bool>> questVotesInfo(int questNumber) {
-    // TODO: implement questVotesInfo
+    // : implement questVotesInfo
     throw UnimplementedError();
   }
 
   @override
   Future<void> removeMember(
       {required int questNumber, required String memberId}) {
-    // TODO: implement removeMember
+    // : implement removeMember
     throw UnimplementedError();
   }
 
   @override
   Future<void> removePlayer({required String playerId}) {
-    // TODO: implement removePlayer
+    // : implement removePlayer
     throw UnimplementedError();
   }
 
   @override
   Stream<String> streamCurrentSquadId() {
-    // TODO: implement streamCurrentSquadId
+    // : implement streamCurrentSquadId
     throw UnimplementedError();
   }
 
   @override
   Stream<List<Member>> streamMembersList({required squadId}) {
-    // TODO: implement streamMembersList
+    // : implement streamMembersList
     throw UnimplementedError();
   }
 
   @override
   Stream<bool?> streamMerlinKilled() {
-    // TODO: implement streamMerlinKilled
+    // : implement streamMerlinKilled
     throw UnimplementedError();
   }
 
   @override
   Future<void> submitSquad() {
-    // TODO: implement submitSquad
+    // : implement submitSquad
     throw UnimplementedError();
   }
 
   @override
   void subscribeCurrentSquadIdWith(
       {required void Function(String p1) doLogic}) {
-    // TODO: implement subscribeCurrentSquadIdWith
+    // : implement subscribeCurrentSquadIdWith
   }
 
   @override
   void subscribeQuestVotesWith(
       {required void Function(List<bool?> p1) doLogic}) {
-    // TODO: implement subscribeQuestVotesWith
+    // : implement subscribeQuestVotesWith
   }
 
   @override
   void subscribeSquadIsSubmittedWith(
       {String squadId = '', required void Function(Squad p1) doLogic}) {
-    // TODO: implement subscribeSquadIsSubmittedWith
+    // : implement subscribeSquadIsSubmittedWith
   }
 
   @override
   void subscribeSquadVotesWith(
       {required void Function(Map<String, bool> p1) doLogic}) {
-    // TODO: implement subscribeSquadVotesWith
+    // : implement subscribeSquadVotesWith
   }
 
   @override
   void unsubscribeCurrentSquadId() {
-    // TODO: implement unsubscribeCurrentSquadId
+    // : implement unsubscribeCurrentSquadId
   }
 
   @override
   void unsubscribeQuestVotes() {
-    // TODO: implement unsubscribeQuestVotes
+    // : implement unsubscribeQuestVotes
   }
 
   @override
   void unsubscribeSquadIsSubmitted() {
-    // TODO: implement unsubscribeSquadIsSubmitted
+    // : implement unsubscribeSquadIsSubmitted
   }
 
   @override
   void unsubscribeSquadVotes() {
-    // TODO: implement unsubscribeSquadVotes
+    // : implement unsubscribeSquadVotes
   }
 
   @override
   Future<void> updateMerlinKilled(bool merlinKilled) {
-    // TODO: implement updateMerlinKilled
+    // : implement updateMerlinKilled
     throw UnimplementedError();
   }
 
   @override
   Future<void> updateSquadIsApproved({bool isApproved = true}) {
-    // TODO: implement updateSquadIsApproved
+    // : implement updateSquadIsApproved
     throw UnimplementedError();
   }
 
   @override
   Future<void> updateSquadIsSuccessfull({bool isSuccessfull = true}) {
-    // TODO: implement updateSquadIsSuccessfull
+    // : implement updateSquadIsSuccessfull
     throw UnimplementedError();
   }
 
   @override
   Future<void> voteQuest(bool vote) {
-    // TODO: implement voteQuest
+    // : implement voteQuest
     throw UnimplementedError();
   }
 
   @override
   voteSquad(bool vote) {
-    // TODO: implement voteSquad
+    // : implement voteSquad
     throw UnimplementedError();
   }
 }
