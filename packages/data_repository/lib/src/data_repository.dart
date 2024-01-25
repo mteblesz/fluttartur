@@ -55,7 +55,7 @@ class DataRepository implements IDataRepository {
         headers: getAuthHeaders(),
       );
       if (response.statusCode != 200) {
-        throw GetRoomByIdFailure(response.statusCode);
+        throw GetRoomFailure(response.statusCode, response.body);
       }
       Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
@@ -64,6 +64,7 @@ class DataRepository implements IDataRepository {
       rethrow;
     }
   }
+
   //----------------------- matchup -----------------------
 
   @override
@@ -75,7 +76,7 @@ class DataRepository implements IDataRepository {
       );
 
       if (response.statusCode != 201) {
-        throw CreateRoomFailure(response.statusCode);
+        throw CreateRoomFailure(response.statusCode, response.body);
       }
       final locationHeader = response.headers[HttpHeaders.locationHeader];
       String roomId = Uri.parse(locationHeader!).pathSegments.last;
@@ -95,7 +96,7 @@ class DataRepository implements IDataRepository {
       );
 
       if (response.statusCode != 201) {
-        throw CreateRoomFailure(response.statusCode);
+        throw JoinRoomFailure(response.statusCode, response.body);
       }
       final locationHeader = response.headers[HttpHeaders.locationHeader];
       String playerId = Uri.parse(locationHeader!).pathSegments.last;
@@ -117,7 +118,7 @@ class DataRepository implements IDataRepository {
       );
 
       if (response.statusCode != 204) {
-        throw CreateRoomFailure(response.statusCode);
+        throw SetNicknameFailure(response.statusCode, response.body);
       }
     } on Exception catch (_) {
       rethrow;
@@ -133,7 +134,7 @@ class DataRepository implements IDataRepository {
       );
 
       if (response.statusCode != 204) {
-        throw CreateRoomFailure(response.statusCode);
+        throw RemovePlayerFailure(response.statusCode, response.body);
       }
     } on Exception catch (_) {
       rethrow;

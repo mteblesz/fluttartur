@@ -1,55 +1,49 @@
-String codeMessage(statusCode) =>
-    statusCode != null ? ' Status Code: $statusCode' : '';
-
-class CreateRoomFailure implements Exception {
-  CreateRoomFailure([statusCode]) {
-    message = "Failed to create room.${codeMessage(statusCode)}";
+abstract class CRUDFailure implements Exception {
+  CRUDFailure(String operation, int code, [String? body]) {
+    body = body ?? "Unknown error";
+    message = "Failed to $operation. ($code | $body)";
   }
 
   late String message;
 }
 
-class AddPlayerFailure implements Exception {
-  CreateRoomFailure([statusCode]) {
-    message = "Failed to add player.${codeMessage(statusCode)}";
-  }
-
-  late String message;
+abstract class ReadDataFailure extends CRUDFailure {
+  ReadDataFailure(String subject, int code, [String? body])
+      : super("read $subject", code, body);
 }
 
-// TODO old stuff for backwards-compatibility during changes (to be removed)
-
-class GetRoomByIdFailure implements Exception {
-  GetRoomByIdFailure([statusCode]) {
-    message = "Failed to create room.${codeMessage(statusCode)}";
-  }
-
-  late String message;
+abstract class CreateDataFailure extends CRUDFailure {
+  CreateDataFailure(String subject, int code, [String? body])
+      : super("create $subject", code, body);
 }
 
-class StreamingRoomFailure implements Exception {
-  const StreamingRoomFailure([this.message = 'An unknown exception occurred.']);
-
-  final String message;
+abstract class UpdateDataFailure extends CRUDFailure {
+  UpdateDataFailure(String operation, int code, [String? body])
+      : super(operation, code, body);
 }
 
-class StreamingPlayerFailure implements Exception {
-  const StreamingPlayerFailure(
-      [this.message = 'An unknown exception occurred.']);
-
-  final String message;
+abstract class DeleteDataFailure extends CRUDFailure {
+  DeleteDataFailure(String subject, int code, [String? body])
+      : super("remove $subject", code, body);
 }
 
-class JoiningStartedGameFailure implements Exception {
-  const JoiningStartedGameFailure(
-      [this.message = 'trying to join room which has started game']);
-
-  final String message;
+class GetRoomFailure extends ReadDataFailure {
+  GetRoomFailure(int code, [String? body]) : super("room", code, body);
 }
 
-class CharacterAndPlayersCountsDoNotMatchFailure implements Exception {
-  const CharacterAndPlayersCountsDoNotMatchFailure(
-      [this.message = 'lengths of list do not match']);
+class CreateRoomFailure extends CreateDataFailure {
+  CreateRoomFailure(int code, [String? body]) : super("room", code, body);
+}
 
-  final String message;
+class JoinRoomFailure extends CreateDataFailure {
+  JoinRoomFailure(int code, [String? body]) : super("player", code, body);
+}
+
+class SetNicknameFailure extends UpdateDataFailure {
+  SetNicknameFailure(int code, [String? body])
+      : super("set nickname", code, body);
+}
+
+class RemovePlayerFailure extends DeleteDataFailure {
+  RemovePlayerFailure(int code, [String? body]) : super("player", code, body);
 }
