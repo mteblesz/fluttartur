@@ -1,49 +1,32 @@
 abstract class DataRepoFailure implements Exception {
   DataRepoFailure(String operation, int code, [String? body]) {
     body = body ?? "Unknown error";
-    message = "Failed to $operation. ($code | $body)";
+    message = "Failed to $operation.\n$code: $body";
   }
 
   late String message;
 }
 
-abstract class GetDataFailure extends DataRepoFailure {
-  GetDataFailure(String subject, int code, [String? body])
-      : super("retrieve $subject", code, body);
+class GetRoomFailure extends DataRepoFailure {
+  GetRoomFailure(int code, [String? body])
+      : super("retirieve room", code, body);
 }
 
-abstract class CreateDataFailure extends DataRepoFailure {
-  CreateDataFailure(String subject, int code, [String? body])
-      : super("create $subject", code, body);
+class CreateRoomFailure extends DataRepoFailure {
+  CreateRoomFailure(int code, [String? body])
+      : super("create room", code, body);
 }
 
-abstract class UpdateDataFailure extends DataRepoFailure {
-  UpdateDataFailure(String operation, int code, [String? body])
-      : super(operation, code, body);
+class JoinRoomFailure extends DataRepoFailure {
+  JoinRoomFailure(int code, [String? body]) : super("join room", code, body);
 }
 
-abstract class DeleteDataFailure extends DataRepoFailure {
-  DeleteDataFailure(String subject, int code, [String? body])
-      : super("remove $subject", code, body);
-}
-
-class GetRoomFailure extends GetDataFailure {
-  GetRoomFailure(int code, [String? body]) : super("room", code, body);
-}
-
-class CreateRoomFailure extends CreateDataFailure {
-  CreateRoomFailure(int code, [String? body]) : super("room", code, body);
-}
-
-class JoinRoomFailure extends CreateDataFailure {
-  JoinRoomFailure(int code, [String? body]) : super("player spot", code, body);
-}
-
-class SetNicknameFailure extends UpdateDataFailure {
+class SetNicknameFailure extends DataRepoFailure {
   SetNicknameFailure(int code, [String? body])
       : super("set nickname", code, body);
 }
 
-class RemovePlayerFailure extends DeleteDataFailure {
-  RemovePlayerFailure(int code, [String? body]) : super("player", code, body);
+class RemovePlayerFailure extends DataRepoFailure {
+  RemovePlayerFailure(int code, [String? body])
+      : super("remove player", code, body);
 }
