@@ -27,7 +27,7 @@ abstract class IDataRepository {
   Future<void> assignSpecialCharacters(Map<String, Player> map);
   Future<void> assignLeader(int leaderIndex);
   Future<void> nextLeader();
-  Future<void> removePlayer({required String playerId});
+  Future<void> removePlayer({required int playerId});
 
   Stream<List<Member>> streamMembersList({required squadId});
   Future<void> addMember({

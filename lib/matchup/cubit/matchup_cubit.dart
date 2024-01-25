@@ -30,7 +30,6 @@ class MatchupCubit extends Cubit<MatchupState> {
     try {
       await _dataRepository.setNickname(
         nick: state.nick.value,
-        userId: userId,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } catch (_) {
@@ -39,7 +38,7 @@ class MatchupCubit extends Cubit<MatchupState> {
   }
 
   Future<void> removePlayer(Player player) async {
-    _dataRepository.removePlayer(playerId: player.id);
+    _dataRepository.removePlayer(playerId: int.parse(player.id));
   }
 
   bool isPlayerCountValid() {
@@ -100,7 +99,6 @@ class MatchupCubit extends Cubit<MatchupState> {
   Future<void> add_Player_debug() async {
     await _dataRepository.setNickname(
       nick: "player_$debug_player_count",
-      userId: "${debug_player_count * 100}",
     );
     debug_player_count++;
   }

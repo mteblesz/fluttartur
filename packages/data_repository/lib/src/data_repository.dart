@@ -125,15 +125,24 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> leaveRoom() async {
-    // : implement leaveRoom
-    throw UnimplementedError();
+  Future<void> removePlayer({required int playerId}) async {
+    try {
+      final response = await HttpSender.patch(
+        Uri.parse(ApiConfig.removePlayerUrl(playerId)),
+        headers: getAuthHeaders(),
+      );
+
+      if (response.statusCode != 204) {
+        throw CreateRoomFailure(response.statusCode);
+      }
+    } on Exception catch (_) {
+      rethrow;
+    }
   }
 
   @override
-  Future<void> removePlayer({required String playerId}) {
-    // : implement removePlayer
-    throw UnimplementedError();
+  Future<void> leaveRoom() async {
+    await removePlayer(playerId: currentPlayerId);
   }
 
   @override
