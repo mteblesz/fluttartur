@@ -2,22 +2,24 @@ import 'dart:async';
 import 'package:data_repository/models/models.dart';
 
 abstract class IDataRepository {
-  Future<void> createRoom();
   Future<RoomInfoDto> getRoomById();
+
+  Future<void> createRoom();
+  Future<void> joinRoom({required int roomId});
+  Future<void> setNickname({required String nick});
+  Future<void> removePlayer({required int playerId});
+  Future<void> leaveRoom();
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Room get currentRoom;
   Stream<Room> streamRoom();
-  Future<void> joinRoom();
   Future<void> startGame();
   void subscribeGameStartedWith({required void Function(bool) doLogic});
   void unsubscribeGameStarted();
 
   Player get currentPlayer;
   Stream<Player> streamPlayer();
-  Future<void> setNickname({required String nick});
-  Future<void> leaveRoom();
 
   Stream<List<Player>> streamPlayersList();
   Future<List<Player>> playersList();
@@ -27,7 +29,6 @@ abstract class IDataRepository {
   Future<void> assignSpecialCharacters(Map<String, Player> map);
   Future<void> assignLeader(int leaderIndex);
   Future<void> nextLeader();
-  Future<void> removePlayer({required int playerId});
 
   Stream<List<Member>> streamMembersList({required squadId});
   Future<void> addMember({

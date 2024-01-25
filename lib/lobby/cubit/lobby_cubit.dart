@@ -25,7 +25,7 @@ class LobbyCubit extends Cubit<LobbyState> {
     if (!state.statusOfJoin.isValidated) return;
     emit(state.copyWith(statusOfJoin: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.joinRoom();
+      await _dataRepository.joinRoom(roomId: int.parse(state.roomId.value));
       emit(state.copyWith(statusOfJoin: FormzStatus.submissionSuccess));
     }
     // TODO better handling of possible errors !!!

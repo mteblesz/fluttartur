@@ -88,10 +88,10 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> joinRoom() async {
+  Future<void> joinRoom({required int roomId}) async {
     try {
       final response = await HttpSender.post(
-        Uri.parse(ApiConfig.joinRoomUrl(currentRoomId)),
+        Uri.parse(ApiConfig.joinRoomUrl(roomId)),
         headers: getAuthHeaders(),
       );
 
