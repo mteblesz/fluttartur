@@ -36,7 +36,7 @@ class CreateRoomFailure extends CreateDataFailure {
 }
 
 class JoinRoomFailure extends CreateDataFailure {
-  JoinRoomFailure(int code, [String? body]) : super("player", code, body);
+  JoinRoomFailure(int code, [String? body]) : super("player spot", code, body);
 }
 
 class SetNicknameFailure extends UpdateDataFailure {

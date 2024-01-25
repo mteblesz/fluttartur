@@ -27,12 +27,11 @@ class LobbyCubit extends Cubit<LobbyState> {
     try {
       await _dataRepository.joinRoom(roomId: int.parse(state.roomId.value));
       emit(state.copyWith(statusOfJoin: FormzStatus.submissionSuccess));
-    }
-    // TODO better handling of possible errors !!!
-    on JoinRoomFailure catch (e) {
-      print(e.message);
-      rethrow;
-      //emit(state.copyWith(statusOfJoin: FormzStatus.submissionFailure));
+    } on DataRepoFailure catch (e) {
+      emit(state.copyWith(
+        statusOfJoin: FormzStatus.submissionFailure,
+        errorMessage: e.message,
+      ));
     } catch (_) {
       emit(state.copyWith(statusOfJoin: FormzStatus.submissionFailure));
     }
@@ -42,9 +41,12 @@ class LobbyCubit extends Cubit<LobbyState> {
     emit(state.copyWith(statusOfCreate: FormzStatus.submissionInProgress));
     try {
       await _dataRepository.createRoom();
-      await _dataRepository.getRoomById();
-      //emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
-      emit(state.copyWith(statusOfCreate: FormzStatus.pure));
+      emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
+    } on DataRepoFailure catch (e) {
+      emit(state.copyWith(
+        statusOfJoin: FormzStatus.submissionFailure,
+        errorMessage: e.message,
+      ));
     } catch (_) {
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionFailure));
     }

@@ -66,9 +66,13 @@ class DataRepository implements IDataRepository {
   }
 
   //----------------------- matchup -----------------------
-
   @override
   Future<void> createRoom() async {
+    final roomId = await _createRoom();
+    await joinRoom(roomId: roomId);
+  }
+
+  Future<int> _createRoom() async {
     try {
       final response = await HttpSender.post(
         Uri.parse(ApiConfig.createRoomUrl()),
@@ -79,9 +83,9 @@ class DataRepository implements IDataRepository {
         throw CreateRoomFailure(response.statusCode, response.body);
       }
       final locationHeader = response.headers[HttpHeaders.locationHeader];
-      String roomId = Uri.parse(locationHeader!).pathSegments.last;
-
-      _cache.write(key: currentRoomIdCacheKey, value: int.parse(roomId));
+      int roomId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
+      _cache.write(key: currentRoomIdCacheKey, value: roomId);
+      return roomId;
     } on Exception catch (_) {
       rethrow;
     }
