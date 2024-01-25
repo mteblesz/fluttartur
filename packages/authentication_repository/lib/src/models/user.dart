@@ -11,6 +11,7 @@ class User extends Equatable {
     required this.id,
     this.email,
     this.name,
+    this.token,
   });
 
   /// The current user's email address.
@@ -21,6 +22,9 @@ class User extends Equatable {
 
   /// The current user's name (display name).
   final String? name;
+
+  /// The current user's authentication token
+  final String? token;
 
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');

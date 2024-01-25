@@ -44,7 +44,7 @@ class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Player>>(
-      stream: context.read<DataRepository>().streamPlayersList(),
+      stream: context.read<IDataRepository>().streamPlayersList(),
       builder: (context, snapshot) {
         var players = snapshot.data;
         context.read<MatchupCubit>().playerCountChanged(players);
@@ -72,7 +72,7 @@ class _PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hostUserId = context.read<DataRepository>().currentRoom.hostUserId;
+    final hostUserId = context.read<IDataRepository>().currentRoom.hostUserId;
     final userId = context.select((AppBloc bloc) => bloc.state.user.id);
     return Card(
       child: ListTile(
@@ -97,7 +97,7 @@ class _PlayerCard extends StatelessWidget {
 class _HostButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final hostUserId = context.read<DataRepository>().currentRoom.hostUserId;
+    final hostUserId = context.read<IDataRepository>().currentRoom.hostUserId;
     final userId = context.select((AppBloc bloc) => bloc.state.user.id);
     return userId != hostUserId
         ? const SizedBox.shrink()

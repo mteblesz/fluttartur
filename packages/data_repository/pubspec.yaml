@@ -1,5 +1,5 @@
 name: data_repository
-description: A new Flutter project.
+description: Library for communication with backend API 
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -7,16 +7,15 @@ environment:
   sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
+  authentication_repository:
+    path: ../authentication_repository
   cache:
     path: ../cache
   equatable: ^2.0.3
-  firebase_core: ^2.4.1
-  firebase_core_platform_interface: ^4.5.2
-  flow_builder: ^0.0.9
   flutter:
     sdk: flutter
+  http: ^1.1.2
   meta: ^1.7.0
-  cloud_firestore: ^4.3.1
   provider: ^6.0.1
 
 dev_dependencies:
@@ -29,7 +28,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
   uses-material-design: true
 
 

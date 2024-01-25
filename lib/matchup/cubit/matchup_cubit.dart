@@ -11,7 +11,7 @@ part 'matchup_state.dart';
 class MatchupCubit extends Cubit<MatchupState> {
   MatchupCubit(this._dataRepository) : super(const MatchupState());
 
-  final DataRepository _dataRepository;
+  final IDataRepository _dataRepository;
 
   void playerCountChanged(List<Player>? players) {
     if (players == null) return;
@@ -28,9 +28,8 @@ class MatchupCubit extends Cubit<MatchupState> {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.addPlayer(
+      await _dataRepository.setNickname(
         nick: state.nick.value,
-        userId: userId,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } catch (_) {
@@ -39,7 +38,7 @@ class MatchupCubit extends Cubit<MatchupState> {
   }
 
   Future<void> removePlayer(Player player) async {
-    _dataRepository.removePlayer(playerId: player.id);
+    _dataRepository.removePlayer(playerId: int.parse(player.id));
   }
 
   bool isPlayerCountValid() {
@@ -98,9 +97,8 @@ class MatchupCubit extends Cubit<MatchupState> {
 
   // debug only
   Future<void> add_Player_debug() async {
-    await _dataRepository.addPlayer(
+    await _dataRepository.setNickname(
       nick: "player_$debug_player_count",
-      userId: "${debug_player_count * 100}",
     );
     debug_player_count++;
   }

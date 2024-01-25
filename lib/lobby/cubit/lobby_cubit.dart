@@ -9,7 +9,7 @@ part 'lobby_state.dart';
 class LobbyCubit extends Cubit<LobbyState> {
   LobbyCubit(this._dataRepository) : super(const LobbyState());
 
-  final DataRepository _dataRepository;
+  final IDataRepository _dataRepository;
 
   void roomIdChanged(String value) {
     final roomId = RoomId.dirty(value);
@@ -25,26 +25,35 @@ class LobbyCubit extends Cubit<LobbyState> {
     if (!state.statusOfJoin.isValidated) return;
     emit(state.copyWith(statusOfJoin: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.joinRoom(roomId: state.roomId.value);
+      await _dataRepository.joinRoom(roomId: int.parse(state.roomId.value));
       emit(state.copyWith(statusOfJoin: FormzStatus.submissionSuccess));
-    }
-    // TODO better handling of possible errors !!!
-    on JoiningStartedGameFailure catch (e) {
-      print(e.message);
-      rethrow;
-      //emit(state.copyWith(statusOfJoin: FormzStatus.submissionFailure));
+    } on DataRepoFailure catch (e) {
+      emit(state.copyWith(
+        statusOfJoin: FormzStatus.submissionFailure,
+        errorMessage: e.message,
+      ));
     } catch (_) {
       emit(state.copyWith(statusOfJoin: FormzStatus.submissionFailure));
     }
   }
 
-  Future<void> createRoom({required String userId}) async {
+  Future<void> createRoom() async {
     emit(state.copyWith(statusOfCreate: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.createRoom(userId: userId);
+      await _dataRepository.createRoom();
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
+    } on DataRepoFailure catch (e) {
+      emit(state.copyWith(
+        statusOfJoin: FormzStatus.submissionFailure,
+        errorMessage: e.message,
+      ));
     } catch (_) {
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionFailure));
     }
+  }
+
+  void resetButtonsState() {
+    emit(state.copyWith(statusOfCreate: FormzStatus.pure));
+    emit(state.copyWith(statusOfJoin: FormzStatus.pure));
   }
 }

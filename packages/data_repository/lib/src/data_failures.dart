@@ -1,50 +1,32 @@
-part of 'data_repository.dart';
+abstract class DataRepoFailure implements Exception {
+  DataRepoFailure(String operation, int code, [String? body]) {
+    body = body ?? "Unknown error";
+    message = "Failed to $operation.\n$code: $body";
+  }
 
-class GetRoomByIdFailure implements Exception {
-  // const GetRoomByIdFailure([this.message = 'An unknown exception occurred.']);
-
-  // factory GetRoomByIdFailure.fromCode(String code) {
-  //   switch (code) {
-  //     case 'invalid-id':
-  //       return const GetRoomByIdFailure(
-  //         'Room ID is invalid',
-  //       );
-  //     case 'no-doc-with-id':
-  //       return const GetRoomByIdFailure(
-  //         'No active room with this ID',
-  //       );
-  //     default:
-  //       return const GetRoomByIdFailure();
-  //   }
-  // }
-
-  // /// The associated error message.
-  // final String message;
+  late String message;
 }
 
-class StreamingRoomFailure implements Exception {
-  const StreamingRoomFailure([this.message = 'An unknown exception occurred.']);
-
-  final String message;
+class GetRoomFailure extends DataRepoFailure {
+  GetRoomFailure(int code, [String? body])
+      : super("retirieve room", code, body);
 }
 
-class StreamingPlayerFailure implements Exception {
-  const StreamingPlayerFailure(
-      [this.message = 'An unknown exception occurred.']);
-
-  final String message;
+class CreateRoomFailure extends DataRepoFailure {
+  CreateRoomFailure(int code, [String? body])
+      : super("create room", code, body);
 }
 
-class JoiningStartedGameFailure implements Exception {
-  const JoiningStartedGameFailure(
-      [this.message = 'trying to join room which has started game']);
-
-  final String message;
+class JoinRoomFailure extends DataRepoFailure {
+  JoinRoomFailure(int code, [String? body]) : super("join room", code, body);
 }
 
-class CharacterAndPlayersCountsDoNotMatchFailure implements Exception {
-  const CharacterAndPlayersCountsDoNotMatchFailure(
-      [this.message = 'lengths of list do not match']);
+class SetNicknameFailure extends DataRepoFailure {
+  SetNicknameFailure(int code, [String? body])
+      : super("set nickname", code, body);
+}
 
-  final String message;
+class RemovePlayerFailure extends DataRepoFailure {
+  RemovePlayerFailure(int code, [String? body])
+      : super("remove player", code, body);
 }

@@ -86,7 +86,7 @@ class _PlayerCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: player.id ==
-                            context.read<DataRepository>().currentPlayer.id
+                            context.read<IDataRepository>().currentPlayer.id
                         ? FontWeight.bold
                         : null,
                   ),
@@ -105,7 +105,7 @@ class _SquadListView extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO move curretnsqadid to cubit and make blocbuilder here instead
     return StreamBuilder<String>(
-      stream: context.read<DataRepository>().streamCurrentSquadId(),
+      stream: context.read<IDataRepository>().streamCurrentSquadId(),
       builder: (context, snapshot) {
         var currentSquadId = snapshot.data;
         return currentSquadId == null
@@ -155,7 +155,7 @@ class _MemberCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: member.playerId ==
-                        context.read<DataRepository>().currentPlayer.id
+                        context.read<IDataRepository>().currentPlayer.id
                     ? FontWeight.bold
                     : null,
               ),

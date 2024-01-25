@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Room extends Equatable {
   final String id;
@@ -55,32 +54,4 @@ class Room extends Equatable {
         specialCharacters,
         merlinKilled,
       ];
-
-  factory Room.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data();
-    return Room(
-      id: doc.id,
-      hostUserId: data?['host_user_id'],
-      gameStarted: data?['game_started'],
-      currentSquadId: data?['current_squad_id'],
-      characters: data?['characters'] is Iterable
-          ? List.from(data?['characters'])
-          : List.empty(),
-      specialCharacters: data?['special_characters'] is Iterable
-          ? List.from(data?['special_characters'])
-          : List.empty(),
-      merlinKilled: data?['merlin_killed'],
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'host_user_id': hostUserId,
-      'game_started': gameStarted,
-      'current_squad_id': currentSquadId,
-      'characters': characters,
-      'special_characters': specialCharacters,
-      'merlin_killed': merlinKilled,
-    };
-  }
 }

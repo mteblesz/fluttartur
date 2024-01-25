@@ -43,7 +43,7 @@ class GamePage extends StatelessWidget {
             ],
           ),
           body: BlocProvider(
-            create: (_) => GameCubit(context.read<DataRepository>()),
+            create: (_) => GameCubit(context.read<IDataRepository>()),
             child: const GameForm(),
           ),
         ),

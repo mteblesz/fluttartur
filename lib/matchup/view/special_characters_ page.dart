@@ -72,13 +72,14 @@ class _CharactersViewState extends State<_CharactersView> {
       characters.add('good_percival');
       characters.add('evil_morgana');
     }
-    await context.read<DataRepository>().setSpecialCharacters(characters);
+    await context.read<IDataRepository>().setSpecialCharacters(characters);
   }
 
   @override
   void initState() {
     super.initState();
-    final list = context.read<DataRepository>().currentRoom.specialCharacters;
+    final list =
+        context.read<IDataRepository>().currentRoom.specialCharacters;
     if (list.contains("good_merlin")) hasMerlinAndAssassin = true;
     if (list.contains("good_percival")) hasPercivalAndMorgana = true;
   }

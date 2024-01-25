@@ -8,7 +8,7 @@ part 'room_state.dart';
 class RoomCubit extends Cubit<RoomState> {
   RoomCubit(this._dataRepository) : super(const RoomState());
 
-  final DataRepository _dataRepository;
+  final IDataRepository _dataRepository;
 
   /// directs to game pages
   void goToGame() {

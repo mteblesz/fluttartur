@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 //TODO divide models and DTOs (?)
@@ -32,26 +31,4 @@ class Player extends Equatable {
   @override
   List<Object?> get props =>
       [id, userId, nick, isLeader, character, specialCharacter];
-
-  factory Player.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data();
-    return Player(
-      id: doc.id,
-      userId: data?["user_id"],
-      nick: data?['nick'],
-      isLeader: data?['is_leader'],
-      character: data?['character'],
-      specialCharacter: data?['special_character'],
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      "user_id": userId,
-      "nick": nick,
-      'is_leader': isLeader,
-      if (character != null) "character": character,
-      if (specialCharacter != null) "special_character": specialCharacter,
-    };
-  }
 }

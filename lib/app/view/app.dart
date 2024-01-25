@@ -6,29 +6,18 @@ import 'package:fluttartur/app/app.dart';
 import 'package:fluttartur/theme.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-
-// MAIN TODO's:
-// TODO move resources to some resources class
-// TODO internalizacja
-// TODO anonimowe logowanie
-// TODO animacje
-// TODO dołączanie do lobby przez kod QR
-// TODO timouts for db actions(such as joining room etc)
-// TODO get rid of view files ?
-// TODO lobby todos
 
 class App extends StatelessWidget {
   const App({
     super.key,
     required AuthenticationRepository authenticationRepository,
-    required DataRepository dataRepository,
+    required IDataRepository dataRepository,
   })  : _authenticationRepository = authenticationRepository,
         _dataRepository = dataRepository;
 
   final AuthenticationRepository _authenticationRepository;
-  final DataRepository _dataRepository;
+  final IDataRepository _dataRepository;
 
   @override
   Widget build(BuildContext context) {

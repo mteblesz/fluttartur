@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Squad extends Equatable {
   final String id;
@@ -44,26 +43,4 @@ class Squad extends Equatable {
   @override
   List<Object?> get props =>
       [id, questNumber, isSubmitted, isApproved, isSuccessfull, votes];
-
-  factory Squad.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data();
-    return Squad(
-      id: doc.id,
-      questNumber: data?['quest_number'],
-      isSubmitted: data?['is_submitted'],
-      isApproved: data?['is_approved'],
-      isSuccessfull: data?['is_successfull'],
-      votes: Map.from(data?['votes']),
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'quest_number': questNumber,
-      'is_submitted': isSubmitted,
-      if (isApproved != null) 'is_approved': isApproved,
-      if (isSuccessfull != null) 'is_successfull': isSuccessfull,
-      'votes': votes,
-    };
-  }
 }
