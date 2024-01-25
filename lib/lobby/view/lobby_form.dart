@@ -12,8 +12,6 @@ class LobbyForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AppBloc bloc) => bloc.state.user);
-
     return Column(
       children: [
         const LanguageChangeButton(),
@@ -50,17 +48,21 @@ class LobbyForm extends StatelessWidget {
 class _RoomIdInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (roomId) => context.read<LobbyCubit>().roomIdChanged(roomId),
-      //keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        border: const UnderlineInputBorder(),
-        labelText: AppLocalizations.of(context)!.roomID,
-        helperText: '',
-        //errorText: state.roomId.invalid ? 'invalid room ID' : null, //TODO alike in login
-        // TODO !! add onError to joinRoom below with dialog about room gamestarted
-      ),
-    );
+    return BlocBuilder<LobbyCubit, LobbyState>(
+        buildWhen: (previous, current) => previous.roomId != current.roomId,
+        builder: (context, state) {
+          return TextField(
+            onChanged: (roomId) =>
+                context.read<LobbyCubit>().roomIdChanged(roomId),
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              border: const UnderlineInputBorder(),
+              labelText: AppLocalizations.of(context)!.roomID,
+              helperText: '',
+              errorText: state.roomId.invalid ? 'invalid room ID' : null,
+            ),
+          );
+        });
   }
 }
 
