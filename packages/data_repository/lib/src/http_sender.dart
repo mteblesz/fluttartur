@@ -18,34 +18,35 @@ class HttpSender {
   HttpSender._();
 
   static Future<http.Response> get(Uri uri,
-      {required Map<String, String>? headers}) async {
-    return await _send(HttpVerb.get_, uri, headers);
+      {required Map<String, String>? headers, String? body}) async {
+    return await _send(HttpVerb.get_, uri, headers, body);
   }
 
   static Future<http.Response> post(Uri uri,
-      {required Map<String, String>? headers}) async {
-    return await _send(HttpVerb.post, uri, headers);
+      {required Map<String, String>? headers, String? body}) async {
+    return await _send(HttpVerb.post, uri, headers, body);
   }
 
   static Future<http.Response> put(Uri uri,
-      {required Map<String, String>? headers}) async {
-    return await _send(HttpVerb.put, uri, headers);
+      {required Map<String, String>? headers, String? body}) async {
+    return await _send(HttpVerb.put, uri, headers, body);
   }
 
   static Future<http.Response> patch(Uri uri,
-      {required Map<String, String>? headers}) async {
-    return await _send(HttpVerb.patch, uri, headers);
+      {required Map<String, String>? headers, String? body}) async {
+    return await _send(HttpVerb.patch, uri, headers, body);
   }
 
   static Future<http.Response> delete(Uri uri,
-      {required Map<String, String>? headers}) async {
-    return await _send(HttpVerb.delete, uri, headers);
+      {required Map<String, String>? headers, String? body}) async {
+    return await _send(HttpVerb.delete, uri, headers, body);
   }
 
   static Future<http.Response> _send(
     HttpVerb httpMethod,
     Uri uri, [
     Map<String, String>? headers,
+    String? body,
   ]) async {
     try {
       // Disable SSL verification for development purposes
@@ -74,6 +75,10 @@ class HttpSender {
       headers?.forEach((key, value) {
         request.headers.set(key, value);
       });
+
+      if (body != null) {
+        request.write(body);
+      }
 
       final response = await request.close();
       httpClient.close();

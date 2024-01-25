@@ -28,7 +28,7 @@ class MatchupCubit extends Cubit<MatchupState> {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.addPlayer(
+      await _dataRepository.setNickname(
         nick: state.nick.value,
         userId: userId,
       );
@@ -98,7 +98,7 @@ class MatchupCubit extends Cubit<MatchupState> {
 
   // debug only
   Future<void> add_Player_debug() async {
-    await _dataRepository.addPlayer(
+    await _dataRepository.setNickname(
       nick: "player_$debug_player_count",
       userId: "${debug_player_count * 100}",
     );

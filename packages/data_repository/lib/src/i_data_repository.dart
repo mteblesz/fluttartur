@@ -16,11 +16,7 @@ abstract class IDataRepository {
 
   Player get currentPlayer;
   Stream<Player> streamPlayer();
-  Future<void> addPlayer({
-    required String userId,
-    required String nick,
-    bool isLeader = false,
-  });
+  Future<void> setNickname({required String nick});
   Future<void> leaveRoom();
 
   Stream<List<Player>> streamPlayersList();

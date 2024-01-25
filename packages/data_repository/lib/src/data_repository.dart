@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
@@ -108,12 +107,21 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> addPlayer(
-      {required String userId,
-      required String nick,
-      bool isLeader = false}) async {
-    // : implement addPlayer
-    throw UnimplementedError();
+  Future<void> setNickname({required String nick}) async {
+    final playerDto = NicknameSetDto(playerId: currentPlayerId, nick: nick);
+    try {
+      final response = await HttpSender.patch(
+        Uri.parse(ApiConfig.setNicknameUrl()),
+        headers: getAuthHeaders(),
+        body: jsonEncode(playerDto.toJson()),
+      );
+
+      if (response.statusCode != 204) {
+        throw CreateRoomFailure(response.statusCode);
+      }
+    } on Exception catch (_) {
+      rethrow;
+    }
   }
 
   @override
