@@ -1,5 +1,5 @@
-abstract class CRUDFailure implements Exception {
-  CRUDFailure(String operation, int code, [String? body]) {
+abstract class DataRepoFailure implements Exception {
+  DataRepoFailure(String operation, int code, [String? body]) {
     body = body ?? "Unknown error";
     message = "Failed to $operation. ($code | $body)";
   }
@@ -7,27 +7,27 @@ abstract class CRUDFailure implements Exception {
   late String message;
 }
 
-abstract class ReadDataFailure extends CRUDFailure {
-  ReadDataFailure(String subject, int code, [String? body])
-      : super("read $subject", code, body);
+abstract class GetDataFailure extends DataRepoFailure {
+  GetDataFailure(String subject, int code, [String? body])
+      : super("retrieve $subject", code, body);
 }
 
-abstract class CreateDataFailure extends CRUDFailure {
+abstract class CreateDataFailure extends DataRepoFailure {
   CreateDataFailure(String subject, int code, [String? body])
       : super("create $subject", code, body);
 }
 
-abstract class UpdateDataFailure extends CRUDFailure {
+abstract class UpdateDataFailure extends DataRepoFailure {
   UpdateDataFailure(String operation, int code, [String? body])
       : super(operation, code, body);
 }
 
-abstract class DeleteDataFailure extends CRUDFailure {
+abstract class DeleteDataFailure extends DataRepoFailure {
   DeleteDataFailure(String subject, int code, [String? body])
       : super("remove $subject", code, body);
 }
 
-class GetRoomFailure extends ReadDataFailure {
+class GetRoomFailure extends GetDataFailure {
   GetRoomFailure(int code, [String? body]) : super("room", code, body);
 }
 
