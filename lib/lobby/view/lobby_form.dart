@@ -36,7 +36,7 @@ class LobbyForm extends StatelessWidget {
                   const SizedBox(height: 10),
                   _JoinRoomButton(),
                   const SizedBox(height: 10),
-                  _CreateRoomButton(),
+                  _CreateRoomButtonSpace(),
                 ],
               ),
             ),
@@ -100,30 +100,42 @@ class _JoinRoomButton extends StatelessWidget {
   }
 }
 
-class _CreateRoomButton extends StatelessWidget {
+class _CreateRoomButtonSpace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyCubit, LobbyState>(
       buildWhen: (previous, current) =>
           previous.statusOfCreate != current.statusOfCreate,
       builder: (context, state) {
-        final user = context.select((AppBloc bloc) => bloc.state.user);
-        return state.statusOfCreate.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : FilledButton.tonal(
-                onPressed: () {
-                  // TODO rework this (go to matchup after create room status is succ)
-                  context.read<LobbyCubit>().createRoom(userId: user.id)
-                      //.then((_) => context.read<RoomCubit>().goToMatchup())
-                      ;
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(AppLocalizations.of(context)!.createRoom,
-                      style: const TextStyle(fontSize: 20)),
-                ),
-              );
+        if (state.statusOfCreate.isSubmissionInProgress) {
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfCreate.isSubmissionFailure) {
+          // button doesnt change and popup with state.errorMessage is shown
+        }
+        if (state.statusOfCreate.isSubmissionSuccess) {
+          //button is not clickable, and context.read<RoomCubit>().goToMatchup() is called
+        }
+        return _CreateRoomButton();
       },
+    );
+  }
+}
+
+class _CreateRoomButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.tonal(
+      onPressed: () {
+        context.read<LobbyCubit>().createRoom()
+            //.then((_) => context.read<RoomCubit>().goToMatchup())
+            ;
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(AppLocalizations.of(context)!.createRoom,
+            style: const TextStyle(fontSize: 20)),
+      ),
     );
   }
 }

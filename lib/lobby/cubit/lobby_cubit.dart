@@ -37,7 +37,7 @@ class LobbyCubit extends Cubit<LobbyState> {
     }
   }
 
-  Future<void> createRoom({required String userId}) async {
+  Future<void> createRoom() async {
     emit(state.copyWith(statusOfCreate: FormzStatus.submissionInProgress));
     try {
       await _dataRepository.createRoom();
