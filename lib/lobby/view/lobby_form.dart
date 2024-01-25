@@ -90,7 +90,7 @@ class _JoinRoomButtonSpace extends StatelessWidget {
 }
 
 class _JoinRoomButton extends StatelessWidget {
-  const _JoinRoomButton({super.key});
+  const _JoinRoomButton();
 
   @override
   Widget build(BuildContext context) {
