@@ -122,7 +122,7 @@ class _CreateRoomButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfCreate.isSubmissionSuccess) {
-          goToMatchup(context);
+          goToMatchup(context, isHost: true);
           return const CircularProgressIndicator();
         }
         return const _CreateRoomButton();
@@ -151,9 +151,9 @@ class _CreateRoomButton extends StatelessWidget {
   }
 }
 
-void goToMatchup(BuildContext context) {
+void goToMatchup(BuildContext context, {bool isHost = false}) {
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    context.read<RoomCubit>().goToMatchup();
+    context.read<RoomCubit>().goToMatchup(isHost: isHost);
   });
 }
 

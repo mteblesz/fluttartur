@@ -17,8 +17,9 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   /// directs to matchup page
-  void goToMatchup() {
-    emit(state.copyWith(status: RoomStatus.inMathup));
+  void goToMatchup({required bool isHost}) {
+    emit(state.copyWith(
+        status: isHost ? RoomStatus.inMathupIsHost : RoomStatus.inMathup));
   }
 
   /// directs back to lobby

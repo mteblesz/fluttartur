@@ -11,9 +11,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // teraz nie działa na dole stacka, bo https://github.com/flutter/flutter/issues/17627
 //    :(
 class MatchupPage extends StatelessWidget {
-  const MatchupPage({super.key});
+  const MatchupPage({super.key, required this.isHost});
 
-  static Page<void> page() => const MaterialPage<void>(child: MatchupPage());
+  static Page<void> page({required bool isHost}) =>
+      MaterialPage<void>(child: MatchupPage(isHost: isHost));
+
+  final bool isHost;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,8 @@ class MatchupPage extends StatelessWidget {
             actions: <Widget>[_MatchupAppBarActions()],
           ),
           body: BlocProvider(
-            create: (_) => MatchupCubit(context.read<IDataRepository>()),
+            create: (_) =>
+                MatchupCubit(context.read<IDataRepository>(), isHost: isHost),
             child: const MatchupForm(),
           ),
         ),

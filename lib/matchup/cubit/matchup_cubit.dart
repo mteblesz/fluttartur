@@ -9,7 +9,8 @@ import 'dart:math';
 part 'matchup_state.dart';
 
 class MatchupCubit extends Cubit<MatchupState> {
-  MatchupCubit(this._dataRepository) : super(const MatchupState());
+  MatchupCubit(this._dataRepository, {required bool isHost})
+      : super(MatchupState(isHost: isHost));
 
   final IDataRepository _dataRepository;
 

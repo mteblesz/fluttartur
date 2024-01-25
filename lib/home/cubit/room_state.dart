@@ -7,6 +7,9 @@ enum RoomStatus {
   /// user is in room durning matchup
   inMathup,
 
+  /// user is in room durning matchup and is the host
+  inMathupIsHost,
+
   /// user is in room durning game
   inGame,
 }
