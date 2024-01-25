@@ -34,7 +34,7 @@ class LobbyForm extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  _JoinRoomButton(),
+                  _JoinRoomButtonSpace(),
                   const SizedBox(height: 10),
                   _CreateRoomButtonSpace(),
                 ],
@@ -64,38 +64,44 @@ class _RoomIdInput extends StatelessWidget {
   }
 }
 
-// TODO !!! handle errors  // TODO deactivate when create room is processing
-class _JoinRoomButton extends StatelessWidget {
+class _JoinRoomButtonSpace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyCubit, LobbyState>(
       buildWhen: (previous, current) =>
           previous.statusOfJoin != current.statusOfJoin,
       builder: (context, state) {
-        return state.statusOfJoin.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : FilledButton(
-                onPressed: !state.statusOfJoin.isValidated ||
-                        state.statusOfCreate.isSubmissionInProgress
-                    ? null
-                    : () async {
-                        // TODO  rework this thing
-                        await context.read<LobbyCubit>().joinRoom();
-                        if (state.statusOfJoin.isValidated) {
-                          // TODO !!! change to have event sent to inside lobbycubit
-                          context.read<RoomCubit>().goToMatchup();
-                        } else {
-                          print("invalid room ID");
-                          //TODO push popup, or write info somwhere
-                        }
-                      },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(AppLocalizations.of(context)!.join,
-                      style: const TextStyle(fontSize: 25)),
-                ),
-              );
+        if (state.statusOfJoin.isSubmissionInProgress) {
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfJoin.isSubmissionFailure) {
+          showFailureDialog(context, state.errorMessage);
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfJoin.isSubmissionSuccess) {
+          goToMatchup(context);
+          return const CircularProgressIndicator();
+        }
+        return const _JoinRoomButton();
       },
+    );
+  }
+}
+
+class _JoinRoomButton extends StatelessWidget {
+  const _JoinRoomButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: () {
+        context.read<LobbyCubit>().joinRoom();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(AppLocalizations.of(context)!.join,
+            style: const TextStyle(fontSize: 25)),
+      ),
     );
   }
 }
@@ -118,13 +124,15 @@ class _CreateRoomButtonSpace extends StatelessWidget {
           goToMatchup(context);
           return const CircularProgressIndicator();
         }
-        return _CreateRoomButton();
+        return const _CreateRoomButton();
       },
     );
   }
 }
 
 class _CreateRoomButton extends StatelessWidget {
+  const _CreateRoomButton();
+
   @override
   Widget build(BuildContext context) {
     return FilledButton.tonal(
