@@ -158,16 +158,16 @@ void goToMatchup(BuildContext context) {
   });
 }
 
-void showFailureDialog(BuildContext context, String errorMessage) {
+void showFailureDialog(BuildContext parentContext, String errorMessage) {
   WidgetsBinding.instance.addPostFrameCallback((_) {
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (context) => AlertDialog(
         content: Text(errorMessage),
         actions: [
           TextButton(
             onPressed: () {
-              context.read<LobbyCubit>().resetFormState();
+              parentContext.read<LobbyCubit>().resetButtonsState();
               Navigator.of(context).pop();
             },
             child: const Text('OK'),

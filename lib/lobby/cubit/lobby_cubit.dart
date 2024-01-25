@@ -52,7 +52,8 @@ class LobbyCubit extends Cubit<LobbyState> {
     }
   }
 
-  void resetFormState() {
+  void resetButtonsState() {
     emit(state.copyWith(statusOfCreate: FormzStatus.pure));
+    emit(state.copyWith(statusOfJoin: FormzStatus.pure));
   }
 }
