@@ -111,10 +111,12 @@ class _CreateRoomButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfCreate.isSubmissionFailure) {
-          // button doesnt change and popup with state.errorMessage is shown
+          showFailureDialog(context, state.errorMessage);
+          return const CircularProgressIndicator();
         }
         if (state.statusOfCreate.isSubmissionSuccess) {
-          //button is not clickable, and context.read<RoomCubit>().goToMatchup() is called
+          goToMatchup(context);
+          return const CircularProgressIndicator();
         }
         return _CreateRoomButton();
       },
@@ -127,15 +129,41 @@ class _CreateRoomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton.tonal(
       onPressed: () {
-        context.read<LobbyCubit>().createRoom()
-            //.then((_) => context.read<RoomCubit>().goToMatchup())
-            ;
+        context.read<LobbyCubit>().createRoom();
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(AppLocalizations.of(context)!.createRoom,
-            style: const TextStyle(fontSize: 20)),
+        child: Text(
+          AppLocalizations.of(context)!.createRoom,
+          style: const TextStyle(fontSize: 20),
+        ),
       ),
     );
   }
+}
+
+void goToMatchup(BuildContext context) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    context.read<RoomCubit>().goToMatchup();
+  });
+}
+
+void showFailureDialog(BuildContext context, String errorMessage) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(errorMessage),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.read<LobbyCubit>().resetFormState();
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  });
 }

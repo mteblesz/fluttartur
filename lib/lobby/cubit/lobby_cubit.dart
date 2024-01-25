@@ -51,4 +51,8 @@ class LobbyCubit extends Cubit<LobbyState> {
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionFailure));
     }
   }
+
+  void resetFormState() {
+    emit(state.copyWith(statusOfCreate: FormzStatus.pure));
+  }
 }
