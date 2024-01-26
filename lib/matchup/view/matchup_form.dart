@@ -168,5 +168,3 @@ Future<void> _showNickDialog(BuildContext context) {
         );
       });
 }
-
-// TODO !! add roles config popup

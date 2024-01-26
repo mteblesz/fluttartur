@@ -17,6 +17,7 @@ dependencies:
   http: ^1.1.2
   meta: ^1.7.0
   provider: ^6.0.1
+  signalr_netcore: 0.1.7+2-nullsafety.3
 
 dev_dependencies:
   bloc_test: ^9.0.0
