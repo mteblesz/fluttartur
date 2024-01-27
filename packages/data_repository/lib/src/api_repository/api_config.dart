@@ -35,6 +35,4 @@ class ApiConfig {
   static String voteQuestUrl() => '$apiUrl/vote/quest';
 
   static String killPlayerUrl(int id) => '$apiUrl/kill/$id';
-
-  static String get rtuUrl => '$baseUrl/rtu';
 }

@@ -1,20 +1,25 @@
 import 'dart:async';
+import 'package:data_repository/src/data_cache.dart';
+import 'package:data_repository/src/realtime_repository/rtu_config.dart';
 import 'package:signalr_netcore/signalr_client.dart';
-import '../models/models.dart';
-import 'api_config.dart';
+import '../../models/models.dart';
 
-class RealTimeUpdatesRepository {
+class RtuRepository {
+  RtuRepository(this._cache) {
+    final serverUrl = RtuConfig.rtuUrl;
+    hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
+  }
+
+  final DataCache _cache;
   late HubConnection hubConnection;
   late StreamController<List<PlayerInfoDto>> _playerStreamController;
 
-  RealTimeUpdatesRepository() {
-    final serverUrl = ApiConfig.rtuUrl;
-    hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
-
-    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
-
+  void start() {
     hubConnection.start();
+  }
 
+  void listenPLayers() {
+    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
     listenPlayers();
   }
 
