@@ -14,28 +14,20 @@ class RtuRepository {
   late HubConnection hubConnection;
   late StreamController<List<PlayerInfoDto>> _playerStreamController;
 
-  void start() {
+  void connect() {
     hubConnection.start();
   }
 
-  void listenPLayers() {
-    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
-    listenPlayers();
-  }
-
-  Stream<List<PlayerInfoDto>> get playerStream =>
-      _playerStreamController.stream;
-
   void listenPlayers() {
+    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
     hubConnection.on("ReceivePlayerList", (arguments) {
-      List<PlayerInfoDto> updatedPlayerList = processData(arguments![0]);
+      final updatedPlayerList = List<PlayerInfoDto>.from(arguments![0]);
       _playerStreamController.add(updatedPlayerList);
     });
   }
 
-  List<PlayerInfoDto> processData(dynamic data) {
-    return List<PlayerInfoDto>.from(data);
-  }
+  Stream<List<PlayerInfoDto>> get playerStream =>
+      _playerStreamController.stream;
 
   void dispose() {
     _playerStreamController.close();
