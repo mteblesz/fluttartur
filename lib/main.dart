@@ -14,7 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final cacheClient = CacheClient();
-  final dataRepository = DataRepository(cache: cacheClient);
+  final dataRepository = DataRepository(cacheClient: cacheClient);
   final authenticationRepository = AuthenticationRepository(cache: cacheClient);
   await authenticationRepository.user.first;
 
