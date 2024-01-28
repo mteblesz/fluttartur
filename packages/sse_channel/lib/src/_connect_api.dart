@@ -1,4 +1,4 @@
-import 'channel.dart';
+import './channel.dart';
 
 /// Creates a new Server Sent Events connection.
 SseChannel connect(Uri url) {

@@ -1,3 +1,3 @@
 library sse_channel;
 
-export 'src/channel.dart';
+export './src/channel.dart';
