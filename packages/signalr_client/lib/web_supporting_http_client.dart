@@ -5,6 +5,9 @@ import 'errors.dart';
 import 'signalr_http_client.dart';
 import 'utils.dart';
 import 'package:logging/logging.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 
 typedef OnHttpClientCreateCallback = void Function(Client httpClient);
 
@@ -21,26 +24,34 @@ class WebSupportingHttpClient extends SignalRHttpClient {
       : this._logger = logger,
         this._httpClientCreateCallback = httpClientCreateCallback;
 
-  Future<SignalRHttpResponse> send(SignalRHttpRequest request) {
+  Future<SignalRHttpResponse> send(SignalRHttpRequest request,
+      {bool skipCertificateValidation = false}) async {
     // Check that abort was not signaled before calling send
     if ((request.abortSignal != null) && request.abortSignal!.aborted!) {
       return Future.error(AbortError());
     }
 
-    if ((request.method == null) || (request.method!.length == 0)) {
-      return Future.error(new ArgumentError("No method defined."));
+    if ((request.method == null) || (request.method!.isEmpty)) {
+      return Future.error(ArgumentError("No method defined."));
     }
 
-    if ((request.url == null) || (request.url!.length == 0)) {
-      return Future.error(new ArgumentError("No url defined."));
+    if ((request.url == null) || (request.url!.isEmpty)) {
+      return Future.error(ArgumentError("No URL defined."));
     }
 
     return Future<SignalRHttpResponse>(() async {
       final uri = Uri.parse(request.url!);
 
-      final httpClient = Client();
+      var httpClient = http.Client();
       if (_httpClientCreateCallback != null) {
         _httpClientCreateCallback!(httpClient);
+      }
+
+      if (skipCertificateValidation) {
+        // Bypass SSL certificate validation
+        httpClient = IOClient(HttpClient()
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true);
       }
 
       final abortFuture = Future<void>(() {
@@ -73,7 +84,7 @@ class WebSupportingHttpClient extends SignalRHttpClient {
 
       final httpRespFuture = await Future.any(
           [_sendHttpRequest(httpClient, request, uri, headers), abortFuture]);
-      final httpResp = httpRespFuture as Response;
+      final httpResp = httpRespFuture as http.Response;
 
       if (request.abortSignal != null) {
         request.abortSignal!.onabort = null;
