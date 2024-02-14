@@ -13,5 +13,5 @@ class RtuConfig {
     return 'wss://localhost:7146';
   }
 
-  static String get rtuUrl => '$baseUrl/rtu';
+  static String get wsUrl => '$baseUrl/rtu';
 }

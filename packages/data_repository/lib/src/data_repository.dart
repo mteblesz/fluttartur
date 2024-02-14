@@ -42,6 +42,12 @@ class DataRepository implements IDataRepository {
   }
 
   @override
+  Stream<List<Player>> streamPlayersList() {
+    // : implement streamPlayersList
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> setNickname({required String nick}) async {
     await _apiRepository.setNickname(nick: nick);
   }
@@ -95,12 +101,6 @@ class DataRepository implements IDataRepository {
   @override
   Stream<Player> streamPlayer() {
     // : implement streamPlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<Player>> streamPlayersList() {
-    // : implement streamPlayersList
     throw UnimplementedError();
   }
 

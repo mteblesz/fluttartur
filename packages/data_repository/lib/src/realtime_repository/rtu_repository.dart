@@ -2,30 +2,45 @@ import 'dart:async';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_config.dart';
 import '../../models/models.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 class RtuRepository {
-  RtuRepository(this._cache) {
-    final serverUrl = RtuConfig.rtuUrl;
-  }
+  RtuRepository(this._cache) {}
 
   final DataCache _cache;
-  late StreamController<List<PlayerInfoDto>> _playerStreamController;
+  late WebSocketChannel _channel;
 
-  Future<void> connect() async {}
-
-  void listenPlayers() {
-    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
-    //on("ReceivePlayerList", (arguments) {
-    //  final updatedPlayerList = List<PlayerInfoDto>.from(arguments![0] as List);
-    //   _playerStreamController.add(updatedPlayerList);
-    //});
+  Future<void> connect() async {
+    try {
+      final wsUri = Uri.parse(RtuConfig.wsUrl);
+      _channel = WebSocketChannel.connect(wsUri);
+      await _channel.ready;
+    } on Exception catch (_) {
+      // TODO logging
+      rethrow;
+    }
   }
 
+  void dispose() {
+    try {
+      _playerStreamController.close();
+      _channel.sink.close();
+    } on Exception catch (_) {
+      // TODO logging
+      rethrow;
+    }
+  }
+
+  late StreamController<List<PlayerInfoDto>> _playerStreamController;
   Stream<List<PlayerInfoDto>> get playerStream =>
       _playerStreamController.stream;
 
-  void dispose() {
-    _playerStreamController.close();
-    // hubConnection.stop();
+  void listenPlayers() {
+    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
+    _channel.stream.listen((message) {
+      final updatedPlayerList = List<PlayerInfoDto>.from(message as List);
+      _playerStreamController.add(updatedPlayerList);
+    });
   }
 }
