@@ -38,7 +38,12 @@ class ApiRepository {
   }
 
   //----------------------- matchup -----------------------
-  Future<int> createRoom() async {
+  Future<void> createAndJoinRoom() async {
+    final roomId = await _createRoom();
+    await joinRoom(roomId: roomId);
+  }
+
+  Future<int> _createRoom() async {
     final response = await HttpSender.post(
       Uri.parse(ApiConfig.createRoomUrl()),
       headers: getAuthHeaders(),

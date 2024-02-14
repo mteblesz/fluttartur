@@ -31,9 +31,8 @@ class DataRepository implements IDataRepository {
 
   //----------------------- matchup -----------------------
   @override
-  Future<void> createRoom() async {
-    final roomId = await _apiRepository.createRoom();
-    await _apiRepository.joinRoom(roomId: roomId);
+  Future<void> createAndJoinRoom() async {
+    await _apiRepository.createAndJoinRoom();
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:data_repository/models/models.dart';
 abstract class IDataRepository {
   Future<RoomInfoDto> getRoomById();
 
-  Future<void> createRoom();
+  Future<void> createAndJoinRoom();
   Future<void> joinRoom({required int roomId});
   Future<void> setNickname({required String nick});
   Future<void> removePlayer({required int playerId});
