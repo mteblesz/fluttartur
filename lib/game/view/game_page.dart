@@ -36,7 +36,7 @@ class GamePage extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     child: Text(AppLocalizations.of(context)!.leaveRoom),
-                    onTap: () => context.read<RoomCubit>().leaveRoom(),
+                    onTap: () => context.read<HomeCubit>().leaveRoom(),
                   ),
                 ],
               ),

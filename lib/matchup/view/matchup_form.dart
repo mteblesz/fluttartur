@@ -160,7 +160,7 @@ Future<void> _showNickDialog(BuildContext context) {
                 final user = context.read<AppBloc>().state.user;
                 context.read<MatchupCubit>().writeinPlayerWithUserId(user.id);
                 Navigator.of(dialogContext).pop();
-                context.read<RoomCubit>().subscribeToGameStarted();
+                context.read<HomeCubit>().subscribeToGameStarted();
               },
               child: Text(AppLocalizations.of(context)!.confirm),
             )

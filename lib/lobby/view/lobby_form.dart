@@ -153,7 +153,7 @@ class _CreateRoomButton extends StatelessWidget {
 
 void goToMatchup(BuildContext context, {bool isHost = false}) {
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    context.read<RoomCubit>().goToMatchup(isHost: isHost);
+    context.read<HomeCubit>().goToMatchup(isHost: isHost);
   });
 }
 

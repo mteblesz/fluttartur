@@ -14,10 +14,10 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final dataRepository = context.read<IDataRepository>();
     return BlocProvider(
-      create: (_) => RoomCubit(dataRepository),
+      create: (_) => HomeCubit(dataRepository),
       child: Builder(builder: (context) {
-        return FlowBuilder<RoomStatus>(
-          state: context.select((RoomCubit cubit) => cubit.state.status),
+        return FlowBuilder<HomeStatus>(
+          state: context.select((HomeCubit cubit) => cubit.state.status),
           onGeneratePages: onGenerateRoomViewPages,
         );
       }),

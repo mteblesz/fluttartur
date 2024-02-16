@@ -2,31 +2,31 @@ import 'package:data_repository/data_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'room_state.dart';
+part 'home_state.dart';
 
 /// cubit responsible for routing between lobby, matchup and game layers
-class RoomCubit extends Cubit<RoomState> {
-  RoomCubit(this._dataRepository) : super(const RoomState());
+class HomeCubit extends Cubit<HomeState> {
+  HomeCubit(this._dataRepository) : super(const HomeState());
 
   final IDataRepository _dataRepository;
 
   /// directs to game pages
   void goToGame() {
     _dataRepository.unsubscribeGameStarted();
-    emit(state.copyWith(status: RoomStatus.inGame));
+    emit(state.copyWith(status: HomeStatus.inGame));
   }
 
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
     emit(state.copyWith(
-        status: isHost ? RoomStatus.inMathupIsHost : RoomStatus.inMathup));
+        status: isHost ? HomeStatus.inMathupIsHost : HomeStatus.inMathup));
   }
 
   /// directs back to lobby
   void leaveRoom() {
     _dataRepository.unsubscribeGameStarted();
     _dataRepository.leaveRoom();
-    emit(state.copyWith(status: RoomStatus.inLobby));
+    emit(state.copyWith(status: HomeStatus.inLobby));
   }
 
   void subscribeToGameStarted() {
