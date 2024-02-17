@@ -6,8 +6,6 @@ import 'package:data_repository/src/api_repository/api_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
 
-import '../dtos/dtos.dart';
-
 /// Facade for classess communicating with api
 class DataRepository implements IDataRepository {
   DataRepository({

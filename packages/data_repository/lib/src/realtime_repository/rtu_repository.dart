@@ -4,7 +4,7 @@ import 'package:data_repository/src/realtime_repository/rtu_config.dart';
 import '../../dtos/dtos.dart';
 import '../../models/models.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart' as status;
+//import 'package:web_socket_channel/status.dart' as status;
 
 class RtuRepository {
   RtuRepository(this._cache) {}

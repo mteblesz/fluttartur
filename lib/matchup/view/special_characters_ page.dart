@@ -149,7 +149,6 @@ class _CharactersViewState extends State<_CharactersView> {
         const SizedBox(height: 20),
       ],
     );
-    ;
   }
 }
 
