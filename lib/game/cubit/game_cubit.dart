@@ -41,7 +41,7 @@ class GameCubit extends Cubit<GameState> {
 
   /// add player to squad
   Future<void> addMember({required Player player}) async {
-    if (!_dataRepository.currentPlayer.isLeader) return;
+    //if (!_dataRepository.currentPlayer.isLeader) return;
     if (state.status != GameStatus.squadChoice) return;
 
     if (state.isSquadFull) return;
@@ -58,7 +58,7 @@ class GameCubit extends Cubit<GameState> {
 
   /// remove player from squad
   Future<void> removeMember({required Member member}) async {
-    if (!_dataRepository.currentPlayer.isLeader) return;
+    //if (!_dataRepository.currentPlayer.isLeader) return;
     if (state.status != GameStatus.squadChoice) return;
 
     await _dataRepository.removeMember(
@@ -175,15 +175,13 @@ class GameCubit extends Cubit<GameState> {
 
   Future<List<Player>> listOfEvilPlayers() async {
     final players = await _dataRepository.playersList();
-    return players.where((p) => p.character == 'evil').toList();
+    return players.where((p) => p.team == 'evil').toList();
   }
 
   Future<List<Player>> listOfMerlinMorganaPlayers() async {
     final players = await _dataRepository.playersList();
     return players
-        .where((p) =>
-            p.specialCharacter == 'evil_morgana' ||
-            p.specialCharacter == 'good_merlin')
+        .where((p) => p.role == 'evil_morgana' || p.role == 'good_merlin')
         .toList();
   }
 
@@ -238,24 +236,22 @@ class GameCubit extends Cubit<GameState> {
 
   //--------------------------------merlin killing logic------------------------
 
-  bool assassinPresent() =>
-      _dataRepository.currentRoom.specialCharacters.contains("evil_assassin");
+  bool assassinPresent() => false;
+  //_dataRepository.currentRoom.specialCharacters.contains("evil_assassin");
 
-  bool isAssassin() =>
-      _dataRepository.currentPlayer.specialCharacter == "evil_assassin";
+  bool isAssassin() => _dataRepository.currentPlayer.role == "evil_assassin";
 
   Stream<bool?> streamMerlinKilled() {
     return _dataRepository.streamMerlinKilled();
   }
 
   Future<void> killPlayer({required Player player}) async {
-    await _dataRepository
-        .updateMerlinKilled(player.specialCharacter == "good_merlin");
+    await _dataRepository.updateMerlinKilled(player.role == "good_merlin");
   }
 
   Future<List<Player>> listOfGoodPlayers() async {
     final players = await _dataRepository.playersList();
-    return players.where((p) => p.character == 'good').toList();
+    return players.where((p) => p.team == 'good').toList();
   }
 
   //--------------------------------quest info logic----------------------------

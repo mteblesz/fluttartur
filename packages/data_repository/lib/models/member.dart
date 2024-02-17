@@ -14,13 +14,8 @@ class Member extends Equatable {
   final String nick;
   final bool? vote;
 
-  /// Empty member which represents that user is currently not in any member.
   static const empty = Member(id: '', playerId: '', nick: '');
-
-  /// Convenience getter to determine whether the current member is empty.
   bool get isEmpty => this == Member.empty;
-
-  /// Convenience getter to determine whether the current member is not empty.
   bool get isNotEmpty => this != Member.empty;
 
   @override

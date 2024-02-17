@@ -1,34 +1,22 @@
 import 'package:equatable/equatable.dart';
 
-//TODO divide models and DTOs (?)
-
 class Player extends Equatable {
   const Player({
-    this.id = '',
-    required this.userId,
-    required this.nick,
-    required this.isLeader,
-    this.character,
-    this.specialCharacter,
+    required this.id,
+    this.nick = "new player",
+    this.team,
+    this.role,
   });
 
   final String id;
-  final String userId;
   final String nick;
-  final bool isLeader;
-  final String? character; // TODO Change to boolean
-  final String? specialCharacter;
+  final String? team;
+  final String? role;
 
-  /// Empty player which represents that user is currently not in any player.
-  static const empty = Player(userId: '', nick: '', isLeader: false);
-
-  /// Convenience getter to determine whether the current player is empty.
+  static const empty = Player(id: '');
   bool get isEmpty => this == Player.empty;
-
-  /// Convenience getter to determine whether the current player is not empty.
   bool get isNotEmpty => this != Player.empty;
 
   @override
-  List<Object?> get props =>
-      [id, userId, nick, isLeader, character, specialCharacter];
+  List<Object?> get props => [id, nick, team, role];
 }

@@ -6,6 +6,8 @@ import 'package:data_repository/src/api_repository/api_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
 
+import '../dtos/dtos.dart';
+
 /// Facade for classess communicating with api
 class DataRepository implements IDataRepository {
   DataRepository({
@@ -20,7 +22,7 @@ class DataRepository implements IDataRepository {
 
   //----------------------- info -----------------------
   @override
-  Future<RoomInfoDto> getRoomById() async {
+  Future<Room> getRoomById() async {
     try {
       return await _apiRepository.getRoomById();
     } on Exception catch (_) {
@@ -33,17 +35,19 @@ class DataRepository implements IDataRepository {
   @override
   Future<void> createAndJoinRoom() async {
     await _apiRepository.createAndJoinRoom();
+    _rtuRepository.listenPlayers();
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
     await _apiRepository.joinRoom(roomId: roomId);
+    _rtuRepository.listenPlayers();
   }
 
   @override
   Stream<List<Player>> streamPlayersList() {
-    // : implement streamPlayersList
-    throw UnimplementedError();
+    // map from dto
+    return _rtuRepository.playerStream;
   }
 
   @override

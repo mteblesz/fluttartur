@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_config.dart';
+import '../../dtos/dtos.dart';
 import '../../models/models.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -32,15 +33,15 @@ class RtuRepository {
     }
   }
 
-  late StreamController<List<PlayerInfoDto>> _playerStreamController;
-  Stream<List<PlayerInfoDto>> get playerStream =>
-      _playerStreamController.stream;
+  late StreamController<List<Player>> _playerStreamController;
+  Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
   void listenPlayers() {
-    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
+    _playerStreamController = StreamController<List<Player>>.broadcast();
     _channel.stream.listen((message) {
-      final updatedPlayerList = List<PlayerInfoDto>.from(message as List);
-      _playerStreamController.add(updatedPlayerList);
+      final dtos = List<PlayerInfoDto>.from(message as List);
+      Iterable<Player> updatedPlayerList = dtos.map((e) => e.toPLayer());
+      _playerStreamController.add(updatedPlayerList.toList());
     });
   }
 }

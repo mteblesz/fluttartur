@@ -1,3 +1,7 @@
+import 'package:data_repository/models/models.dart';
+
+import 'player_info_dto.dart';
+
 class RoomInfoDto {
   int roomId;
   String status;
@@ -21,27 +25,12 @@ class RoomInfoDto {
           .toList(),
     );
   }
-}
 
-class PlayerInfoDto {
-  int playerId;
-  String nick;
-  String team;
-  String role;
-
-  PlayerInfoDto({
-    required this.playerId,
-    required this.nick,
-    required this.team,
-    required this.role,
-  });
-
-  factory PlayerInfoDto.fromJson(Map<String, dynamic> json) {
-    return PlayerInfoDto(
-      playerId: json['playerId'],
-      nick: json['nick'],
-      team: json['team'],
-      role: json['role'],
+  Room toRoom() {
+    return Room(
+      id: roomId.toString(),
+      gameStarted: status == "Playing",
+      currentSquadId: currentSquadId?.toString(),
     );
   }
 }

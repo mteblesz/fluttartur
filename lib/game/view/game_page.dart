@@ -44,7 +44,7 @@ class GamePage extends StatelessWidget {
           ),
           body: BlocProvider(
             create: (_) => GameCubit(context.read<IDataRepository>()),
-            child: const GameForm(),
+            //child: const GameForm(), //TODO uncomment
           ),
         ),
       ],
