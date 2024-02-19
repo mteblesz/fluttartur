@@ -33,13 +33,15 @@ class DataRepository implements IDataRepository {
   @override
   Future<void> createAndJoinRoom() async {
     await _apiRepository.createAndJoinRoom();
+    _rtuRepository.connect();
     _rtuRepository.listenPlayers();
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
     await _apiRepository.joinRoom(roomId: roomId);
-    _rtuRepository.listenPlayers();
+    _rtuRepository.connect();
+    _rtuRepository.listenPlayers(); // TODO move to cubit?
   }
 
   @override
