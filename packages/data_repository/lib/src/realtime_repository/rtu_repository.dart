@@ -1,40 +1,47 @@
 import 'dart:async';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_config.dart';
-import 'package:signalr_client/signalr_client.dart';
+import '../../dtos/dtos.dart';
 import '../../models/models.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+//import 'package:web_socket_channel/status.dart' as status;
 
 class RtuRepository {
-  RtuRepository(this._cache) {
-    final serverUrl = RtuConfig.rtuUrl;
-    hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
-  }
+  RtuRepository(this._cache) {}
 
   final DataCache _cache;
-  late HubConnection hubConnection;
-  late StreamController<List<PlayerInfoDto>> _playerStreamController;
+  late WebSocketChannel _channel;
 
   Future<void> connect() async {
     try {
-      await hubConnection.start();
-    } on Exception catch (e) {
-      print(e);
+      final wsUri = Uri.parse(RtuConfig.wsUrl);
+      _channel = WebSocketChannel.connect(wsUri);
+      await _channel.ready;
+    } on Exception catch (_) {
+      // TODO logging
+      rethrow;
     }
   }
 
-  void listenPlayers() {
-    _playerStreamController = StreamController<List<PlayerInfoDto>>.broadcast();
-    hubConnection.on("ReceivePlayerList", (arguments) {
-      final updatedPlayerList = List<PlayerInfoDto>.from(arguments![0] as List);
-      _playerStreamController.add(updatedPlayerList);
-    });
+  void dispose() {
+    try {
+      _playerStreamController.close();
+      _channel.sink.close();
+    } on Exception catch (_) {
+      // TODO logging
+      rethrow;
+    }
   }
 
-  Stream<List<PlayerInfoDto>> get playerStream =>
-      _playerStreamController.stream;
+  late StreamController<List<Player>> _playerStreamController;
+  Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
-  void dispose() {
-    _playerStreamController.close();
-    hubConnection.stop();
+  void listenPlayers() {
+    _playerStreamController = StreamController<List<Player>>.broadcast();
+    _channel.stream.listen((message) {
+      final dtos = List<PlayerInfoDto>.from(message as List);
+      Iterable<Player> updatedPlayerList = dtos.map((e) => e.toPLayer());
+      _playerStreamController.add(updatedPlayerList.toList());
+    });
   }
 }

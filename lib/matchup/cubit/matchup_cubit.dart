@@ -77,23 +77,23 @@ class MatchupCubit extends Cubit<MatchupState> {
   }
 
   Future<void> _assignSpecialCharacters() async {
-    final specialCharacters = _dataRepository.currentRoom.specialCharacters;
-    if (specialCharacters.isEmpty) return;
-    final players = await _dataRepository.playersList();
+    // final specialCharacters = _dataRepository.currentRoom.specialCharacters;
+    // if (specialCharacters.isEmpty) return;
+    // final players = await _dataRepository.playersList();
 
-    final goodCharacters = specialCharacters.where((c) => c.startsWith('good'));
-    final goodPlayers = players.where((p) => p.character == 'good').toList();
-    goodPlayers.shuffle();
-    final goodMap = Map.fromIterables(
-        goodCharacters, goodPlayers.take(goodCharacters.length));
+    // final goodCharacters = specialCharacters.where((c) => c.startsWith('good'));
+    // final goodPlayers = players.where((p) => p.team == 'good').toList();
+    // goodPlayers.shuffle();
+    // final goodMap = Map.fromIterables(
+    //     goodCharacters, goodPlayers.take(goodCharacters.length));
 
-    final evilCharacters = specialCharacters.where((c) => c.startsWith('evil'));
-    final evilPlayers = players.where((p) => p.character == 'evil').toList();
-    evilPlayers.shuffle();
-    final evilMap = Map.fromIterables(
-        evilCharacters, evilPlayers.take(evilCharacters.length));
+    // final evilCharacters = specialCharacters.where((c) => c.startsWith('evil'));
+    // final evilPlayers = players.where((p) => p.team == 'evil').toList();
+    // evilPlayers.shuffle();
+    // final evilMap = Map.fromIterables(
+    //     evilCharacters, evilPlayers.take(evilCharacters.length));
 
-    await _dataRepository.assignSpecialCharacters({...goodMap, ...evilMap});
+    // await _dataRepository.assignSpecialCharacters({...goodMap, ...evilMap});
   }
 
   // debug only

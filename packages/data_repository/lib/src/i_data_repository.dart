@@ -3,9 +3,9 @@ import 'package:data_repository/models/models.dart';
 
 /// Temporary measure to ensure compilation of legacy code
 abstract class IDataRepository {
-  Future<RoomInfoDto> getRoomById();
+  Future<Room> getRoomById();
 
-  Future<void> createRoom();
+  Future<void> createAndJoinRoom();
   Future<void> joinRoom({required int roomId});
   Future<void> setNickname({required String nick});
   Future<void> removePlayer({required int playerId});

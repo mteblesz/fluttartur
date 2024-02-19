@@ -57,27 +57,25 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          (player.character ?? "error") == 'good'
+                          (player.team ?? "error") == 'good'
                               ? AppLocalizations.of(context)!.good
                               : AppLocalizations.of(context)!.evil,
                           style: const TextStyle(fontSize: 30),
                         ),
-                        player.specialCharacter == null
+                        player.role == null
                             ? const SizedBox.shrink()
                             : const Text(" - ",
                                 style: const TextStyle(fontSize: 30)),
-                        player.specialCharacter == null
+                        player.role == null
                             ? const SizedBox.shrink()
                             : Text(
-                                specialCharacterToText(
-                                    player.specialCharacter!, context),
+                                specialCharacterToText(player.role!, context),
                                 style: const TextStyle(fontSize: 30),
                               ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    !(player.character == "evil" ||
-                            player.specialCharacter == 'good_merlin')
+                    !(player.team == "evil" || player.role == 'good_merlin')
                         ? const SizedBox.shrink()
                         : Column(
                             children: [
@@ -112,7 +110,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                               ),
                             ],
                           ),
-                    !(player.specialCharacter == 'good_percival')
+                    !(player.role == 'good_percival')
                         ? const SizedBox.shrink()
                         : Column(
                             children: [

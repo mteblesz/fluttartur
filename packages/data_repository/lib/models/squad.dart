@@ -33,11 +33,7 @@ class Squad extends Equatable {
     isSuccessfull: null,
     votes: <String, bool>{},
   );
-
-  /// Convenience getter to determine whether the current Squad is empty.
   bool get isEmpty => this == Squad.empty;
-
-  /// Convenience getter to determine whether the current Squad is not empty.
   bool get isNotEmpty => this != Squad.empty;
 
   @override

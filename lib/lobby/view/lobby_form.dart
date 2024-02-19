@@ -138,7 +138,7 @@ class _CreateRoomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton.tonal(
       onPressed: () {
-        context.read<LobbyCubit>().createRoom();
+        context.read<LobbyCubit>().createAndJoinRoom();
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -153,7 +153,7 @@ class _CreateRoomButton extends StatelessWidget {
 
 void goToMatchup(BuildContext context, {bool isHost = false}) {
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    context.read<RoomCubit>().goToMatchup(isHost: isHost);
+    context.read<HomeCubit>().goToMatchup(isHost: isHost);
   });
 }
 

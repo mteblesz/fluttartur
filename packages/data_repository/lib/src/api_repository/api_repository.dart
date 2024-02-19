@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
+import '../../dtos/dtos.dart';
 import 'api_config.dart';
 import 'http_sender.dart';
 
@@ -24,7 +25,7 @@ class ApiRepository {
       };
 
   //----------------------- info -----------------------
-  Future<RoomInfoDto> getRoomById() async {
+  Future<Room> getRoomById() async {
     final response = await HttpSender.get(
       Uri.parse(ApiConfig.getRoomByIdUrl(_cache.currentRoomId)),
       headers: getAuthHeaders(),
@@ -34,11 +35,16 @@ class ApiRepository {
     }
     Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
-    return RoomInfoDto.fromJson(jsonBody);
+    return RoomInfoDto.fromJson(jsonBody).toRoom();
   }
 
   //----------------------- matchup -----------------------
-  Future<int> createRoom() async {
+  Future<void> createAndJoinRoom() async {
+    final roomId = await _createRoom();
+    await joinRoom(roomId: roomId);
+  }
+
+  Future<int> _createRoom() async {
     final response = await HttpSender.post(
       Uri.parse(ApiConfig.createRoomUrl()),
       headers: getAuthHeaders(),

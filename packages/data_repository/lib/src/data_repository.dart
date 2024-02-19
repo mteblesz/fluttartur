@@ -20,7 +20,7 @@ class DataRepository implements IDataRepository {
 
   //----------------------- info -----------------------
   @override
-  Future<RoomInfoDto> getRoomById() async {
+  Future<Room> getRoomById() async {
     try {
       return await _apiRepository.getRoomById();
     } on Exception catch (_) {
@@ -31,14 +31,23 @@ class DataRepository implements IDataRepository {
 
   //----------------------- matchup -----------------------
   @override
-  Future<void> createRoom() async {
-    final roomId = await _apiRepository.createRoom();
-    await _apiRepository.joinRoom(roomId: roomId);
+  Future<void> createAndJoinRoom() async {
+    await _apiRepository.createAndJoinRoom();
+    _rtuRepository.connect();
+    _rtuRepository.listenPlayers();
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
     await _apiRepository.joinRoom(roomId: roomId);
+    _rtuRepository.connect();
+    _rtuRepository.listenPlayers(); // TODO move to cubit?
+  }
+
+  @override
+  Stream<List<Player>> streamPlayersList() {
+    // map from dto
+    return _rtuRepository.playerStream;
   }
 
   @override
@@ -95,12 +104,6 @@ class DataRepository implements IDataRepository {
   @override
   Stream<Player> streamPlayer() {
     // : implement streamPlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<Player>> streamPlayersList() {
-    // : implement streamPlayersList
     throw UnimplementedError();
   }
 

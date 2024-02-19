@@ -78,8 +78,8 @@ class _CharactersViewState extends State<_CharactersView> {
   @override
   void initState() {
     super.initState();
-    final list =
-        context.read<IDataRepository>().currentRoom.specialCharacters;
+    final list = List<String>.empty();
+    //    context.read<IDataRepository>().currentRoom.specialCharacters;
     if (list.contains("good_merlin")) hasMerlinAndAssassin = true;
     if (list.contains("good_percival")) hasPercivalAndMorgana = true;
   }
@@ -149,7 +149,6 @@ class _CharactersViewState extends State<_CharactersView> {
         const SizedBox(height: 20),
       ],
     );
-    ;
   }
 }
 

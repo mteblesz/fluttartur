@@ -1,6 +1,6 @@
-part of 'room_cubit.dart';
+part of 'home_cubit.dart';
 
-enum RoomStatus {
+enum HomeStatus {
   /// user is not in any room
   inLobby,
 
@@ -14,21 +14,21 @@ enum RoomStatus {
   inGame,
 }
 
-class RoomState extends Equatable {
-  const RoomState({
-    this.status = RoomStatus.inLobby,
+class HomeState extends Equatable {
+  const HomeState({
+    this.status = HomeStatus.inLobby,
   });
 
-  final RoomStatus status;
+  final HomeStatus status;
 
   @override
   List<Object> get props => [status];
 
-  RoomState copyWith({
+  HomeState copyWith({
     Room? room,
-    RoomStatus? status,
+    HomeStatus? status,
   }) {
-    return RoomState(
+    return HomeState(
       status: status ?? this.status,
     );
   }

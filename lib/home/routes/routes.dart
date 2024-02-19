@@ -5,17 +5,17 @@ import 'package:fluttartur/game/game.dart';
 import 'package:flutter/widgets.dart';
 
 List<Page<dynamic>> onGenerateRoomViewPages(
-  RoomStatus status,
+  HomeStatus status,
   List<Page<dynamic>> pages,
 ) {
   switch (status) {
-    case RoomStatus.inLobby:
+    case HomeStatus.inLobby:
       return [LobbyPage.page()];
-    case RoomStatus.inMathup:
+    case HomeStatus.inMathup:
       return [MatchupPage.page(isHost: false)];
-    case RoomStatus.inMathupIsHost:
+    case HomeStatus.inMathupIsHost:
       return [MatchupPage.page(isHost: true)];
-    case RoomStatus.inGame:
+    case HomeStatus.inGame:
       return [GamePage.page()];
   }
 }
