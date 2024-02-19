@@ -1,153 +1,68 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:convert';
 
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:data_repository/data_repository.dart';
-import './api_config.dart';
-import './http_sender.dart';
+import 'package:data_repository/src/api_repository/api_repository.dart';
+import 'package:data_repository/src/data_cache.dart';
+import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
 
-class CacheNullException implements Exception {
-  const CacheNullException([this.message = 'The cache is unexpectedly null.']);
-  final String message;
-}
-
+/// Facade for classess communicating with api
 class DataRepository implements IDataRepository {
   DataRepository({
-    CacheClient? cache,
-  }) : _cache = cache ?? CacheClient();
-
-  final CacheClient _cache;
-
-  //----------------------- token -----------------------
-  static const _userCacheKey = '__user_cache_key__';
-
-  String get _authToken {
-    User user = _cache.read<User>(key: _userCacheKey) ?? User.empty;
-    return user.token ?? "";
+    CacheClient? cacheClient,
+  }) {
+    final cache = DataCache(cacheClient ?? CacheClient());
+    _apiRepository = ApiRepository(cache);
+    _rtuRepository = RtuRepository(cache);
   }
-
-  Map<String, String> getAuthHeaders() => <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $_authToken',
-      };
-
-  //----------------------- caches -----------------------
-  static const invalidId = -1;
-  static const currentRoomIdCacheKey = '__room_id_cache_key__';
-  static const currentPlayerIdCacheKey = '__player_id_cache_key__';
-
-  int get currentRoomId {
-    return _cache.read<int>(key: currentRoomIdCacheKey) ?? invalidId;
-  }
-
-  int get currentPlayerId {
-    return _cache.read<int>(key: currentPlayerIdCacheKey) ?? invalidId;
-  }
+  late ApiRepository _apiRepository;
+  late RtuRepository _rtuRepository;
 
   //----------------------- info -----------------------
   @override
-  Future<RoomInfoDto> getRoomById() async {
+  Future<Room> getRoomById() async {
     try {
-      final response = await HttpSender.get(
-        Uri.parse(ApiConfig.getRoomByIdUrl(currentRoomId)),
-        headers: getAuthHeaders(),
-      );
-      if (response.statusCode != 200) {
-        throw GetRoomFailure(response.statusCode, response.body);
-      }
-      Map<String, dynamic> jsonBody = jsonDecode(response.body);
-
-      return RoomInfoDto.fromJson(jsonBody);
+      return await _apiRepository.getRoomById();
     } on Exception catch (_) {
+      // TODO logging
       rethrow;
     }
   }
 
   //----------------------- matchup -----------------------
   @override
-  Future<void> createRoom() async {
-    final roomId = await _createRoom();
-    await joinRoom(roomId: roomId);
-  }
-
-  Future<int> _createRoom() async {
-    try {
-      final response = await HttpSender.post(
-        Uri.parse(ApiConfig.createRoomUrl()),
-        headers: getAuthHeaders(),
-      );
-
-      if (response.statusCode != 201) {
-        throw CreateRoomFailure(response.statusCode, response.body);
-      }
-      final locationHeader = response.headers[HttpHeaders.locationHeader];
-      int roomId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
-      _cache.write(key: currentRoomIdCacheKey, value: roomId);
-      return roomId;
-    } on Exception catch (_) {
-      rethrow;
-    }
+  Future<void> createAndJoinRoom() async {
+    await _apiRepository.createAndJoinRoom();
+    _rtuRepository.connect();
+    _rtuRepository.listenPlayers();
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
-    try {
-      final response = await HttpSender.post(
-        Uri.parse(ApiConfig.joinRoomUrl(roomId)),
-        headers: getAuthHeaders(),
-      );
+    await _apiRepository.joinRoom(roomId: roomId);
+    _rtuRepository.connect();
+    _rtuRepository.listenPlayers(); // TODO move to cubit?
+  }
 
-      if (response.statusCode != 201) {
-        throw JoinRoomFailure(response.statusCode, response.body);
-      }
-      final locationHeader = response.headers[HttpHeaders.locationHeader];
-      String playerId = Uri.parse(locationHeader!).pathSegments.last;
-
-      _cache.write(key: currentPlayerIdCacheKey, value: int.parse(playerId));
-    } on Exception catch (_) {
-      rethrow;
-    }
+  @override
+  Stream<List<Player>> streamPlayersList() {
+    // map from dto
+    return _rtuRepository.playerStream;
   }
 
   @override
   Future<void> setNickname({required String nick}) async {
-    final playerDto = NicknameSetDto(playerId: currentPlayerId, nick: nick);
-    try {
-      final response = await HttpSender.patch(
-        Uri.parse(ApiConfig.setNicknameUrl()),
-        headers: getAuthHeaders(),
-        body: jsonEncode(playerDto.toJson()),
-      );
-
-      if (response.statusCode != 204) {
-        throw SetNicknameFailure(response.statusCode, response.body);
-      }
-    } on Exception catch (_) {
-      rethrow;
-    }
+    await _apiRepository.setNickname(nick: nick);
   }
 
   @override
   Future<void> removePlayer({required int playerId}) async {
-    try {
-      final response = await HttpSender.patch(
-        Uri.parse(ApiConfig.removePlayerUrl(playerId)),
-        headers: getAuthHeaders(),
-      );
-
-      if (response.statusCode != 204) {
-        throw RemovePlayerFailure(response.statusCode, response.body);
-      }
-    } on Exception catch (_) {
-      rethrow;
-    }
+    await _apiRepository.removePlayer(playerId: playerId);
   }
 
   @override
   Future<void> leaveRoom() async {
-    await removePlayer(playerId: currentPlayerId);
+    await _apiRepository.leaveRoom();
   }
 
   @override
@@ -189,12 +104,6 @@ class DataRepository implements IDataRepository {
   @override
   Stream<Player> streamPlayer() {
     // : implement streamPlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<Player>> streamPlayersList() {
-    // : implement streamPlayersList
     throw UnimplementedError();
   }
 

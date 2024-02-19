@@ -90,7 +90,7 @@ class _JoinRoomButtonSpace extends StatelessWidget {
 }
 
 class _JoinRoomButton extends StatelessWidget {
-  const _JoinRoomButton({super.key});
+  const _JoinRoomButton();
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +122,7 @@ class _CreateRoomButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfCreate.isSubmissionSuccess) {
-          goToMatchup(context);
+          goToMatchup(context, isHost: true);
           return const CircularProgressIndicator();
         }
         return const _CreateRoomButton();
@@ -138,7 +138,7 @@ class _CreateRoomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton.tonal(
       onPressed: () {
-        context.read<LobbyCubit>().createRoom();
+        context.read<LobbyCubit>().createAndJoinRoom();
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -151,9 +151,9 @@ class _CreateRoomButton extends StatelessWidget {
   }
 }
 
-void goToMatchup(BuildContext context) {
+void goToMatchup(BuildContext context, {bool isHost = false}) {
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    context.read<RoomCubit>().goToMatchup();
+    context.read<HomeCubit>().goToMatchup(isHost: isHost);
   });
 }
 

@@ -7,6 +7,7 @@ class MatchupState extends Equatable {
     this.status = FormzStatus.pure,
     this.errorMessage,
     this.playersCount = 0,
+    this.isHost = false,
   });
 
   final Nick nick;
@@ -14,21 +15,24 @@ class MatchupState extends Equatable {
   final FormzStatus status;
   final String? errorMessage;
   final int playersCount;
+  final bool isHost;
 
   @override
-  List<Object> get props => [nick, status, playersCount];
+  List<Object> get props => [nick, status, playersCount, isHost];
 
   MatchupState copyWith({
     Nick? nick,
     FormzStatus? status,
     String? errorMessage,
     int? playersCount,
+    bool? isHost,
   }) {
     return MatchupState(
       nick: nick ?? this.nick,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       playersCount: playersCount ?? this.playersCount,
+      isHost: isHost ?? this.isHost,
     );
   }
 }

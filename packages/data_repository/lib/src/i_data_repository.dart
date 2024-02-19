@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:data_repository/models/models.dart';
 
+/// Temporary measure to ensure compilation of legacy code
 abstract class IDataRepository {
-  Future<RoomInfoDto> getRoomById();
+  Future<Room> getRoomById();
 
-  Future<void> createRoom();
+  Future<void> createAndJoinRoom();
   Future<void> joinRoom({required int roomId});
   Future<void> setNickname({required String nick});
   Future<void> removePlayer({required int playerId});
@@ -45,14 +46,12 @@ abstract class IDataRepository {
   Future<void> updateSquadIsApproved({bool isApproved = true});
   Future<void> nextSquad({required int questNumber});
 
-  StreamSubscription? _squadIsSubmittedSubscription;
   void subscribeSquadIsSubmittedWith({
     String squadId = '',
     required void Function(Squad) doLogic,
   });
   void unsubscribeSquadIsSubmitted();
 
-  StreamSubscription? _currentSquadIdSubscription;
   String currentSquadId = "";
   void subscribeCurrentSquadIdWith({
     required void Function(String) doLogic,
@@ -61,7 +60,6 @@ abstract class IDataRepository {
   Stream<String> streamCurrentSquadId();
 
   voteSquad(bool vote);
-  StreamSubscription? _squadVotesSubscription;
   void subscribeSquadVotesWith({
     required void Function(Map<String, bool>) doLogic,
   });
@@ -71,7 +69,6 @@ abstract class IDataRepository {
 
   Future<bool> isCurrentPlayerAMember();
   Future<void> voteQuest(bool vote);
-  StreamSubscription? _questVotesSubscription;
   void subscribeQuestVotesWith({
     required void Function(List<bool?>) doLogic,
   });

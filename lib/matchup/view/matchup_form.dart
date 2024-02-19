@@ -8,7 +8,6 @@ import 'package:formz/formz.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// TODO zmiana kolejnosci graczy -> ma byc tak jak przy stole
 class MatchupForm extends StatelessWidget {
   const MatchupForm({super.key});
 
@@ -72,12 +71,11 @@ class _PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hostUserId = context.read<IDataRepository>().currentRoom.hostUserId;
-    final userId = context.select((AppBloc bloc) => bloc.state.user.id);
+    final isHost = context.read<MatchupCubit>().state.isHost;
     return Card(
       child: ListTile(
         title: Text(player.nick),
-        trailing: userId != hostUserId
+        trailing: isHost
             ? null
             : PopupMenuButton(
                 itemBuilder: (context) => [
@@ -85,7 +83,6 @@ class _PlayerCard extends StatelessWidget {
                     child: Text(AppLocalizations.of(context)!.remove),
                     onTap: () =>
                         context.read<MatchupCubit>().removePlayer(player),
-                    // TODO !!! give the info about removal to the removed user's UI
                   )
                 ],
               ),
@@ -97,9 +94,8 @@ class _PlayerCard extends StatelessWidget {
 class _HostButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final hostUserId = context.read<IDataRepository>().currentRoom.hostUserId;
-    final userId = context.select((AppBloc bloc) => bloc.state.user.id);
-    return userId != hostUserId
+    final isHost = context.read<MatchupCubit>().state.isHost;
+    return isHost
         ? const SizedBox.shrink()
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -164,7 +160,7 @@ Future<void> _showNickDialog(BuildContext context) {
                 final user = context.read<AppBloc>().state.user;
                 context.read<MatchupCubit>().writeinPlayerWithUserId(user.id);
                 Navigator.of(dialogContext).pop();
-                context.read<RoomCubit>().subscribeToGameStarted();
+                context.read<HomeCubit>().subscribeToGameStarted();
               },
               child: Text(AppLocalizations.of(context)!.confirm),
             )
@@ -172,5 +168,3 @@ Future<void> _showNickDialog(BuildContext context) {
         );
       });
 }
-
-// TODO !! add roles config popup

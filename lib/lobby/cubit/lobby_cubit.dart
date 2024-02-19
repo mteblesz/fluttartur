@@ -37,10 +37,10 @@ class LobbyCubit extends Cubit<LobbyState> {
     }
   }
 
-  Future<void> createRoom() async {
+  Future<void> createAndJoinRoom() async {
     emit(state.copyWith(statusOfCreate: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.createRoom();
+      await _dataRepository.createAndJoinRoom();
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
     } on DataRepoFailure catch (e) {
       emit(state.copyWith(

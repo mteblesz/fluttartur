@@ -17,6 +17,8 @@ dependencies:
   http: ^1.1.2
   meta: ^1.7.0
   provider: ^6.0.1
+  logging: ^1.2.0
+  signalr_netcore: ^1.3.7
 
 dev_dependencies:
   bloc_test: ^9.0.0
@@ -31,7 +33,8 @@ flutter:
   uses-material-design: true
 
 
-dependency_overrides:
+dependency_overrides: 
   bloc: ^8.1.0
   bloc_test: ^9.1.0
   flutter_bloc: ^8.1.1
+  web: ^0.4.0
