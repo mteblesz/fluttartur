@@ -4,13 +4,13 @@ import 'package:flutter/foundation.dart';
 class ApiConfig {
   static String get baseUrl {
     if (Platform.isAndroid) {
-      return 'https://10.0.2.2:7146';
+      return 'https://10.0.2.2:7700';
     } else if (Platform.isIOS) {
       throw UnimplementedError();
     } else if (kIsWeb) {
-      return 'https://localhost:7146';
+      return 'https://localhost:7700';
     }
-    return 'https://localhost:7146';
+    return 'https://localhost:7700';
   }
 
   static String get apiUrl => '$baseUrl/api';
