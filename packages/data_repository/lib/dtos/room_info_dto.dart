@@ -29,7 +29,7 @@ class RoomInfoDto {
   Room toRoom() {
     return Room(
       id: roomId.toString(),
-      gameStarted: status == "Playing",
+      status: RoomStatus.values.byName(status),
       currentSquadId: currentSquadId?.toString(),
     );
   }

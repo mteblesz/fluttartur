@@ -16,9 +16,9 @@ class PlayerInfoDto {
   factory PlayerInfoDto.fromJson(Map<String, dynamic> json) {
     return PlayerInfoDto(
       playerId: json['playerId'],
-      nick: json['nick'],
-      team: json['team'],
-      role: json['role'],
+      nick: json['nick'] ?? "NA",
+      team: json['team'] ?? "",
+      role: json['role'] ?? "",
     );
   }
 
@@ -26,8 +26,8 @@ class PlayerInfoDto {
     return Player(
       id: playerId.toString(),
       nick: nick,
-      team: team,
-      role: role,
+      team: Team.values.byName(team),
+      role: Role.values.byName(role),
     );
   }
 }
