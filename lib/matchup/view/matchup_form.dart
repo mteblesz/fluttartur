@@ -47,6 +47,7 @@ class _PlayerListView extends StatelessWidget {
       builder: (context, snapshot) {
         var players = snapshot.data;
         context.read<MatchupCubit>().playerCountChanged(players);
+        // TODO: redirect to lobby if player is not on list
         return players == null
             ? const SizedBox.expand()
             : ListView(

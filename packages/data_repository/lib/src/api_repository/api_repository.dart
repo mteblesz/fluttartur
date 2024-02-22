@@ -92,7 +92,7 @@ class ApiRepository {
   }
 
   Future<void> removePlayer({required int playerId}) async {
-    final response = await HttpSender.patch(
+    final response = await HttpSender.delete(
       Uri.parse(ApiConfig.removePlayerUrl(playerId)),
       headers: getAuthHeaders(),
     );
