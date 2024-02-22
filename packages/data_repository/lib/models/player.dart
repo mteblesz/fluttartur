@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class Player extends Equatable {
   const Player({
     required this.id,
-    this.nick = "new player",
+    this.nick = "NA",
     this.team,
     this.role,
   });

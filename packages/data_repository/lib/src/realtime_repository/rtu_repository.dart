@@ -40,4 +40,9 @@ class RtuRepository {
       }
     });
   }
+
+  void stopListeningPlayers() {
+    hubConnection.off("ReceivePlayerList");
+    _playerStreamController.close();
+  }
 }

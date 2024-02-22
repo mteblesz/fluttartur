@@ -69,7 +69,8 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                         player.role == null
                             ? const SizedBox.shrink()
                             : Text(
-                                specialCharacterToText(player.role!, context),
+                                specialCharacterToText(
+                                    player.role!.toString(), context),
                                 style: const TextStyle(fontSize: 30),
                               ),
                       ],

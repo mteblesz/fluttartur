@@ -9,25 +9,25 @@ class PlayerInfoDto {
   });
 
   int playerId;
-  String nick;
-  String team;
-  String role;
+  String? nick;
+  String? team;
+  String? role;
 
   factory PlayerInfoDto.fromJson(Map<String, dynamic> json) {
     return PlayerInfoDto(
       playerId: json['playerId'],
-      nick: json['nick'] ?? "NA",
-      team: json['team'] ?? "",
-      role: json['role'] ?? "",
+      nick: json['nick'],
+      team: json['team'],
+      role: json['role'],
     );
   }
 
   Player toPLayer() {
     return Player(
       id: playerId.toString(),
-      nick: nick,
-      team: Team.values.byName(team),
-      role: Role.values.byName(role),
+      nick: nick ?? "NA",
+      team: team == null ? null : Team.values.byName(team!),
+      role: role == null ? null : Role.values.byName(role!),
     );
   }
 }

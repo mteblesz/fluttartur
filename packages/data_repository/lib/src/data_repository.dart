@@ -37,6 +37,7 @@ class DataRepository implements IDataRepository {
     try {
       await _apiRepository.createAndJoinRoom();
     } on Exception catch (_) {
+      _rtuRepository.stopListeningPlayers();
       _rtuRepository.dispose();
     }
   }
@@ -45,12 +46,16 @@ class DataRepository implements IDataRepository {
   Future<void> joinRoom({required int roomId}) async {
     await _rtuRepository.connect();
     _rtuRepository.listenPlayers(); // TODO move to cubit?
-    await _apiRepository.joinRoom(roomId: roomId);
+    try {
+      await _apiRepository.joinRoom(roomId: roomId);
+    } on Exception catch (_) {
+      _rtuRepository.stopListeningPlayers();
+      _rtuRepository.dispose();
+    }
   }
 
   @override
   Stream<List<Player>> streamPlayersList() {
-    // map from dto
     return _rtuRepository.playerStream;
   }
 
@@ -119,6 +124,7 @@ class DataRepository implements IDataRepository {
 
   @override
   void subscribeGameStartedWith({required void Function(bool p1) doLogic}) {
+    //stopListeningPlayers()
     // : implement subscribeGameStartedWith
   }
 
