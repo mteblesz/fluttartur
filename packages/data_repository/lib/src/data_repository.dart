@@ -32,16 +32,20 @@ class DataRepository implements IDataRepository {
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
-    await _apiRepository.createAndJoinRoom();
-    _rtuRepository.connect();
+    await _rtuRepository.connect();
     _rtuRepository.listenPlayers();
+    try {
+      await _apiRepository.createAndJoinRoom();
+    } on Exception catch (_) {
+      _rtuRepository.dispose();
+    }
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
-    await _apiRepository.joinRoom(roomId: roomId);
-    _rtuRepository.connect();
+    await _rtuRepository.connect();
     _rtuRepository.listenPlayers(); // TODO move to cubit?
+    await _apiRepository.joinRoom(roomId: roomId);
   }
 
   @override
