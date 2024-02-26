@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cache/cache.dart';
 import 'package:data_repository/data_repository.dart';
+import 'package:data_repository/models/courtier.dart';
 import 'package:data_repository/src/api_repository/api_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
@@ -66,7 +67,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> removePlayer({required int playerId}) async {
-    await _apiRepository.removePlayer(playerId: playerId);
+    await _apiRepository.removePlayer(removedPlayerId: playerId);
   }
 
   @override
@@ -156,6 +157,10 @@ class DataRepository implements IDataRepository {
   @override
   // : implement currentPlayer
   Player get currentPlayer => throw UnimplementedError();
+
+  // : implement currentCourtier
+  @override
+  Courtier get currentCourtier => throw UnimplementedError();
 
   @override
   // : implement currentRoom
@@ -301,6 +306,12 @@ class DataRepository implements IDataRepository {
   @override
   voteSquad(bool vote) {
     // : implement voteSquad
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Courtier>> courtiersList() {
+    // TODO: implement courtiersList
     throw UnimplementedError();
   }
 }

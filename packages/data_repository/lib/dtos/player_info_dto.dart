@@ -1,5 +1,7 @@
 import 'package:data_repository/models/models.dart';
 
+import '../models/courtier.dart';
+
 class PlayerInfoDto {
   PlayerInfoDto({
     required this.playerId,
@@ -9,14 +11,14 @@ class PlayerInfoDto {
   });
 
   int playerId;
-  String? nick;
+  String nick;
   String? team;
   String? role;
 
   factory PlayerInfoDto.fromJson(Map<String, dynamic> json) {
     return PlayerInfoDto(
       playerId: json['playerId'],
-      nick: json['nick'],
+      nick: json['nick'] ?? "id: ${json['playerId'].toString()}",
       team: json['team'],
       role: json['role'],
     );
@@ -25,9 +27,19 @@ class PlayerInfoDto {
   Player toPLayer() {
     return Player(
       id: playerId.toString(),
-      nick: nick ?? "id: ${playerId.toString()}",
-      team: team == null ? null : Team.values.byName(team!),
-      role: role == null ? null : Role.values.byName(role!),
+      nick: nick,
+    );
+  }
+
+  Courtier toCourtier() {
+    if (team == null || role == null) {
+      return Courtier.empty;
+    }
+    return Courtier(
+      id: playerId.toString(),
+      nick: nick,
+      team: Team.values.byName(team!),
+      role: Role.values.byName(role!),
     );
   }
 }

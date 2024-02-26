@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:data_repository/models/models.dart';
 
+import '../models/courtier.dart';
+
 /// Temporary measure to ensure compilation of legacy code
 abstract class IDataRepository {
   Future<Room> getRoomById();
@@ -20,10 +22,12 @@ abstract class IDataRepository {
   void unsubscribeGameStarted();
 
   Player get currentPlayer;
+  Courtier get currentCourtier;
   Stream<Player> streamPlayer();
 
   Stream<List<Player>> streamPlayersList();
   Future<List<Player>> playersList();
+  Future<List<Courtier>> courtiersList(); // breaking change
   Future<int> get playersCount;
 
   Future<void> assignCharacters(List<String> characters);

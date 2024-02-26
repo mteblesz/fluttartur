@@ -1,4 +1,5 @@
 import 'package:data_repository/data_repository.dart';
+import 'package:data_repository/models/courtier.dart';
 import 'package:fluttartur/game/cubit/game_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final player = context.read<IDataRepository>().currentPlayer;
+    final player = context.read<IDataRepository>().currentCourtier;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -84,7 +85,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   AppLocalizations.of(widget.gameContext)!
                                       .evilCourtiers,
                                   style: const TextStyle(fontSize: 15)),
-                              FutureBuilder<List<Player>>(
+                              FutureBuilder<List<Courtier>>(
                                 future: widget.gameContext
                                     .read<GameCubit>()
                                     .listOfEvilPlayers(),
@@ -96,7 +97,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   }
-                                  List<Player> evilPlayers =
+                                  List<Courtier> evilPlayers =
                                       snapshot.data ?? List.empty();
                                   return Wrap(
                                     children: <Widget>[
@@ -119,7 +120,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   AppLocalizations.of(widget.gameContext)!
                                       .merlinAndMorgana,
                                   style: const TextStyle(fontSize: 15)),
-                              FutureBuilder<List<Player>>(
+                              FutureBuilder<List<Courtier>>(
                                 future: widget.gameContext
                                     .read<GameCubit>()
                                     .listOfMerlinMorganaPlayers(),
@@ -131,7 +132,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   }
-                                  List<Player> evilPlayers =
+                                  List<Courtier> evilPlayers =
                                       snapshot.data ?? List.empty();
                                   return Wrap(
                                     children: <Widget>[

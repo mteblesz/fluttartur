@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
+import 'package:data_repository/dtos/player_remove_dto.dart';
 import 'package:data_repository/src/data_cache.dart';
 import '../../dtos/dtos.dart';
 import 'api_config.dart';
@@ -76,14 +77,14 @@ class ApiRepository {
   }
 
   Future<void> setNickname({required String nick}) async {
-    final playerDto = NicknameSetDto(
+    final dto = NicknameSetDto(
       playerId: _cache.currentPlayerId,
       nick: nick,
     );
     final response = await HttpSender.patch(
       Uri.parse(ApiConfig.setNicknameUrl()),
       headers: getAuthHeaders(),
-      body: jsonEncode(playerDto.toJson()),
+      body: jsonEncode(dto.toJson()),
     );
 
     if (response.statusCode != 204) {
@@ -91,10 +92,15 @@ class ApiRepository {
     }
   }
 
-  Future<void> removePlayer({required int playerId}) async {
+  Future<void> removePlayer({required int removedPlayerId}) async {
+    final dto = PlayerRemoveDto(
+      playerId: removedPlayerId,
+      roomId: _cache.currentRoomId,
+    );
     final response = await HttpSender.delete(
-      Uri.parse(ApiConfig.removePlayerUrl(playerId)),
+      Uri.parse(ApiConfig.removePlayerUrl()),
       headers: getAuthHeaders(),
+      body: jsonEncode(dto.toJson()),
     );
 
     if (response.statusCode != 204) {
@@ -103,6 +109,6 @@ class ApiRepository {
   }
 
   Future<void> leaveRoom() async {
-    await removePlayer(playerId: _cache.currentPlayerId);
+    await removePlayer(removedPlayerId: _cache.currentPlayerId);
   }
 }
