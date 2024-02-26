@@ -12,6 +12,7 @@ abstract class IDataRepository {
   Future<void> setNickname({required String nick});
   Future<void> removePlayer({required int playerId});
   Future<void> leaveRoom();
+  void handlePlayerRemoval({required void Function() handler});
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 

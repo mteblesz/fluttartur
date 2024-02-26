@@ -46,4 +46,12 @@ class RtuRepository {
     hubConnection.off("ReceivePlayerList");
     _playerStreamController.close();
   }
+
+  void handlePlayerRemoval(void Function() removalHandler) {
+    hubConnection.on("ReceiveRemoval", (List<Object?>? args) {
+      if (args != null && args.isNotEmpty) {
+        removalHandler();
+      }
+    });
+  }
 }

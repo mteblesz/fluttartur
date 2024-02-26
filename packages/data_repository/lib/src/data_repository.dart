@@ -76,6 +76,12 @@ class DataRepository implements IDataRepository {
   }
 
   @override
+  void handlePlayerRemoval({required void Function() handler}) {
+    _rtuRepository.handlePlayerRemoval(handler);
+  }
+
+//----------------------------------------------------------------------------
+  @override
   Future<void> startGame() async {
     // : implement startGame
     throw UnimplementedError();

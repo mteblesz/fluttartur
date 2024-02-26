@@ -18,6 +18,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
+    // TODO to be done by a BLoC event maybe?
+    _dataRepository.handlePlayerRemoval(handler: leaveRoom);
+
     emit(state.copyWith(
         status: isHost ? HomeStatus.inMathupIsHost : HomeStatus.inMathup));
   }
