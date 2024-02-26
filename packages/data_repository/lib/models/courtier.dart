@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class Courtier extends Equatable {
   const Courtier({
     required this.id,
-    this.nick = "NA",
+    required this.nick,
     this.team,
     this.role,
   });
@@ -13,7 +13,7 @@ class Courtier extends Equatable {
   final Team? team;
   final Role? role;
 
-  static const empty = Courtier(id: '');
+  static const empty = Courtier(id: '', nick: "NA");
   bool get isEmpty => this == Courtier.empty;
   bool get isNotEmpty => this != Courtier.empty;
 
