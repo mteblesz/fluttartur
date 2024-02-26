@@ -20,6 +20,7 @@ class RtuRepository {
 
   Future<void> connect() async {
     await hubConnection.start();
+    _cache.hubConnectionId = hubConnection.connectionId!;
   }
 
   void dispose() {
@@ -29,7 +30,7 @@ class RtuRepository {
   late StreamController<List<Player>> _playerStreamController;
   Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
-  void listenPlayers() {
+  void subscribePlayersList() {
     _playerStreamController = StreamController<List<Player>>.broadcast();
     hubConnection.on("ReceivePlayerList", (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
@@ -41,7 +42,7 @@ class RtuRepository {
     });
   }
 
-  void stopListeningPlayers() {
+  void unsubscribePlayersList() {
     hubConnection.off("ReceivePlayerList");
     _playerStreamController.close();
   }

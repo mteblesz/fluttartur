@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
-import 'package:data_repository/dtos/player_remove_dto.dart';
+import 'package:data_repository/dtos/room_connection_dto.dart';
 import 'package:data_repository/src/data_cache.dart';
 import '../../dtos/dtos.dart';
 import 'api_config.dart';
@@ -63,7 +63,7 @@ class ApiRepository {
 
   Future<void> joinRoom({required int roomId}) async {
     final response = await HttpSender.post(
-      Uri.parse(ApiConfig.joinRoomUrl(roomId)),
+      Uri.parse(ApiConfig.joinRoomUrl(roomId, _cache.hubConnectionId)),
       headers: getAuthHeaders(),
     );
 
@@ -93,12 +93,12 @@ class ApiRepository {
   }
 
   Future<void> removePlayer({required int removedPlayerId}) async {
-    final dto = PlayerRemoveDto(
-      playerId: removedPlayerId,
+    final dto = RoomConnectionDto(
       roomId: _cache.currentRoomId,
+      hubConnectionId: _cache.hubConnectionId,
     );
     final response = await HttpSender.delete(
-      Uri.parse(ApiConfig.removePlayerUrl()),
+      Uri.parse(ApiConfig.removePlayerUrl(removedPlayerId)),
       headers: getAuthHeaders(),
       body: jsonEncode(dto.toJson()),
     );

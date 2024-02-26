@@ -38,4 +38,13 @@ class DataCache {
   set currentPlayerId(int id) {
     _cacheClient.write(key: currentPlayerIdCacheKey, value: id);
   }
+
+  static const hubConnectionIdCacheKey = '__rtu_connection_id_cache_key__';
+  String get hubConnectionId {
+    return _cacheClient.read<String>(key: hubConnectionIdCacheKey) ?? "_";
+  }
+
+  set hubConnectionId(String id) {
+    _cacheClient.write(key: hubConnectionIdCacheKey, value: id);
+  }
 }
