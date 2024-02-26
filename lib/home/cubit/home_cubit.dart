@@ -27,6 +27,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// directs back to lobby
   void leaveRoom() {
+    // TODO to be done by a BLoC event maybe?
+    _dataRepository.handlePlayerRemoval(handler: () => {});
     _dataRepository.unsubscribeGameStarted();
     _dataRepository.leaveRoom();
     emit(state.copyWith(status: HomeStatus.inLobby));

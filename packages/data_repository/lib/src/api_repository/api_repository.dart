@@ -57,7 +57,6 @@ class ApiRepository {
     final locationHeader = response.headers[HttpHeaders.locationHeader];
     final roomId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
 
-    _cache.currentRoomId = roomId;
     return roomId;
   }
 
@@ -74,10 +73,12 @@ class ApiRepository {
     final playerId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
 
     _cache.currentPlayerId = playerId;
+    _cache.currentRoomId = roomId;
   }
 
   Future<void> setNickname({required String nick}) async {
     final dto = NicknameSetDto(
+      roomId: _cache.currentRoomId,
       playerId: _cache.currentPlayerId,
       nick: nick,
     );
