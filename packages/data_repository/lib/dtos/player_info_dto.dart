@@ -25,7 +25,7 @@ class PlayerInfoDto {
   Player toPLayer() {
     return Player(
       id: playerId.toString(),
-      nick: nick ?? "NA",
+      nick: nick ?? "id: ${playerId.toString()}",
       team: team == null ? null : Team.values.byName(team!),
       role: role == null ? null : Role.values.byName(role!),
     );
