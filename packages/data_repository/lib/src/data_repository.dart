@@ -14,7 +14,7 @@ class DataRepository implements IDataRepository {
   }) {
     final cache = DataCache(cacheClient ?? CacheClient());
     _apiRepository = ApiRepository(cache);
-    _rtuRepository = RtuRepository();
+    _rtuRepository = RtuRepository(cache);
   }
   late ApiRepository _apiRepository;
   late RtuRepository _rtuRepository;

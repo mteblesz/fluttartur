@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_config.dart';
 import '../../dtos/dtos.dart';
 import '../../models/models.dart';
@@ -6,7 +7,7 @@ import 'package:signalr_netcore/signalr_client.dart';
 //import 'package:web_socket_channel/status.dart' as status;
 
 class RtuRepository {
-  RtuRepository() {
+  RtuRepository(this._cache) {
     final serverUrl = RtuConfig.url;
     hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
     hubConnection.onclose(({error}) {
@@ -14,6 +15,7 @@ class RtuRepository {
     });
   }
 
+  final DataCache _cache;
   late HubConnection hubConnection;
 
   Future<void> connect() async {
