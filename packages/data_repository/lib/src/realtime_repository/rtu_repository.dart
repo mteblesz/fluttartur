@@ -57,6 +57,7 @@ class RtuRepository {
         if (removedplayerId == _cache.currentPlayerId) {
           hubConnection.off("ReceiveRemoval");
           removalHandler();
+          dispose();
         }
       }
     });
