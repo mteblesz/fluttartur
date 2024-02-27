@@ -49,7 +49,7 @@ class HttpSender {
     String? body,
   ]) async {
     try {
-      // Disable SSL verification for development purposes
+      // Disable SSL verification for development purposes TODO remove
       final httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);

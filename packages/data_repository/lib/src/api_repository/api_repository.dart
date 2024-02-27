@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
+import 'package:data_repository/dtos/room_connection_dto.dart';
 import 'package:data_repository/src/data_cache.dart';
 import '../../dtos/dtos.dart';
 import 'api_config.dart';
@@ -56,7 +57,6 @@ class ApiRepository {
     final locationHeader = response.headers[HttpHeaders.locationHeader];
     final roomId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
 
-    _cache.currentRoomId = roomId;
     return roomId;
   }
 
@@ -73,17 +73,19 @@ class ApiRepository {
     final playerId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
 
     _cache.currentPlayerId = playerId;
+    _cache.currentRoomId = roomId;
   }
 
   Future<void> setNickname({required String nick}) async {
-    final playerDto = NicknameSetDto(
+    final dto = NicknameSetDto(
+      roomId: _cache.currentRoomId,
       playerId: _cache.currentPlayerId,
       nick: nick,
     );
     final response = await HttpSender.patch(
       Uri.parse(ApiConfig.setNicknameUrl()),
       headers: getAuthHeaders(),
-      body: jsonEncode(playerDto.toJson()),
+      body: jsonEncode(dto.toJson()),
     );
 
     if (response.statusCode != 204) {
@@ -91,18 +93,20 @@ class ApiRepository {
     }
   }
 
-  Future<void> removePlayer({required int playerId}) async {
-    final response = await HttpSender.patch(
-      Uri.parse(ApiConfig.removePlayerUrl(playerId)),
+  Future<void> leaveRoom() async {
+    removePlayer(removedPlayerId: _cache.currentPlayerId);
+  }
+
+  Future<void> removePlayer({required int removedPlayerId}) async {
+    final response = await HttpSender.delete(
+      Uri.parse(
+        ApiConfig.removePlayerUrl(removedPlayerId, _cache.currentRoomId),
+      ),
       headers: getAuthHeaders(),
     );
 
     if (response.statusCode != 204) {
       throw RemovePlayerFailure(response.statusCode, response.body);
     }
-  }
-
-  Future<void> leaveRoom() async {
-    await removePlayer(playerId: _cache.currentPlayerId);
   }
 }

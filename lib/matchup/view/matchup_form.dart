@@ -47,6 +47,7 @@ class _PlayerListView extends StatelessWidget {
       builder: (context, snapshot) {
         var players = snapshot.data;
         context.read<MatchupCubit>().playerCountChanged(players);
+        // TODO: redirect to lobby if player is not on list
         return players == null
             ? const SizedBox.expand()
             : ListView(
@@ -160,7 +161,7 @@ Future<void> _showNickDialog(BuildContext context) {
                 final user = context.read<AppBloc>().state.user;
                 context.read<MatchupCubit>().writeinPlayerWithUserId(user.id);
                 Navigator.of(dialogContext).pop();
-                context.read<HomeCubit>().subscribeToGameStarted();
+                //context.read<HomeCubit>().subscribeToGameStarted();
               },
               child: Text(AppLocalizations.of(context)!.confirm),
             )

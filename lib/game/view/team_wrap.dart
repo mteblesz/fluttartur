@@ -86,7 +86,7 @@
 //                   style: TextStyle(
 //                     fontSize: 23,
 //                     fontWeight: player.id ==
-//                             context.read<IDataRepository>().currentPlayer.id
+//                             context.read<IDataRepository>().currentCourtier.id
 //                         ? FontWeight.bold
 //                         : null,
 //                   ),
@@ -155,7 +155,7 @@
 //               style: TextStyle(
 //                 fontSize: 23,
 //                 fontWeight: member.playerId ==
-//                         context.read<IDataRepository>().currentPlayer.id
+//                         context.read<IDataRepository>().currentCourtier.id
 //                     ? FontWeight.bold
 //                     : null,
 //               ),

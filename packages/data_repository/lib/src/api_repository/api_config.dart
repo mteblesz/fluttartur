@@ -4,13 +4,13 @@ import 'package:flutter/foundation.dart';
 class ApiConfig {
   static String get baseUrl {
     if (Platform.isAndroid) {
-      return 'https://10.0.2.2:7146';
+      return 'https://10.0.2.2:7700';
     } else if (Platform.isIOS) {
       throw UnimplementedError();
     } else if (kIsWeb) {
-      return 'https://localhost:7146';
+      return 'https://localhost:7700';
     }
-    return 'https://localhost:7146';
+    return 'https://localhost:7700';
   }
 
   static String get apiUrl => '$baseUrl/api';
@@ -18,7 +18,8 @@ class ApiConfig {
   static String createRoomUrl() => '$apiUrl/matchup/room';
   static String joinRoomUrl(int id) => '$apiUrl/matchup/join/$id';
   static String setNicknameUrl() => '$apiUrl/matchup/nick';
-  static String removePlayerUrl(int id) => '$apiUrl/matchup/remove/$id';
+  static String removePlayerUrl(int playerId, int roomId) =>
+      '$apiUrl/matchup/remove/$playerId/from/$roomId';
   static String startGameUrl() => '$apiUrl/matchup/start';
 
   static String getRoomByIdUrl(int id) => '$apiUrl/info/room/$id';
