@@ -93,14 +93,16 @@ class ApiRepository {
     }
   }
 
+  Future<void> leaveRoom() async {
+    removePlayer(removedPlayerId: _cache.currentPlayerId);
+  }
+
   Future<void> removePlayer({required int removedPlayerId}) async {
-    final dto = RoomConnectionDto(
-      roomId: _cache.currentRoomId,
-    );
     final response = await HttpSender.delete(
-      Uri.parse(ApiConfig.removePlayerUrl(removedPlayerId)),
+      Uri.parse(
+        ApiConfig.removePlayerUrl(removedPlayerId, _cache.currentRoomId),
+      ),
       headers: getAuthHeaders(),
-      body: jsonEncode(dto.toJson()),
     );
 
     if (response.statusCode != 204) {

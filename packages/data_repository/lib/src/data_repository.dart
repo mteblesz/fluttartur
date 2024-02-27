@@ -12,13 +12,12 @@ class DataRepository implements IDataRepository {
   DataRepository({
     CacheClient? cacheClient,
   }) {
-    _cache = DataCache(cacheClient ?? CacheClient());
-    _apiRepository = ApiRepository(_cache);
-    _rtuRepository = RtuRepository(_cache);
+    final cache = DataCache(cacheClient ?? CacheClient());
+    _apiRepository = ApiRepository(cache);
+    _rtuRepository = RtuRepository(cache);
   }
   late ApiRepository _apiRepository;
   late RtuRepository _rtuRepository;
-  late DataCache _cache;
 
   //----------------------- info -----------------------
   @override
@@ -37,9 +36,7 @@ class DataRepository implements IDataRepository {
     try {
       await _apiRepository.createAndJoinRoom();
       await _rtuRepository.connect();
-      _rtuRepository.subscribePlayersList();
     } on Exception catch (_) {
-      _rtuRepository.unsubscribePlayersList();
       _rtuRepository.dispose();
     }
   }
@@ -49,16 +46,9 @@ class DataRepository implements IDataRepository {
     try {
       await _apiRepository.joinRoom(roomId: roomId);
       await _rtuRepository.connect();
-      _rtuRepository.subscribePlayersList(); // TODO move to cubit?
     } on Exception catch (_) {
-      _rtuRepository.unsubscribePlayersList();
       _rtuRepository.dispose();
     }
-  }
-
-  @override
-  Stream<List<Player>> streamPlayersList() {
-    return _rtuRepository.playerStream;
   }
 
   @override
@@ -67,15 +57,20 @@ class DataRepository implements IDataRepository {
   }
 
   @override
+  Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
+  @override
+  void subscribePlayersList() => _rtuRepository.subscribePlayersList();
+  @override
+  void unsubscribePlayersList() => _rtuRepository.unsubscribePlayersList();
+
+  @override
   Future<void> leaveRoom() async {
-    await removePlayer(playerId: _cache.currentPlayerId);
+    await _apiRepository.leaveRoom();
   }
 
   @override
   Future<void> removePlayer({required int playerId}) async {
     await _apiRepository.removePlayer(removedPlayerId: playerId);
-    _rtuRepository.unsubscribePlayersList();
-    _rtuRepository.dispose();
   }
 
   @override
@@ -143,6 +138,7 @@ class DataRepository implements IDataRepository {
     // : implement unsubscribeGameStarted
   }
 
+  // ----------------------------------------------------------------------
   //  old stuff for backwards-compatibility during changes (to be removed)
 
   @override

@@ -14,6 +14,10 @@ abstract class IDataRepository {
   Future<void> leaveRoom();
   void handlePlayerRemoval({required void Function() handler});
 
+  Stream<List<Player>> streamPlayersList();
+  void subscribePlayersList();
+  void unsubscribePlayersList();
+
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Room get currentRoom;
@@ -26,7 +30,6 @@ abstract class IDataRepository {
   Courtier get currentCourtier;
   Stream<Player> streamPlayer();
 
-  Stream<List<Player>> streamPlayersList();
   Future<List<Player>> playersList();
   Future<List<Courtier>> courtiersList(); // breaking change
   Future<int> get playersCount;
