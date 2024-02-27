@@ -62,7 +62,7 @@ class ApiRepository {
 
   Future<void> joinRoom({required int roomId}) async {
     final response = await HttpSender.post(
-      Uri.parse(ApiConfig.joinRoomUrl(roomId, _cache.hubConnectionId)),
+      Uri.parse(ApiConfig.joinRoomUrl(roomId)),
       headers: getAuthHeaders(),
     );
 
@@ -96,7 +96,6 @@ class ApiRepository {
   Future<void> removePlayer({required int removedPlayerId}) async {
     final dto = RoomConnectionDto(
       roomId: _cache.currentRoomId,
-      hubConnectionId: _cache.hubConnectionId,
     );
     final response = await HttpSender.delete(
       Uri.parse(ApiConfig.removePlayerUrl(removedPlayerId)),
@@ -107,9 +106,5 @@ class ApiRepository {
     if (response.statusCode != 204) {
       throw RemovePlayerFailure(response.statusCode, response.body);
     }
-  }
-
-  Future<void> leaveRoom() async {
-    await removePlayer(removedPlayerId: _cache.currentPlayerId);
   }
 }

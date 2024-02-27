@@ -34,10 +34,10 @@ class DataRepository implements IDataRepository {
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
-    await _rtuRepository.connect();
-    _rtuRepository.subscribePlayersList();
     try {
       await _apiRepository.createAndJoinRoom();
+      await _rtuRepository.connect();
+      _rtuRepository.subscribePlayersList();
     } on Exception catch (_) {
       _rtuRepository.unsubscribePlayersList();
       _rtuRepository.dispose();
@@ -46,10 +46,10 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> joinRoom({required int roomId}) async {
-    await _rtuRepository.connect();
-    _rtuRepository.subscribePlayersList(); // TODO move to cubit?
     try {
       await _apiRepository.joinRoom(roomId: roomId);
+      await _rtuRepository.connect();
+      _rtuRepository.subscribePlayersList(); // TODO move to cubit?
     } on Exception catch (_) {
       _rtuRepository.unsubscribePlayersList();
       _rtuRepository.dispose();

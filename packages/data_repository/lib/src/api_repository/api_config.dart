@@ -16,8 +16,7 @@ class ApiConfig {
   static String get apiUrl => '$baseUrl/api';
 
   static String createRoomUrl() => '$apiUrl/matchup/room';
-  static String joinRoomUrl(int roomId, String hubConnectionId) =>
-      '$apiUrl/matchup/join/$roomId?hubConnectionId=$hubConnectionId';
+  static String joinRoomUrl(int id) => '$apiUrl/matchup/join/$id';
   static String setNicknameUrl() => '$apiUrl/matchup/nick';
   static String removePlayerUrl(int id) => '$apiUrl/matchup/remove/$id';
   static String startGameUrl() => '$apiUrl/matchup/start';

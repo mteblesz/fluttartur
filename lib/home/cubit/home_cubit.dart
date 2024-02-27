@@ -19,19 +19,21 @@ class HomeCubit extends Cubit<HomeState> {
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
     // TODO to be done by a BLoC event maybe?
-    _dataRepository.handlePlayerRemoval(handler: leaveRoom);
+    _dataRepository.handlePlayerRemoval(handler: () => goToLobby());
 
     emit(state.copyWith(
         status: isHost ? HomeStatus.inMathupIsHost : HomeStatus.inMathup));
   }
 
+  /// directs to lobby page
+  void goToLobby() {
+    //_dataRepository.unsubscribeGameStarted();
+    emit(state.copyWith(status: HomeStatus.inLobby));
+  }
+
   /// directs back to lobby
   void leaveRoom() {
-    // TODO to be done by a BLoC event maybe?
-    _dataRepository.handlePlayerRemoval(handler: () => {});
-    _dataRepository.unsubscribeGameStarted();
     _dataRepository.leaveRoom();
-    emit(state.copyWith(status: HomeStatus.inLobby));
   }
 
   void subscribeToGameStarted() {
