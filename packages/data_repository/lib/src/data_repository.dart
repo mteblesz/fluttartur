@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cache/cache.dart';
 import 'package:data_repository/data_repository.dart';
+import 'package:data_repository/models/courtier.dart';
 import 'package:data_repository/src/api_repository/api_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
@@ -32,22 +33,22 @@ class DataRepository implements IDataRepository {
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
-    await _apiRepository.createAndJoinRoom();
-    _rtuRepository.connect();
-    _rtuRepository.listenPlayers();
+    try {
+      await _apiRepository.createAndJoinRoom();
+      await _rtuRepository.connect();
+    } on Exception catch (_) {
+      _rtuRepository.dispose();
+    }
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
-    await _apiRepository.joinRoom(roomId: roomId);
-    _rtuRepository.connect();
-    _rtuRepository.listenPlayers(); // TODO move to cubit?
-  }
-
-  @override
-  Stream<List<Player>> streamPlayersList() {
-    // map from dto
-    return _rtuRepository.playerStream;
+    try {
+      await _apiRepository.joinRoom(roomId: roomId);
+      await _rtuRepository.connect();
+    } on Exception catch (_) {
+      _rtuRepository.dispose();
+    }
   }
 
   @override
@@ -56,15 +57,28 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> removePlayer({required int playerId}) async {
-    await _apiRepository.removePlayer(playerId: playerId);
-  }
+  Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
+  @override
+  void subscribePlayersList() => _rtuRepository.subscribePlayersList();
+  @override
+  void unsubscribePlayersList() => _rtuRepository.unsubscribePlayersList();
 
   @override
   Future<void> leaveRoom() async {
     await _apiRepository.leaveRoom();
   }
 
+  @override
+  Future<void> removePlayer({required int playerId}) async {
+    await _apiRepository.removePlayer(removedPlayerId: playerId);
+  }
+
+  @override
+  void handlePlayerRemoval({required void Function() handler}) {
+    _rtuRepository.handlePlayerRemoval(handler);
+  }
+
+//----------------------------------------------------------------------------
   @override
   Future<void> startGame() async {
     // : implement startGame
@@ -115,6 +129,7 @@ class DataRepository implements IDataRepository {
 
   @override
   void subscribeGameStartedWith({required void Function(bool p1) doLogic}) {
+    //stopListeningPlayers()
     // : implement subscribeGameStartedWith
   }
 
@@ -123,6 +138,7 @@ class DataRepository implements IDataRepository {
     // : implement unsubscribeGameStarted
   }
 
+  // ----------------------------------------------------------------------
   //  old stuff for backwards-compatibility during changes (to be removed)
 
   @override
@@ -146,6 +162,10 @@ class DataRepository implements IDataRepository {
   @override
   // : implement currentPlayer
   Player get currentPlayer => throw UnimplementedError();
+
+  // : implement currentCourtier
+  @override
+  Courtier get currentCourtier => throw UnimplementedError();
 
   @override
   // : implement currentRoom
@@ -291,6 +311,12 @@ class DataRepository implements IDataRepository {
   @override
   voteSquad(bool vote) {
     // : implement voteSquad
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Courtier>> courtiersList() {
+    // TODO: implement courtiersList
     throw UnimplementedError();
   }
 }

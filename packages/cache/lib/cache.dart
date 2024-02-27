@@ -21,4 +21,10 @@ class CacheClient {
     if (value is T) return value;
     return null;
   }
+
+  /// Removes cache entry for the provided [key].
+  /// If no entry exists it does nothing as Map.remove is safe.
+  void remove({required String key}) {
+    _cache.remove(key);
+  }
 }

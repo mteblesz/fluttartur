@@ -1,4 +1,4 @@
-import 'package:data_repository/data_repository.dart';
+import 'package:data_repository/models/courtier.dart';
 import 'package:fluttartur/fluttartur_icons_icons.dart';
 import 'package:fluttartur/game/cubit/game_cubit.dart';
 import 'package:fluttartur/home/home.dart';
@@ -41,7 +41,7 @@ Future<void> pushGameResultsDialog(BuildContext gameContext) {
               const SizedBox(height: 10),
               Text(AppLocalizations.of(gameContext)!.evilCourtiers,
                   style: const TextStyle(fontSize: 25)),
-              FutureBuilder<List<Player>>(
+              FutureBuilder<List<Courtier>>(
                 future: gameContext.read<GameCubit>().listOfEvilPlayers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,7 +50,7 @@ Future<void> pushGameResultsDialog(BuildContext gameContext) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
-                  List<Player> evilPlayers = snapshot.data ?? List.empty();
+                  List<Courtier> evilPlayers = snapshot.data ?? List.empty();
                   return Wrap(
                     children: <Widget>[
                       ...evilPlayers.map(
@@ -137,7 +137,7 @@ class _KillingMerlinBox extends StatelessWidget {
                   Text(AppLocalizations.of(context)!.killMerlin,
                       style: const TextStyle(fontSize: 20)),
                   const SizedBox(height: 10),
-                  FutureBuilder<List<Player>>(
+                  FutureBuilder<List<Courtier>>(
                     future: gameContext.read<GameCubit>().listOfGoodPlayers(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -146,7 +146,7 @@ class _KillingMerlinBox extends StatelessWidget {
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      final goodPlayers = snapshot.data ?? <Player>[];
+                      final goodPlayers = snapshot.data ?? <Courtier>[];
                       return Wrap(
                         children: [
                           ...goodPlayers.map(
@@ -173,7 +173,7 @@ class _KillingPlayerButton extends StatelessWidget {
     required this.gameContext,
   });
 
-  final Player player;
+  final Courtier player;
   final BuildContext gameContext;
 
   @override
