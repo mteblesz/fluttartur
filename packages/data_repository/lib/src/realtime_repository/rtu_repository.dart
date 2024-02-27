@@ -20,7 +20,10 @@ class RtuRepository {
 
   Future<void> connect() async {
     await hubConnection.start();
-    await hubConnection.invoke("GroupClientTo", args: [_cache.currentRoomId]);
+    await hubConnection.invoke(
+      "JoinRoomGroup",
+      args: [_cache.currentRoomId.toString()],
+    );
   }
 
   void dispose() {
@@ -50,9 +53,11 @@ class RtuRepository {
   void handlePlayerRemoval(void Function() removalHandler) {
     hubConnection.on("ReceiveRemoval", (List<Object?>? args) {
       if (args != null && args.isNotEmpty) {
-        // TODO if id == currentplayerid
-        hubConnection.off("ReceiveRemoval"); //
-        removalHandler();
+        final removedplayerId = int.parse(args[0] as String);
+        if (removedplayerId == _cache.currentPlayerId) {
+          hubConnection.off("ReceiveRemoval");
+          removalHandler();
+        }
       }
     });
   }
