@@ -1,5 +1,5 @@
 import 'package:fluttartur/app/app.dart';
-import 'package:fluttartur/home/home.dart';
+import 'package:fluttartur/matchup/cubit/nick_form_cubit.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+part 'nick_form.dart';
 
 class MatchupForm extends StatelessWidget {
   const MatchupForm({super.key});
@@ -47,7 +49,6 @@ class _PlayerListView extends StatelessWidget {
       builder: (context, snapshot) {
         var players = snapshot.data;
         context.read<MatchupCubit>().playerCountChanged(players);
-        // TODO: redirect to lobby if player is not on list
         return players == null
             ? const SizedBox.expand()
             : ListView(
@@ -136,36 +137,4 @@ class _RolesDefButton extends StatelessWidget {
       child: Text(AppLocalizations.of(context)!.defineRoles),
     );
   }
-}
-
-Future<void> _showNickDialog(BuildContext context) {
-  return showDialog<void>(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.enterYourNick),
-          content: TextField(
-            onChanged: (nick) => context.read<MatchupCubit>().nickChanged(nick),
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.nick,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                //simple validation TODO ! make validation more complex
-                if (!context.read<MatchupCubit>().state.status.isValidated) {
-                  return;
-                }
-                final user = context.read<AppBloc>().state.user;
-                context.read<MatchupCubit>().writeinPlayerWithUserId(user.id);
-                Navigator.of(dialogContext).pop();
-                //context.read<HomeCubit>().subscribeToGameStarted();
-              },
-              child: Text(AppLocalizations.of(context)!.confirm),
-            )
-          ],
-        );
-      });
 }
