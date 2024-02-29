@@ -24,7 +24,7 @@
   "enterYourNick": "Enter your nick",
   "nick": "nick",
   "confirm": "Confirm",
-  "defineRoles": "Special characters",
+  "roleDefinitionsPage": "Roles",
   "startGame": "Start game",  
   "remove": "Remove",
 
@@ -60,7 +60,7 @@
   "squad": "Squad:",
 
 
-  "defineSpecialCharacters": "Define special characters",
+  "defineRoles": "Define roles",
   "goodColon": "Good:",
   "evilColon": "Evil:",
   "merlin": "Merlin",

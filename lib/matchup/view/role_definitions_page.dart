@@ -1,15 +1,14 @@
-import 'package:data_repository/data_repository.dart';
 import 'package:fluttartur/matchup/cubit/matchup_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CharactersPage extends StatelessWidget {
-  const CharactersPage({super.key});
+class RoleDefinitionsPage extends StatelessWidget {
+  const RoleDefinitionsPage({super.key});
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
-      builder: (_) => const CharactersPage(),
+      builder: (_) => const RoleDefinitionsPage(),
     );
   }
 
@@ -27,16 +26,16 @@ class CharactersPage extends StatelessWidget {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.defineSpecialCharacters),
+            title: Text(AppLocalizations.of(context)!.defineRoles),
           ),
-          body: _CharactersView(),
+          body: _RoleDefinitionsView(),
         ),
       ],
     );
   }
 }
 
-class _CharactersView extends StatelessWidget {
+class _RoleDefinitionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,9 +44,9 @@ class _CharactersView extends StatelessWidget {
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _CharactersList(listGood: true),
+            _RoleDefinitionsList(listGood: true),
             SizedBox(width: 10),
-            _CharactersList(listGood: false),
+            _RoleDefinitionsList(listGood: false),
           ],
         ),
         const Expanded(child: _RolesDefButtons()),
@@ -110,8 +109,8 @@ class _RolesDefButtons extends StatelessWidget {
   }
 }
 
-class _CharactersList extends StatelessWidget {
-  const _CharactersList({
+class _RoleDefinitionsList extends StatelessWidget {
+  const _RoleDefinitionsList({
     this.listGood = true,
   });
 

@@ -24,7 +24,7 @@
   "enterYourNick": "Wprowadź nick",
   "nick": "nick",
   "confirm": "Zatwierdź",
-  "defineRoles": "Postacie",
+  "roleDefinitionsPage": "Postacie",
   "startGame": "Rozpocznij grę",  
   "remove": "Wyrzuć",
 
@@ -59,7 +59,7 @@
   "court": "Dworzanie:",
   "squad": "Drużyna:",
 
-  "defineSpecialCharacters": "Postacie",
+  "defineRoles": "Wybierz postacie",
   "goodColon": "Dobre:",
   "evilColon": "Złe:",
   "merlin": "Merlin",

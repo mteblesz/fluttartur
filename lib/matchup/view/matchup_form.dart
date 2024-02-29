@@ -1,4 +1,3 @@
-import 'package:fluttartur/matchup/cubit/nick_form_cubit.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -118,8 +117,8 @@ class _RolesDefButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton.tonal(
-      onPressed: () => Navigator.push(context, CharactersPage.route()),
-      child: Text(AppLocalizations.of(context)!.defineRoles),
+      onPressed: () => Navigator.push(context, RoleDefinitionsPage.route()),
+      child: Text(AppLocalizations.of(context)!.roleDefinitionsPage),
     );
   }
 }
