@@ -17,16 +17,20 @@ class NickFormCubit extends Cubit<NickFormState> {
     emit(state.copyWith(nick: nick, status: Formz.validate([nick])));
   }
 
-  Future<void> setNickname(String userId) async {
+  Future<void> setNickname() async {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.setNickname(
-        nick: state.nick.value,
-      );
+      await _dataRepository.setNickname(nick: state.nick.value);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on StateError catch (e) {
+      emit(state.copyWith(
+        status: FormzStatus.submissionFailure,
+        errorMessage: e.message,
+      ));
     } catch (_) {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+      emit(state.copyWith(
+          status: FormzStatus.submissionFailure, errorMessage: "uknown error"));
     }
   }
 }
