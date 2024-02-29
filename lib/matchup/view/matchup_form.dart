@@ -29,18 +29,6 @@ class MatchupForm extends StatelessWidget {
   }
 }
 
-class __AddPlayerButtonDebug extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return !kDebugMode
-        ? const SizedBox.shrink()
-        : ElevatedButton(
-            onPressed: () => context.read<MatchupCubit>().addDummyPlayer(),
-            child: const Text('Add player'),
-          );
-  }
-}
-
 class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -136,5 +124,17 @@ class _RolesDefButton extends StatelessWidget {
       onPressed: () => Navigator.push(context, CharactersPage.route()),
       child: Text(AppLocalizations.of(context)!.defineRoles),
     );
+  }
+}
+
+class __AddPlayerButtonDebug extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return !kDebugMode
+        ? const SizedBox.shrink()
+        : ElevatedButton(
+            onPressed: () => context.read<MatchupCubit>().addDummyPlayer(),
+            child: const Text('Add player'),
+          );
   }
 }
