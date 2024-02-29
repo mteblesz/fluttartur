@@ -1,4 +1,5 @@
 import 'package:data_repository/data_repository.dart';
+import 'package:fluttartur/matchup/cubit/matchup_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,7 +9,7 @@ class CharactersPage extends StatelessWidget {
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
-      builder: (_) => CharactersPage(),
+      builder: (_) => const CharactersPage(),
     );
   }
 
@@ -28,114 +29,30 @@ class CharactersPage extends StatelessWidget {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.defineSpecialCharacters),
           ),
-          body: const _CharactersView(),
+          body: _CharactersView(),
         ),
       ],
     );
   }
 }
 
-// TODO change to cubit later
-class _CharactersView extends StatefulWidget {
-  const _CharactersView({
-    super.key,
-  });
-
-  @override
-  State<_CharactersView> createState() => _CharactersViewState();
-}
-
-class _CharactersViewState extends State<_CharactersView> {
-  bool hasMerlinAndAssassin = false;
-  bool hasPercivalAndMorgana = false;
-
-  void addMerlinAndAssassin() => setState(() => hasMerlinAndAssassin = true);
-
-  void addPercivalAndMorgana() => setState(() => hasPercivalAndMorgana = true);
-
-  void removeMerlinAndAssassin() => setState(() {
-        hasMerlinAndAssassin = false;
-        hasPercivalAndMorgana = false;
-      });
-
-  void removePercivalAndMorgana() => setState(() {
-        hasPercivalAndMorgana = false;
-      });
-
-  Future<void> updateSpecialCharacters() async {
-    final List<String> characters = [];
-    if (hasMerlinAndAssassin) {
-      characters.add('good_merlin');
-      characters.add('evil_assassin');
-    }
-    if (hasPercivalAndMorgana) {
-      characters.add('good_percival');
-      characters.add('evil_morgana');
-    }
-    //await context.read<IDataRepository>().setSpecialCharacters(characters);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    final list = List<String>.empty();
-    //    context.read<IDataRepository>().currentRoom.specialCharacters;
-    if (list.contains("good_merlin")) hasMerlinAndAssassin = true;
-    if (list.contains("good_percival")) hasPercivalAndMorgana = true;
-  }
-
+class _CharactersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 10),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _CharactersList(
-              listGood: true,
-              hasMerlinAndAssassin: hasMerlinAndAssassin,
-              hasPercivalAndMorgana: hasPercivalAndMorgana,
-            ),
-            const SizedBox(width: 10),
-            _CharactersList(
-              listGood: false,
-              hasMerlinAndAssassin: hasMerlinAndAssassin,
-              hasPercivalAndMorgana: hasPercivalAndMorgana,
-            ),
+            _CharactersList(listGood: true),
+            SizedBox(width: 10),
+            _CharactersList(listGood: false),
           ],
         ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FilledButton(
-                onPressed: () => !hasMerlinAndAssassin
-                    ? addMerlinAndAssassin()
-                    : removeMerlinAndAssassin(),
-                child: Text(
-                  AppLocalizations.of(context)!.addMerlinAndAssassin,
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
-              const SizedBox(height: 10),
-              FilledButton(
-                onPressed: !hasMerlinAndAssassin
-                    ? null
-                    : () => !hasPercivalAndMorgana
-                        ? addPercivalAndMorgana()
-                        : removePercivalAndMorgana(),
-                child: Text(
-                  AppLocalizations.of(context)!.addPercivalAndMorgana,
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-        ),
+        const Expanded(child: _RolesDefButtons()),
         ElevatedButton(
           onPressed: () {
-            updateSpecialCharacters();
             Navigator.of(context).pop();
           },
           child: Padding(
@@ -152,49 +69,90 @@ class _CharactersViewState extends State<_CharactersView> {
   }
 }
 
-class _CharactersList extends StatelessWidget {
-  const _CharactersList({
-    super.key,
-    this.listGood = true,
-    required this.hasMerlinAndAssassin,
-    required this.hasPercivalAndMorgana,
-  });
-
-  final bool listGood;
-  final bool hasMerlinAndAssassin;
-  final bool hasPercivalAndMorgana;
+class _RolesDefButtons extends StatelessWidget {
+  const _RolesDefButtons();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          listGood
-              ? AppLocalizations.of(context)!.goodColon
-              : AppLocalizations.of(context)!.evilColon,
-          style: const TextStyle(fontSize: 30),
-        ),
-        const SizedBox(height: 10),
-        !hasMerlinAndAssassin
-            ? const SizedBox.shrink()
-            : (listGood
-                ? _TextCard(text: AppLocalizations.of(context)!.merlin)
-                : _TextCard(text: AppLocalizations.of(context)!.assassin)),
-        !hasPercivalAndMorgana
-            ? const SizedBox.shrink()
-            : (listGood
-                ? _TextCard(text: AppLocalizations.of(context)!.percival)
-                : _TextCard(text: AppLocalizations.of(context)!.morgana)),
-      ],
-    );
+    return BlocBuilder<MatchupCubit, MatchupState>(
+        buildWhen: ((previous, current) =>
+            previous.rolesDef != current.rolesDef),
+        builder: (context, state) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FilledButton(
+                onPressed: () => !state.rolesDef.hasMerlinAndAssassin
+                    ? context.read<MatchupCubit>().addMerlinAndAssassin()
+                    : context.read<MatchupCubit>().removeMerlinAndAssassin(),
+                child: Text(
+                  AppLocalizations.of(context)!.addMerlinAndAssassin,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+              const SizedBox(height: 10),
+              FilledButton(
+                onPressed: !state.rolesDef.hasMerlinAndAssassin
+                    ? null
+                    : () => !state.rolesDef.hasPercivalAndMorgana
+                        ? context.read<MatchupCubit>().addPercivalAndMorgana()
+                        : context
+                            .read<MatchupCubit>()
+                            .removePercivalAndMorgana(),
+                child: Text(
+                  AppLocalizations.of(context)!.addPercivalAndMorgana,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+}
+
+class _CharactersList extends StatelessWidget {
+  const _CharactersList({
+    this.listGood = true,
+  });
+
+  final bool listGood;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MatchupCubit, MatchupState>(
+        buildWhen: ((previous, current) =>
+            previous.rolesDef != current.rolesDef),
+        builder: (context, state) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                listGood
+                    ? AppLocalizations.of(context)!.goodColon
+                    : AppLocalizations.of(context)!.evilColon,
+                style: const TextStyle(fontSize: 30),
+              ),
+              const SizedBox(height: 10),
+              !state.rolesDef.hasMerlinAndAssassin
+                  ? const SizedBox.shrink()
+                  : (listGood
+                      ? _TextCard(text: AppLocalizations.of(context)!.merlin)
+                      : _TextCard(
+                          text: AppLocalizations.of(context)!.assassin)),
+              !state.rolesDef.hasPercivalAndMorgana
+                  ? const SizedBox.shrink()
+                  : (listGood
+                      ? _TextCard(text: AppLocalizations.of(context)!.percival)
+                      : _TextCard(text: AppLocalizations.of(context)!.morgana)),
+            ],
+          );
+        });
   }
 }
 
 class _TextCard extends StatelessWidget {
   const _TextCard({
-    super.key,
     this.text = "",
   });
 

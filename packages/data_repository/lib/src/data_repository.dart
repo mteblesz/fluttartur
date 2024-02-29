@@ -88,11 +88,11 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> startGame(
-    bool areMerlinAndAssassinInGame,
-    bool arePercivalAreMorganaInGame,
-    bool areOberonAndMordredInGame,
-  ) async {
+  Future<void> startGame({
+    required bool areMerlinAndAssassinInGame,
+    required bool arePercivalAreMorganaInGame,
+    required bool areOberonAndMordredInGame,
+  }) async {
     throw UnimplementedError();
   }
 

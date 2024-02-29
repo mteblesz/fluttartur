@@ -38,9 +38,32 @@ class MatchupCubit extends Cubit<MatchupState> {
   Future<void> initGame() async {
     if (!isHost) return;
     await _dataRepository.startGame(
-      state.areMerlinAndAssassinInGame,
-      state.arePercivalAreMorganaInGame,
-      state.areOberonAndMordredInGame,
+      areMerlinAndAssassinInGame: state.rolesDef.hasMerlinAndAssassin,
+      arePercivalAreMorganaInGame: state.rolesDef.hasPercivalAndMorgana,
+      areOberonAndMordredInGame: state.rolesDef.hasOberonAndMordred,
     );
   }
+
+  void _emit(MatchupState state) {
+    emit(state);
+  }
+}
+
+extension CharactersCubit on MatchupCubit {
+  void addMerlinAndAssassin() => _emit(state.copyWith(
+        hasMerlinAndAssassin: true,
+      ));
+
+  void addPercivalAndMorgana() => _emit(state.copyWith(
+        hasPercivalAndMorgana: true,
+      ));
+
+  void removeMerlinAndAssassin() => _emit(state.copyWith(
+        hasMerlinAndAssassin: false,
+        hasPercivalAndMorgana: false,
+      ));
+
+  void removePercivalAndMorgana() => _emit(state.copyWith(
+        hasPercivalAndMorgana: false,
+      ));
 }
