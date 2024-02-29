@@ -83,7 +83,7 @@ class _RolesDefButtons extends StatelessWidget {
               FilledButton(
                 onPressed: () => !state.rolesDef.hasMerlinAndAssassin
                     ? context.read<MatchupCubit>().addMerlinAndAssassin()
-                    : context.read<MatchupCubit>().removeMerlinAndAssassin(),
+                    : context.read<MatchupCubit>().omitMerlinAndAssassin(),
                 child: Text(
                   AppLocalizations.of(context)!.addMerlinAndAssassin,
                   style: const TextStyle(fontSize: 20),
@@ -95,11 +95,21 @@ class _RolesDefButtons extends StatelessWidget {
                     ? null
                     : () => !state.rolesDef.hasPercivalAndMorgana
                         ? context.read<MatchupCubit>().addPercivalAndMorgana()
-                        : context
-                            .read<MatchupCubit>()
-                            .removePercivalAndMorgana(),
+                        : context.read<MatchupCubit>().omitPercivalAndMorgana(),
                 child: Text(
                   AppLocalizations.of(context)!.addPercivalAndMorgana,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+              const SizedBox(height: 10),
+              FilledButton(
+                onPressed: !state.rolesDef.hasMerlinAndAssassin
+                    ? null
+                    : () => !state.rolesDef.hasOberonAndMordred
+                        ? context.read<MatchupCubit>().addOberonAndMordred()
+                        : context.read<MatchupCubit>().omitOberonAndMordred(),
+                child: Text(
+                  AppLocalizations.of(context)!.addOberonAndMordred,
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
@@ -128,8 +138,8 @@ class _RoleDefinitionsList extends StatelessWidget {
             children: [
               Text(
                 listGood
-                    ? AppLocalizations.of(context)!.goodColon
-                    : AppLocalizations.of(context)!.evilColon,
+                    ? AppLocalizations.of(context)!.goodRoles
+                    : AppLocalizations.of(context)!.evilRoles,
                 style: const TextStyle(fontSize: 30),
               ),
               const SizedBox(height: 10),
@@ -144,6 +154,16 @@ class _RoleDefinitionsList extends StatelessWidget {
                   : (listGood
                       ? _TextCard(text: AppLocalizations.of(context)!.percival)
                       : _TextCard(text: AppLocalizations.of(context)!.morgana)),
+              !state.rolesDef.hasOberonAndMordred
+                  ? const SizedBox.shrink()
+                  : (listGood
+                      ? const SizedBox.shrink()
+                      : _TextCard(text: AppLocalizations.of(context)!.oberon)),
+              !state.rolesDef.hasOberonAndMordred
+                  ? const SizedBox.shrink()
+                  : (listGood
+                      ? const SizedBox.shrink()
+                      : _TextCard(text: AppLocalizations.of(context)!.mordred)),
             ],
           );
         });

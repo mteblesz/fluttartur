@@ -61,14 +61,17 @@
 
 
   "defineRoles": "Define roles",
-  "goodColon": "Good:",
-  "evilColon": "Evil:",
+  "goodRoles": "Good",
+  "evilRoles": "Evil",
   "merlin": "Merlin",
   "assassin": "Assassin",
   "percival": "Percival",
   "morgana": "Morgana",
+  "oberon": "Oberon",
+  "mordred": "Mordred",
   "addMerlinAndAssassin": "Merlin & Assassin",
   "addPercivalAndMorgana": "Percival & Morgana",
+  "addOberonAndMordred": "Oberon & Mordred",
 
   "assassinChooses": "Assassin chooses his victim.\nIf he kills Merlin, evil wins.",
   "killMerlin": "Kill one of good courtiers.\nIf you kill Merlin, evil wins.",

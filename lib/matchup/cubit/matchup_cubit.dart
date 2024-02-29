@@ -50,20 +50,21 @@ class MatchupCubit extends Cubit<MatchupState> {
 }
 
 extension CharactersCubit on MatchupCubit {
-  void addMerlinAndAssassin() => _emit(state.copyWith(
-        hasMerlinAndAssassin: true,
-      ));
-
-  void addPercivalAndMorgana() => _emit(state.copyWith(
-        hasPercivalAndMorgana: true,
-      ));
-
-  void removeMerlinAndAssassin() => _emit(state.copyWith(
+  void addMerlinAndAssassin() =>
+      _emit(state.copyWith(hasMerlinAndAssassin: true));
+  void omitMerlinAndAssassin() => _emit(state.copyWith(
         hasMerlinAndAssassin: false,
         hasPercivalAndMorgana: false,
+        hasOberonAndMordred: false,
       ));
 
-  void removePercivalAndMorgana() => _emit(state.copyWith(
-        hasPercivalAndMorgana: false,
-      ));
+  void addPercivalAndMorgana() =>
+      _emit(state.copyWith(hasPercivalAndMorgana: true));
+  void omitPercivalAndMorgana() =>
+      _emit(state.copyWith(hasPercivalAndMorgana: false));
+
+  void addOberonAndMordred() =>
+      _emit(state.copyWith(hasOberonAndMordred: true));
+  void omitOberonAndMordred() =>
+      _emit(state.copyWith(hasOberonAndMordred: false));
 }
