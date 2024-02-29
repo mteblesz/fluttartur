@@ -13,7 +13,7 @@ class MatchupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Future.delayed(Duration.zero, () => _showNickDialog(context));
+    Future.delayed(Duration.zero, () => _showNickDialog(context));
     return Column(
       children: [
         __AddPlayerButtonDebug(),
