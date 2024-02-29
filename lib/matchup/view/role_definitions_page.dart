@@ -46,16 +46,22 @@ class RoleDefinitionsPage extends StatelessWidget {
 class _RoleDefinitionsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final double halfScreenWidth = MediaQuery.of(context).size.width / 2;
     return Column(
       children: [
         const SizedBox(height: 10),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _RoleDefinitionsList(listGood: true),
-            SizedBox(width: 10),
-            _RoleDefinitionsList(listGood: false),
+            SizedBox(
+              width: halfScreenWidth,
+              child: const _RoleDefinitionsList(listGood: true),
+            ),
+            SizedBox(
+              width: halfScreenWidth,
+              child: const _RoleDefinitionsList(listGood: false),
+            ),
           ],
         ),
         Expanded(child: Container()),
