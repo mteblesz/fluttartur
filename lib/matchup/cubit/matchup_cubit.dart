@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'dart:math';
 
 part 'matchup_state.dart';
 
@@ -35,14 +34,7 @@ class MatchupCubit extends Cubit<MatchupState> {
 
   /// handles starting game logic
   Future<void> initGame() async {
-    await _assignLeader();
     await _dataRepository.startGame();
-  }
-
-  Future<void> _assignLeader() async {
-    final numberOfPlayers = await _dataRepository.playersCount;
-    int leaderIndex = Random().nextInt(numberOfPlayers);
-    await _dataRepository.assignLeader(leaderIndex);
   }
 
   Future<void> _assignSpecialCharacters() async {
