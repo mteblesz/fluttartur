@@ -6,9 +6,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class RoleDefinitionsPage extends StatelessWidget {
   const RoleDefinitionsPage({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(
-      builder: (_) => const RoleDefinitionsPage(),
+  /// grants this page access to previous context (of matchup cubit) after push
+  static void pushPage(BuildContext parentContext) {
+    Navigator.push(
+      parentContext,
+      MaterialPageRoute<void>(
+        builder: (context) => BlocProvider.value(
+          value: BlocProvider.of<MatchupCubit>(parentContext),
+          child: const RoleDefinitionsPage(),
+        ),
+      ),
     );
   }
 

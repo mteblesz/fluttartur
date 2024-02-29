@@ -118,7 +118,7 @@ class _RolesDefButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton.tonal(
-      onPressed: () => Navigator.push(context, RoleDefinitionsPage.route()),
+      onPressed: () => RoleDefinitionsPage.pushPage(context),
       child: Text(AppLocalizations.of(context)!.roleDefinitionsPage,
           style: const TextStyle(fontSize: 16)),
     );
