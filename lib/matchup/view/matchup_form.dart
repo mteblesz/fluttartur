@@ -60,11 +60,10 @@ class _PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isHost = context.read<MatchupCubit>().state.isHost;
     return Card(
       child: ListTile(
         title: Text(player.nick),
-        trailing: isHost
+        trailing: !context.read<MatchupCubit>().isHost
             ? null
             : PopupMenuButton(
                 itemBuilder: (context) => [
@@ -83,8 +82,7 @@ class _PlayerCard extends StatelessWidget {
 class _HostButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isHost = context.read<MatchupCubit>().state.isHost;
-    return isHost
+    return context.read<MatchupCubit>().isHost
         ? const SizedBox.shrink()
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,7 +131,7 @@ class __AddPlayerButtonDebug extends StatelessWidget {
         ? const SizedBox.shrink()
         : ElevatedButton(
             onPressed: () => context.read<MatchupCubit>().addDummyPlayer(),
-            child: const Text('Add player'),
+            child: const Text('Add dummy player'),
           );
   }
 }

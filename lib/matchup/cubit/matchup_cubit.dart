@@ -5,10 +5,11 @@ import 'package:equatable/equatable.dart';
 part 'matchup_state.dart';
 
 class MatchupCubit extends Cubit<MatchupState> {
-  MatchupCubit(this._dataRepository, {required bool isHost})
-      : super(MatchupState(isHost: isHost));
+  MatchupCubit(this._dataRepository, {required this.isHost})
+      : super(const MatchupState());
 
   final IDataRepository _dataRepository;
+  final bool isHost;
 
   // debug only
   int debugPlayerCount = 0;
@@ -29,11 +30,13 @@ class MatchupCubit extends Cubit<MatchupState> {
   }
 
   Future<void> removePlayer(Player player) async {
+    if (!isHost) return;
     _dataRepository.removePlayer(playerId: int.parse(player.id));
   }
 
   /// handles starting game logic
   Future<void> initGame() async {
+    if (!isHost) return;
     await _dataRepository.startGame(
       state.areMerlinAndAssassinInGame,
       state.arePercivalAreMorganaInGame,

@@ -1,16 +1,13 @@
 part of 'matchup_cubit.dart';
 
-// TODO add error messages in cubits
 class MatchupState extends Equatable {
   const MatchupState({
-    this.isHost = false,
     this.playersCount = 0,
     this.areMerlinAndAssassinInGame = false,
     this.arePercivalAreMorganaInGame = false,
     this.areOberonAndMordredInGame = false,
   });
 
-  final bool isHost;
   final int playersCount;
   final bool areMerlinAndAssassinInGame;
   final bool arePercivalAreMorganaInGame;
@@ -18,7 +15,6 @@ class MatchupState extends Equatable {
 
   @override
   List<Object> get props => [
-        isHost,
         playersCount,
         areMerlinAndAssassinInGame,
         arePercivalAreMorganaInGame,
@@ -33,7 +29,6 @@ class MatchupState extends Equatable {
     bool? areOberonAndMordredInGame,
   }) {
     return MatchupState(
-      isHost: isHost ?? this.isHost,
       playersCount: playersCount ?? this.playersCount,
       areMerlinAndAssassinInGame:
           areMerlinAndAssassinInGame ?? this.areMerlinAndAssassinInGame,
