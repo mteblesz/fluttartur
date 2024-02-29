@@ -13,7 +13,7 @@ class MatchupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => _showNickDialog(context));
+    //Future.delayed(Duration.zero, () => _showNickDialog(context));
     return Column(
       children: [
         __AddPlayerButtonDebug(),
@@ -61,6 +61,7 @@ class _PlayerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 16, right: 0.0),
         title: Text(player.nick),
         trailing: !context.read<MatchupCubit>().isHost
             ? null
@@ -81,7 +82,7 @@ class _PlayerCard extends StatelessWidget {
 class _HostButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.read<MatchupCubit>().isHost
+    return !context.read<MatchupCubit>().isHost
         ? const SizedBox.shrink()
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
