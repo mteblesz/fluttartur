@@ -39,6 +39,8 @@ class ApiRepository {
     return RoomInfoDto.fromJson(jsonBody).toRoom();
   }
 
+  int get currentRoomId => _cache.currentRoomId;
+
   //----------------------- matchup -----------------------
   Future<void> createAndJoinRoom() async {
     final roomId = await _createRoom();

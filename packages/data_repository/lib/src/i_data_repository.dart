@@ -6,6 +6,7 @@ import '../models/courtier.dart';
 /// Temporary measure to ensure compilation of legacy code
 abstract class IDataRepository {
   Future<Room> getRoomById();
+  int get currentRoomId;
 
   Future<void> createAndJoinRoom();
   Future<void> joinRoom({required int roomId});
@@ -20,7 +21,6 @@ abstract class IDataRepository {
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
-  Room get currentRoom;
   Stream<Room> streamRoom();
   Future<void> startGame();
   void subscribeGameStartedWith({required void Function(bool) doLogic});

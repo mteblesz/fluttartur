@@ -30,6 +30,9 @@ class DataRepository implements IDataRepository {
     }
   }
 
+  @override
+  int get currentRoomId => _apiRepository.currentRoomId;
+
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
@@ -166,10 +169,6 @@ class DataRepository implements IDataRepository {
   // : implement currentCourtier
   @override
   Courtier get currentCourtier => throw UnimplementedError();
-
-  @override
-  // : implement currentRoom
-  Room get currentRoom => throw UnimplementedError();
 
   @override
   Future<List<Squad>> getApprovedSquads() {
