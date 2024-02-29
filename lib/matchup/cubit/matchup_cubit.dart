@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 
 part 'matchup_state.dart';
 
@@ -34,12 +35,27 @@ class MatchupCubit extends Cubit<MatchupState> {
     _dataRepository.removePlayer(playerId: int.parse(player.id));
   }
 
-  /// handles starting game logic
-  Future<void> initGame() async {
+  Future<void> startGame() async {
     if (!isHost) return;
-    await _dataRepository.startGame(rolesDef: state.rolesDef);
+    emit(state.copyWith(statusOfStartGame: FormzStatus.submissionInProgress));
+    try {
+      await _dataRepository.startGame(rolesDef: state.rolesDef);
+      emit(state.copyWith(statusOfStartGame: FormzStatus.submissionSuccess));
+    } on DataRepoFailure catch (e) {
+      emit(state.copyWith(
+        statusOfStartGame: FormzStatus.submissionFailure,
+        errorMessage: e.message,
+      ));
+    } catch (_) {
+      emit(state.copyWith(statusOfStartGame: FormzStatus.submissionFailure));
+    }
   }
 
+  void resetStatusOfStartGame() {
+    emit(state.copyWith(statusOfStartGame: FormzStatus.pure));
+  }
+
+  /// helper method for managing extension
   void _emit(MatchupState state) {
     emit(state);
   }

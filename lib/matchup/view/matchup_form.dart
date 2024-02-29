@@ -1,3 +1,4 @@
+import 'package:fluttartur/home/home.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttartur/widgets/widgets.dart';
 
 part 'nick_form.dart';
 
@@ -88,13 +90,47 @@ class _HostButtons extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _RolesDefButton(),
-              _StartGameButton(),
+              _StartGameButtonSpace(),
             ],
           );
   }
 }
 
+class _StartGameButtonSpace extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MatchupCubit, MatchupState>(
+      buildWhen: (previous, current) =>
+          previous.statusOfStartGame != current.statusOfStartGame,
+      builder: (context, state) {
+        if (state.statusOfStartGame.isSubmissionInProgress) {
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfStartGame.isSubmissionFailure) {
+          showFailureDialog(
+              context: context,
+              errorMessage: state.errorMessage,
+              onPressed: () {
+                context.read<MatchupCubit>().resetStatusOfStartGame();
+                Navigator.of(context).pop();
+              });
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfStartGame.isSubmissionSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            // for host, other guys wait for signalR
+            context.read<HomeCubit>().goToGame();
+          });
+          return const CircularProgressIndicator();
+        }
+        return const _StartGameButton();
+      },
+    );
+  }
+}
+
 class _StartGameButton extends StatelessWidget {
+  const _StartGameButton();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MatchupCubit, MatchupState>(
@@ -105,7 +141,7 @@ class _StartGameButton extends StatelessWidget {
             onPressed: !context.read<MatchupCubit>().isPlayerCountValid()
                 ? null
                 : () {
-                    context.read<MatchupCubit>().initGame();
+                    context.read<MatchupCubit>().startGame();
                   },
             child: Text(AppLocalizations.of(context)!.startGame,
                 style: const TextStyle(fontSize: 20)),
