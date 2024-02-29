@@ -12,25 +12,31 @@ class MatchupCubit extends Cubit<MatchupState> {
 
   final IDataRepository _dataRepository;
 
+  // debug only
+  int debugPlayerCount = 0;
+  Future<void> addDummyPlayer() async {
+    await _dataRepository.addDummyPlayer(
+      nick: "player_$debugPlayerCount",
+    );
+    debugPlayerCount++;
+  }
+
   void playerCountChanged(List<Player>? players) {
     if (players == null) return;
     emit(state.copyWith(playersCount: players.length));
+  }
+
+  bool isPlayerCountValid() {
+    return state.playersCount >= 5 && state.playersCount <= 10;
   }
 
   Future<void> removePlayer(Player player) async {
     _dataRepository.removePlayer(playerId: int.parse(player.id));
   }
 
-  bool isPlayerCountValid() {
-    if (kDebugMode) return true;
-    return state.playersCount >= 5 && state.playersCount <= 10;
-  }
-
   /// handles starting game logic
   Future<void> initGame() async {
     await _assignLeader();
-    await _assignCharacters();
-    await _assignSpecialCharacters();
     await _dataRepository.startGame();
   }
 
@@ -38,21 +44,6 @@ class MatchupCubit extends Cubit<MatchupState> {
     final numberOfPlayers = await _dataRepository.playersCount;
     int leaderIndex = Random().nextInt(numberOfPlayers);
     await _dataRepository.assignLeader(leaderIndex);
-  }
-
-  Future<void> _assignCharacters() async {
-    final numberOfPlayers = await _dataRepository.playersCount;
-    final characters = defaultCharacters(numberOfPlayers);
-    characters.shuffle();
-    await _dataRepository.assignCharacters(characters);
-  }
-
-  List<String> defaultCharacters(numberOfPlayers) {
-    final numberOfEvils = (numberOfPlayers + 2) ~/ 3;
-    return List.generate(
-      numberOfPlayers,
-      (index) => index < numberOfEvils ? 'evil' : 'good',
-    );
   }
 
   Future<void> _assignSpecialCharacters() async {
@@ -74,14 +65,4 @@ class MatchupCubit extends Cubit<MatchupState> {
 
     // await _dataRepository.assignSpecialCharacters({...goodMap, ...evilMap});
   }
-
-  // debug only
-  Future<void> add_Player_debug() async {
-    await _dataRepository.setNickname(
-      nick: "player_$debug_player_count",
-    );
-    debug_player_count++;
-  }
-
-  int debug_player_count = 0;
 }

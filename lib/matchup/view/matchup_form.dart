@@ -35,7 +35,7 @@ class __AddPlayerButtonDebug extends StatelessWidget {
     return !kDebugMode
         ? const SizedBox.shrink()
         : ElevatedButton(
-            onPressed: () => context.read<MatchupCubit>().add_Player_debug(),
+            onPressed: () => context.read<MatchupCubit>().addDummyPlayer(),
             child: const Text('Add player'),
           );
   }

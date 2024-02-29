@@ -11,6 +11,7 @@ abstract class IDataRepository {
   Future<void> createAndJoinRoom();
   Future<void> joinRoom({required int roomId});
   Future<void> setNickname({required String nick});
+  Future<void> addDummyPlayer({required String nick});
   Future<void> removePlayer({required int playerId});
   Future<void> leaveRoom();
   void handlePlayerRemoval({required void Function() handler});

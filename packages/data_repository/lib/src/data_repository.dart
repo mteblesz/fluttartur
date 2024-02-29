@@ -60,6 +60,11 @@ class DataRepository implements IDataRepository {
   }
 
   @override
+  Future<void> addDummyPlayer({required String nick}) async {
+    await _apiRepository.addDummyPlayer(nick: nick);
+  }
+
+  @override
   Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
   @override
   void subscribePlayersList() => _rtuRepository.subscribePlayersList();
