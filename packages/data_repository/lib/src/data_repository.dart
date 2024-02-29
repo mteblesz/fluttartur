@@ -87,36 +87,16 @@ class DataRepository implements IDataRepository {
     _rtuRepository.handlePlayerRemoval(handler);
   }
 
+  @override
+  Future<void> startGame(
+    bool areMerlinAndAssassinInGame,
+    bool arePercivalAreMorganaInGame,
+    bool areOberonAndMordredInGame,
+  ) async {
+    throw UnimplementedError();
+  }
+
 //----------------------------------------------------------------------------
-  @override
-  Future<void> startGame() async {
-    // : implement startGame
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignCharacters(List<String> characters) {
-    // : implement assignCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<String>> getSpecialCharacters() {
-    // : implement getSpecialCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignSpecialCharacters(Map<String, Player> map) {
-    // : implement assignSpecialCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> setSpecialCharacters(List<String> specialCharacters) {
-    // : implement setSpecialCharacters
-    throw UnimplementedError();
-  }
 
   @override
   Future<List<Player>> playersList() {
@@ -159,12 +139,6 @@ class DataRepository implements IDataRepository {
       required String playerId,
       required String nick}) {
     // : implement addMember
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignLeader(int leaderIndex) {
-    // : implement assignLeader
     throw UnimplementedError();
   }
 

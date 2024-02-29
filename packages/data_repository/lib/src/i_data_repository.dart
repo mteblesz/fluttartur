@@ -23,7 +23,11 @@ abstract class IDataRepository {
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Stream<Room> streamRoom();
-  Future<void> startGame();
+  Future<void> startGame(
+    bool areMerlinAndAssassinInGame,
+    bool arePercivalAreMorganaInGame,
+    bool areOberonAndMordredInGame,
+  );
   void subscribeGameStartedWith({required void Function(bool) doLogic});
   void unsubscribeGameStarted();
 
@@ -34,11 +38,6 @@ abstract class IDataRepository {
   Future<List<Player>> playersList();
   Future<List<Courtier>> courtiersList(); // breaking change
   Future<int> get playersCount;
-
-  Future<void> assignCharacters(List<String> characters);
-  Future<void> assignSpecialCharacters(Map<String, Player> map);
-  Future<void> assignLeader(int leaderIndex);
-  Future<void> nextLeader();
 
   Stream<List<Member>> streamMembersList({required squadId});
   Future<void> addMember({
@@ -86,9 +85,6 @@ abstract class IDataRepository {
 
   Future<List<Squad>> getApprovedSquads();
   Future<int> get membersCount;
-
-  Future<List<String>> getSpecialCharacters();
-  Future<void> setSpecialCharacters(List<String> specialCharacters);
 
   Stream<bool?> streamMerlinKilled();
   Future<void> updateMerlinKilled(bool merlinKilled);

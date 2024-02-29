@@ -72,7 +72,7 @@ class _CharactersViewState extends State<_CharactersView> {
       characters.add('good_percival');
       characters.add('evil_morgana');
     }
-    await context.read<IDataRepository>().setSpecialCharacters(characters);
+    //await context.read<IDataRepository>().setSpecialCharacters(characters);
   }
 
   @override
