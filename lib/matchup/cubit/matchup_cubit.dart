@@ -37,11 +37,7 @@ class MatchupCubit extends Cubit<MatchupState> {
   /// handles starting game logic
   Future<void> initGame() async {
     if (!isHost) return;
-    await _dataRepository.startGame(
-      areMerlinAndAssassinInGame: state.rolesDef.hasMerlinAndAssassin,
-      arePercivalAreMorganaInGame: state.rolesDef.hasPercivalAndMorgana,
-      areOberonAndMordredInGame: state.rolesDef.hasOberonAndMordred,
-    );
+    await _dataRepository.startGame(rolesDef: state.rolesDef);
   }
 
   void _emit(MatchupState state) {

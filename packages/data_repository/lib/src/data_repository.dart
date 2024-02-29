@@ -88,12 +88,8 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> startGame({
-    required bool areMerlinAndAssassinInGame,
-    required bool arePercivalAreMorganaInGame,
-    required bool areOberonAndMordredInGame,
-  }) async {
-    throw UnimplementedError();
+  Future<void> startGame({required RolesDef rolesDef}) async {
+    await _apiRepository.startGame(rolesDef: rolesDef);
   }
 
 //----------------------------------------------------------------------------

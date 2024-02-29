@@ -23,11 +23,7 @@ abstract class IDataRepository {
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Stream<Room> streamRoom();
-  Future<void> startGame({
-    required bool areMerlinAndAssassinInGame,
-    required bool arePercivalAreMorganaInGame,
-    required bool areOberonAndMordredInGame,
-  });
+  Future<void> startGame({required RolesDef rolesDef});
   void subscribeGameStartedWith({required void Function(bool) doLogic});
   void unsubscribeGameStarted();
 

@@ -123,4 +123,22 @@ class ApiRepository {
       throw RemovePlayerFailure(response.statusCode, response.body);
     }
   }
+
+  Future<void> startGame({required RolesDef rolesDef}) async {
+    final dto = StartGameDto(
+      roomId: _cache.currentRoomId,
+      areMerlinAndAssassinInGame: rolesDef.hasMerlinAndAssassin,
+      arePercivalAndMorganaInGame: rolesDef.hasPercivalAndMorgana,
+      areOberonAndMordredInGame: rolesDef.hasOberonAndMordred,
+    );
+    final response = await HttpSender.patch(
+      Uri.parse(ApiConfig.startGameUrl()),
+      headers: getAuthHeaders(),
+      body: jsonEncode(dto.toJson()),
+    );
+
+    if (response.statusCode != 204) {
+      throw SetNicknameFailure(response.statusCode, response.body);
+    }
+  }
 }
