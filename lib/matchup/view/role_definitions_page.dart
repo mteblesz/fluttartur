@@ -28,14 +28,14 @@ class RoleDefinitionsPage extends StatelessWidget {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.defineRoles),
           ),
-          body: _RoleDefinitionsView(),
+          body: _RoleDefinitionsForm(),
         ),
       ],
     );
   }
 }
 
-class _RoleDefinitionsView extends StatelessWidget {
+class _RoleDefinitionsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
