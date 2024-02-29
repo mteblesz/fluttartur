@@ -13,7 +13,7 @@ class MatchupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Future.delayed(Duration.zero, () => _showNickDialog(context));
+    Future.delayed(Duration.zero, () => _showNickDialog(context));
     return Column(
       children: [
         __AddPlayerButtonDebug(),
@@ -119,7 +119,8 @@ class _RolesDefButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton.tonal(
       onPressed: () => Navigator.push(context, RoleDefinitionsPage.route()),
-      child: Text(AppLocalizations.of(context)!.roleDefinitionsPage),
+      child: Text(AppLocalizations.of(context)!.roleDefinitionsPage,
+          style: const TextStyle(fontSize: 16)),
     );
   }
 }
