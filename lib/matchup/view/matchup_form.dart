@@ -1,4 +1,3 @@
-import 'package:fluttartur/app/app.dart';
 import 'package:fluttartur/matchup/cubit/nick_form_cubit.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';

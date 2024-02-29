@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 class Room extends Equatable {
   final String id;
-  late bool gameStarted; // TODO to be removed
   final RoomStatus status;
   final String? currentSquadId;
 
@@ -10,9 +9,7 @@ class Room extends Equatable {
     required this.id,
     required this.status,
     required this.currentSquadId,
-  }) {
-    gameStarted = status.toString() == "Playing";
-  }
+  }) {}
 
   /// Empty room which represents that user is currently not in any room.
   static Room empty = Room(

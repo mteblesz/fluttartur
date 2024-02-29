@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:math';
 
 part 'matchup_state.dart';
