@@ -28,8 +28,13 @@ final theme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      backgroundColor: const Color.fromARGB(255, 36, 101, 154),
+      foregroundColor: Colors.white,
       disabledBackgroundColor: const Color.fromARGB(190, 90, 90, 90),
       disabledForegroundColor: const Color.fromARGB(200, 215, 215, 215),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6.0),
+      ),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
