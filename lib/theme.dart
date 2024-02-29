@@ -22,7 +22,7 @@ final theme = ThemeData(
       disabledBackgroundColor: const Color.fromARGB(190, 90, 90, 90),
       disabledForegroundColor: const Color.fromARGB(200, 215, 215, 215),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(6)),
       ),
     ),
   ),
@@ -39,8 +39,11 @@ final theme = ThemeData(
     ),
   ),
 
-  cardTheme: const CardTheme(
-    color: Color.fromARGB(210, 50, 50, 50),
+  cardTheme: CardTheme(
+    color: const Color.fromARGB(210, 50, 50, 50),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(6.0),
+    ),
   ),
 
   inputDecorationTheme: const InputDecorationTheme(
