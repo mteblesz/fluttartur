@@ -1,4 +1,5 @@
 import 'package:fluttartur/matchup/cubit/matchup_cubit.dart';
+import 'package:fluttartur/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -50,26 +51,27 @@ class _RoleDefinitionsForm extends StatelessWidget {
         const SizedBox(height: 10),
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _RoleDefinitionsList(listGood: true),
             SizedBox(width: 10),
             _RoleDefinitionsList(listGood: false),
           ],
         ),
-        const Expanded(child: _RolesDefButtons()),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        Expanded(child: Container()),
+        const _RolesDefButtons(),
+        const SizedBox(height: 50),
+        FilledButton.tonal(
+          onPressed: () => Navigator.of(context).pop(),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               AppLocalizations.of(context)!.confirm,
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -96,7 +98,7 @@ class _RolesDefButtons extends StatelessWidget {
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               FilledButton(
                 onPressed: !state.rolesDef.hasMerlinAndAssassin
                     ? null
@@ -108,7 +110,7 @@ class _RolesDefButtons extends StatelessWidget {
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               FilledButton(
                 onPressed: !state.rolesDef.hasMerlinAndAssassin
                     ? null
@@ -143,7 +145,7 @@ class _RoleDefinitionsList extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Text(
+              OutlinedText(
                 listGood
                     ? AppLocalizations.of(context)!.goodRoles
                     : AppLocalizations.of(context)!.evilRoles,
