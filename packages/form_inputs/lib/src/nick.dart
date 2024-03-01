@@ -16,7 +16,6 @@ class Nick extends FormzInput<String, NickValidationError> {
   @override
   NickValidationError? validator(String? value) {
     if (!(value ?? '').isNotEmpty) return NickValidationError.invalid;
-    if (value!.length > 13) return NickValidationError.invalid;
     return null;
   }
 }

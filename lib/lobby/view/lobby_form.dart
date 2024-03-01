@@ -76,7 +76,7 @@ class _JoinRoomButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfJoin.isSubmissionFailure) {
-          showFailureDialog(context, state.errorMessage);
+          _showFailureDialog(context, state.errorMessage);
           return const CircularProgressIndicator();
         }
         if (state.statusOfJoin.isSubmissionSuccess) {
@@ -118,7 +118,7 @@ class _CreateRoomButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfCreate.isSubmissionFailure) {
-          showFailureDialog(context, state.errorMessage);
+          _showFailureDialog(context, state.errorMessage);
           return const CircularProgressIndicator();
         }
         if (state.statusOfCreate.isSubmissionSuccess) {
@@ -157,22 +157,13 @@ void goToMatchup(BuildContext context, {bool isHost = false}) {
   });
 }
 
-void showFailureDialog(BuildContext parentContext, String errorMessage) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    showDialog(
-      context: parentContext,
-      builder: (context) => AlertDialog(
-        content: Text(errorMessage),
-        actions: [
-          TextButton(
-            onPressed: () {
-              parentContext.read<LobbyCubit>().resetButtonsState();
-              Navigator.of(context).pop();
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  });
+void _showFailureDialog(BuildContext context, String errorMessage) {
+  showFailureDialog(
+    context: context,
+    errorMessage: errorMessage,
+    onPressed: () {
+      context.read<LobbyCubit>().resetButtonsState();
+      Navigator.of(context).pop();
+    },
+  );
 }

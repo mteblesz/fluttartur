@@ -10,7 +10,7 @@
 //             child: Column(
 //               crossAxisAlignment: CrossAxisAlignment.start,
 //               children: [
-//                 Text(AppLocalizations.of(context)!.court,
+//                 OutlinedText(AppLocalizations.of(context)!.court,
 //                     style: const TextStyle(fontSize: 30)),
 //                 SingleChildScrollView(
 //                   child: _PlayerListView(),
@@ -22,7 +22,7 @@
 //             child: Column(
 //               crossAxisAlignment: CrossAxisAlignment.end,
 //               children: [
-//                 Text(AppLocalizations.of(context)!.squad,
+//                 OutlinedText(AppLocalizations.of(context)!.squad,
 //                     style: const TextStyle(fontSize: 30)),
 //                 SingleChildScrollView(
 //                   child: _SquadListView(),

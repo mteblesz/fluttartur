@@ -1,4 +1,3 @@
-import 'package:fluttartur/app/app.dart';
 import 'package:fluttartur/home/home.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:data_repository/data_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttartur/widgets/widgets.dart';
+
+part 'nick_form.dart';
 
 class MatchupForm extends StatelessWidget {
   const MatchupForm({super.key});
@@ -27,18 +29,6 @@ class MatchupForm extends StatelessWidget {
   }
 }
 
-class __AddPlayerButtonDebug extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return !kDebugMode
-        ? const SizedBox.shrink()
-        : ElevatedButton(
-            onPressed: () => context.read<MatchupCubit>().add_Player_debug(),
-            child: const Text('Add player'),
-          );
-  }
-}
-
 class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -47,7 +37,6 @@ class _PlayerListView extends StatelessWidget {
       builder: (context, snapshot) {
         var players = snapshot.data;
         context.read<MatchupCubit>().playerCountChanged(players);
-        // TODO: redirect to lobby if player is not on list
         return players == null
             ? const SizedBox.expand()
             : ListView(
@@ -72,11 +61,11 @@ class _PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isHost = context.read<MatchupCubit>().state.isHost;
     return Card(
       child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 16, right: 0.0),
         title: Text(player.nick),
-        trailing: isHost
+        trailing: !context.read<MatchupCubit>().isHost
             ? null
             : PopupMenuButton(
                 itemBuilder: (context) => [
@@ -95,20 +84,53 @@ class _PlayerCard extends StatelessWidget {
 class _HostButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isHost = context.read<MatchupCubit>().state.isHost;
-    return isHost
+    return !context.read<MatchupCubit>().isHost
         ? const SizedBox.shrink()
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _RolesDefButton(),
-              _StartGameButton(),
+              _StartGameButtonSpace(),
             ],
           );
   }
 }
 
+class _StartGameButtonSpace extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MatchupCubit, MatchupState>(
+      buildWhen: (previous, current) =>
+          previous.statusOfStartGame != current.statusOfStartGame,
+      builder: (context, state) {
+        if (state.statusOfStartGame.isSubmissionInProgress) {
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfStartGame.isSubmissionFailure) {
+          showFailureDialog(
+              context: context,
+              errorMessage: state.errorMessage,
+              onPressed: () {
+                context.read<MatchupCubit>().resetStatusOfStartGame();
+                Navigator.of(context).pop();
+              });
+          return const CircularProgressIndicator();
+        }
+        if (state.statusOfStartGame.isSubmissionSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            // for host, other guys wait for signalR
+            context.read<HomeCubit>().goToGame();
+          });
+          return const CircularProgressIndicator();
+        }
+        return const _StartGameButton();
+      },
+    );
+  }
+}
+
 class _StartGameButton extends StatelessWidget {
+  const _StartGameButton();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MatchupCubit, MatchupState>(
@@ -119,7 +141,7 @@ class _StartGameButton extends StatelessWidget {
             onPressed: !context.read<MatchupCubit>().isPlayerCountValid()
                 ? null
                 : () {
-                    context.read<MatchupCubit>().initGame();
+                    context.read<MatchupCubit>().startGame();
                   },
             child: Text(AppLocalizations.of(context)!.startGame,
                 style: const TextStyle(fontSize: 20)),
@@ -132,40 +154,21 @@ class _RolesDefButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton.tonal(
-      onPressed: () => Navigator.push(context, CharactersPage.route()),
-      child: Text(AppLocalizations.of(context)!.defineRoles),
+      onPressed: () => RoleDefinitionsPage.pushPage(context),
+      child: Text(AppLocalizations.of(context)!.roleDefinitionsPage,
+          style: const TextStyle(fontSize: 16)),
     );
   }
 }
 
-Future<void> _showNickDialog(BuildContext context) {
-  return showDialog<void>(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.enterYourNick),
-          content: TextField(
-            onChanged: (nick) => context.read<MatchupCubit>().nickChanged(nick),
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.nick,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                //simple validation TODO ! make validation more complex
-                if (!context.read<MatchupCubit>().state.status.isValidated) {
-                  return;
-                }
-                final user = context.read<AppBloc>().state.user;
-                context.read<MatchupCubit>().writeinPlayerWithUserId(user.id);
-                Navigator.of(dialogContext).pop();
-                //context.read<HomeCubit>().subscribeToGameStarted();
-              },
-              child: Text(AppLocalizations.of(context)!.confirm),
-            )
-          ],
-        );
-      });
+class __AddPlayerButtonDebug extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return !kDebugMode
+        ? const SizedBox.shrink()
+        : ElevatedButton(
+            onPressed: () => context.read<MatchupCubit>().addDummyPlayer(),
+            child: const Text('Add dummy player'),
+          );
+  }
 }

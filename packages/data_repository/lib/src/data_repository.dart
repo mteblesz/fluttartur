@@ -30,6 +30,9 @@ class DataRepository implements IDataRepository {
     }
   }
 
+  @override
+  int get currentRoomId => _apiRepository.currentRoomId;
+
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
@@ -57,7 +60,13 @@ class DataRepository implements IDataRepository {
   }
 
   @override
+  Future<void> addDummyPlayer({required String nick}) async {
+    await _apiRepository.addDummyPlayer(nick: nick);
+  }
+
+  @override
   Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
+  // TODO jak stream pusty to api call o info, albo najpirw dodawac do streama po api callu a potem subskryowac, albo na serwerze kolejnosc cos nie cos?
   @override
   void subscribePlayersList() => _rtuRepository.subscribePlayersList();
   @override
@@ -78,36 +87,12 @@ class DataRepository implements IDataRepository {
     _rtuRepository.handlePlayerRemoval(handler);
   }
 
+  @override
+  Future<void> startGame({required RolesDef rolesDef}) async {
+    await _apiRepository.startGame(rolesDef: rolesDef);
+  }
+
 //----------------------------------------------------------------------------
-  @override
-  Future<void> startGame() async {
-    // : implement startGame
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignCharacters(List<String> characters) {
-    // : implement assignCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<String>> getSpecialCharacters() {
-    // : implement getSpecialCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> assignSpecialCharacters(Map<String, Player> map) {
-    // : implement assignSpecialCharacters
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> setSpecialCharacters(List<String> specialCharacters) {
-    // : implement setSpecialCharacters
-    throw UnimplementedError();
-  }
 
   @override
   Future<List<Player>> playersList() {
@@ -154,22 +139,12 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> assignLeader(int leaderIndex) {
-    // : implement assignLeader
-    throw UnimplementedError();
-  }
-
-  @override
   // : implement currentPlayer
   Player get currentPlayer => throw UnimplementedError();
 
   // : implement currentCourtier
   @override
   Courtier get currentCourtier => throw UnimplementedError();
-
-  @override
-  // : implement currentRoom
-  Room get currentRoom => throw UnimplementedError();
 
   @override
   Future<List<Squad>> getApprovedSquads() {

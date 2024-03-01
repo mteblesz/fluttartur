@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
-import 'package:data_repository/dtos/room_connection_dto.dart';
 import 'package:data_repository/src/data_cache.dart';
 import '../../dtos/dtos.dart';
 import 'api_config.dart';
@@ -39,6 +38,8 @@ class ApiRepository {
     return RoomInfoDto.fromJson(jsonBody).toRoom();
   }
 
+  int get currentRoomId => _cache.currentRoomId;
+
   //----------------------- matchup -----------------------
   Future<void> createAndJoinRoom() async {
     final roomId = await _createRoom();
@@ -60,7 +61,16 @@ class ApiRepository {
     return roomId;
   }
 
+  /// joins room and caches ids
   Future<void> joinRoom({required int roomId}) async {
+    int playerId = await _joinRoom(roomId);
+
+    _cache.currentPlayerId = playerId;
+    _cache.currentRoomId = roomId;
+  }
+
+  /// helper method for joinRoom
+  Future<int> _joinRoom(int roomId) async {
     final response = await HttpSender.post(
       Uri.parse(ApiConfig.joinRoomUrl(roomId)),
       headers: getAuthHeaders(),
@@ -71,15 +81,13 @@ class ApiRepository {
     }
     final locationHeader = response.headers[HttpHeaders.locationHeader];
     final playerId = int.parse(Uri.parse(locationHeader!).pathSegments.last);
-
-    _cache.currentPlayerId = playerId;
-    _cache.currentRoomId = roomId;
+    return playerId;
   }
 
-  Future<void> setNickname({required String nick}) async {
+  Future<void> setNickname({required String nick, int? playerId}) async {
     final dto = NicknameSetDto(
       roomId: _cache.currentRoomId,
-      playerId: _cache.currentPlayerId,
+      playerId: playerId ?? _cache.currentPlayerId,
       nick: nick,
     );
     final response = await HttpSender.patch(
@@ -91,6 +99,12 @@ class ApiRepository {
     if (response.statusCode != 204) {
       throw SetNicknameFailure(response.statusCode, response.body);
     }
+  }
+
+  /// for debug reasons only, adds dummy players to server
+  Future<void> addDummyPlayer({required String nick}) async {
+    final playerId = await _joinRoom(_cache.currentRoomId);
+    await setNickname(nick: nick, playerId: playerId);
   }
 
   Future<void> leaveRoom() async {
@@ -107,6 +121,24 @@ class ApiRepository {
 
     if (response.statusCode != 204) {
       throw RemovePlayerFailure(response.statusCode, response.body);
+    }
+  }
+
+  Future<void> startGame({required RolesDef rolesDef}) async {
+    final dto = StartGameDto(
+      roomId: _cache.currentRoomId,
+      areMerlinAndAssassinInGame: rolesDef.hasMerlinAndAssassin,
+      arePercivalAndMorganaInGame: rolesDef.hasPercivalAndMorgana,
+      areOberonAndMordredInGame: rolesDef.hasOberonAndMordred,
+    );
+    final response = await HttpSender.put(
+      Uri.parse(ApiConfig.startGameUrl()),
+      headers: getAuthHeaders(),
+      body: jsonEncode(dto.toJson()),
+    );
+
+    if (response.statusCode != 204) {
+      throw StartGameFailure(response.statusCode, response.body);
     }
   }
 }

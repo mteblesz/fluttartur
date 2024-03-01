@@ -1,38 +1,44 @@
 part of 'matchup_cubit.dart';
 
-// TODO add error messages in cubits
 class MatchupState extends Equatable {
   const MatchupState({
-    this.nick = const Nick.pure(),
-    this.status = FormzStatus.pure,
-    this.errorMessage,
     this.playersCount = 0,
-    this.isHost = false,
+    this.statusOfStartGame = FormzStatus.pure,
+    this.rolesDef = const RolesDef(),
+    this.errorMessage = "",
   });
 
-  final Nick nick;
-  // TODO add chharacter config status here
-  final FormzStatus status;
-  final String? errorMessage;
   final int playersCount;
-  final bool isHost;
+  final RolesDef rolesDef;
+  final FormzStatus statusOfStartGame;
+  final String errorMessage;
 
   @override
-  List<Object> get props => [nick, status, playersCount, isHost];
+  List<Object> get props => [
+        playersCount,
+        rolesDef,
+        statusOfStartGame,
+        errorMessage,
+      ];
 
   MatchupState copyWith({
-    Nick? nick,
-    FormzStatus? status,
-    String? errorMessage,
-    int? playersCount,
     bool? isHost,
+    int? playersCount,
+    bool? hasMerlinAndAssassin,
+    bool? hasPercivalAndMorgana,
+    bool? hasOberonAndMordred,
+    FormzStatus? statusOfStartGame,
+    String? errorMessage,
   }) {
     return MatchupState(
-      nick: nick ?? this.nick,
-      status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
       playersCount: playersCount ?? this.playersCount,
-      isHost: isHost ?? this.isHost,
+      rolesDef: rolesDef.copyWith(
+        hasMerlinAndAssassin,
+        hasPercivalAndMorgana,
+        hasOberonAndMordred,
+      ),
+      statusOfStartGame: statusOfStartGame ?? this.statusOfStartGame,
+      errorMessage: errorMessage ?? "", // empty by default
     );
   }
 }

@@ -10,8 +10,11 @@ class NicknameSetDto {
   });
 
   Map<String, dynamic> toJson() {
-    if (nick.length < 3 || nick.length > 20) {
-      throw StateError('Invalid nick length');
+    if (nick.length < 3) {
+      throw StateError('Nick too short');
+    }
+    if (nick.length > 20) {
+      throw StateError('Nick too long');
     }
 
     return {
