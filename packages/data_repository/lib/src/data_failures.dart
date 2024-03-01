@@ -30,3 +30,7 @@ class RemovePlayerFailure extends DataRepoFailure {
   RemovePlayerFailure(int code, [String? body])
       : super("remove player", code, body);
 }
+
+class StartGameFailure extends DataRepoFailure {
+  StartGameFailure(int code, [String? body]) : super("start game", code, body);
+}

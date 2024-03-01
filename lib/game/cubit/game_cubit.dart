@@ -89,7 +89,7 @@ class GameCubit extends Cubit<GameState> {
       _dataRepository.subscribeQuestVotesWith(doLogic: _assessQuestVoteResults);
     } else {
       await _dataRepository.updateSquadIsApproved(isApproved: false);
-      await _dataRepository.nextLeader();
+      //await _dataRepository.nextLeader();
       await _dataRepository.nextSquad(questNumber: state.questNumber);
     }
   }
@@ -114,7 +114,7 @@ class GameCubit extends Cubit<GameState> {
       await _dataRepository.updateSquadIsSuccessfull();
     }
 
-    await _dataRepository.nextLeader();
+    //await _dataRepository.nextLeader();
     await _dataRepository.nextSquad(questNumber: state.questNumber + 1);
   }
   //--------------------------------players's logic-----------------------------

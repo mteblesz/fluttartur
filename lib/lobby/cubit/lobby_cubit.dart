@@ -44,7 +44,7 @@ class LobbyCubit extends Cubit<LobbyState> {
       emit(state.copyWith(statusOfCreate: FormzStatus.submissionSuccess));
     } on DataRepoFailure catch (e) {
       emit(state.copyWith(
-        statusOfJoin: FormzStatus.submissionFailure,
+        statusOfCreate: FormzStatus.submissionFailure,
         errorMessage: e.message,
       ));
     } catch (_) {

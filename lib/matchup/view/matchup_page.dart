@@ -54,8 +54,8 @@ class _MatchupAppBarActions extends StatelessWidget {
         PopupMenuItem(
           child: Text(AppLocalizations.of(context)!.copyRoomsId),
           onTap: () async {
-            final roomId = context.read<IDataRepository>().currentRoom.id;
-            await Clipboard.setData(ClipboardData(text: roomId));
+            final roomId = context.read<IDataRepository>().currentRoomId;
+            await Clipboard.setData(ClipboardData(text: roomId.toString()));
           },
         ),
         PopupMenuItem(
