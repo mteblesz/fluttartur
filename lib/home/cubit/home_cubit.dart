@@ -12,6 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// directs to game pages
   void goToGame() {
+    print("game started");
     _dataRepository.unsubscribeGameStarted();
     //emit(state.copyWith(status: HomeStatus.inGame)); //__ TODO __!!!uncomment
   }

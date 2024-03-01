@@ -131,14 +131,14 @@ class ApiRepository {
       arePercivalAndMorganaInGame: rolesDef.hasPercivalAndMorgana,
       areOberonAndMordredInGame: rolesDef.hasOberonAndMordred,
     );
-    final response = await HttpSender.patch(
+    final response = await HttpSender.put(
       Uri.parse(ApiConfig.startGameUrl()),
       headers: getAuthHeaders(),
       body: jsonEncode(dto.toJson()),
     );
 
     if (response.statusCode != 204) {
-      throw SetNicknameFailure(response.statusCode, response.body);
+      throw StartGameFailure(response.statusCode, response.body);
     }
   }
 }
