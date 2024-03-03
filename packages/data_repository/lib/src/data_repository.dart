@@ -163,12 +163,6 @@ class DataRepository implements IDataRepository {
   Future<int> get membersCount => throw UnimplementedError();
 
   @override
-  Future<void> nextLeader() {
-    // : implement nextLeader
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> nextSquad({required int questNumber}) {
     // : implement nextSquad
     throw UnimplementedError();
