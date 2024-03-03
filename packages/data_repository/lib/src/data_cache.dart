@@ -1,5 +1,6 @@
 import 'package:cache/cache.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:data_repository/models/models.dart';
 
 class CacheNullException implements Exception {
   const CacheNullException([this.message = 'The cache is unexpectedly null.']);
@@ -37,5 +38,16 @@ class DataCache {
 
   set currentPlayerId(int id) {
     _cacheClient.write(key: currentPlayerIdCacheKey, value: id);
+  }
+
+  //----------------------- courtier data -----------------------
+  static const currentCourtierCacheKey = '__Courtier_cache_key__';
+  Courtier get currentCourtier {
+    return _cacheClient.read<Courtier>(key: currentCourtierCacheKey) ??
+        Courtier.empty;
+  }
+
+  set currentCourtier(Courtier courtier) {
+    _cacheClient.write(key: currentCourtierCacheKey, value: courtier);
   }
 }

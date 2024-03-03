@@ -92,6 +92,11 @@ class DataRepository implements IDataRepository {
     await _apiRepository.startGame(rolesDef: rolesDef);
   }
 
+  @override
+  void handleGameStarted({required void Function() handler}) {
+    _rtuRepository.handleGameStarted(handler);
+  }
+
 //----------------------------------------------------------------------------
 
   @override
