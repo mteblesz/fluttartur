@@ -12,4 +12,4 @@ This project is an implementation of the board game "The Resistance: Avalon" as 
 * web browser at [mteblesz.github.io/fluttartur](https://mteblesz.github.io/fluttartur/)
 
 
-This project uses .NET API: [github.com/mteblesz/servartur](https://github.com/mteblesz/servartur).
+### This project uses .NET API: [github.com/mteblesz/servartur](https://github.com/mteblesz/servartur).
