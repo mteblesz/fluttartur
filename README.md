@@ -4,7 +4,7 @@ This project is an implementation of the board game "The Resistance: Avalon" as 
 
 ### Game tutorial is available at: 
 
-[github.com/mteblesz/docartur]([https://github.com/mteblesz/docartur/blob/main/tutorial.md](https://github.com/mteblesz/docartur?tab=readme-ov-file#fluttartur-tutorial))
+[github.com/mteblesz/docartur](https://github.com/mteblesz/docartur?tab=readme-ov-file#fluttartur-tutorial)
 
 ### Fluttartur should be available on:
 
