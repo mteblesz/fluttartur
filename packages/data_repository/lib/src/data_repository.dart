@@ -92,6 +92,11 @@ class DataRepository implements IDataRepository {
     await _apiRepository.startGame(rolesDef: rolesDef);
   }
 
+  @override
+  void handleGameStarted({required void Function() handler}) {
+    _rtuRepository.handleGameStarted(handler);
+  }
+
 //----------------------------------------------------------------------------
 
   @override
@@ -161,12 +166,6 @@ class DataRepository implements IDataRepository {
   @override
   // : implement membersCount
   Future<int> get membersCount => throw UnimplementedError();
-
-  @override
-  Future<void> nextLeader() {
-    // : implement nextLeader
-    throw UnimplementedError();
-  }
 
   @override
   Future<void> nextSquad({required int questNumber}) {

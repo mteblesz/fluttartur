@@ -14,11 +14,13 @@ abstract class IDataRepository {
   Future<void> addDummyPlayer({required String nick});
   Future<void> removePlayer({required int playerId});
   Future<void> leaveRoom();
-  void handlePlayerRemoval({required void Function() handler});
 
   Stream<List<Player>> streamPlayersList();
   void subscribePlayersList();
   void unsubscribePlayersList();
+
+  void handlePlayerRemoval({required void Function() handler});
+  void handleGameStarted({required void Function() handler});
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
