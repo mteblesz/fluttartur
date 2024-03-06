@@ -63,7 +63,7 @@ class RtuRepository {
     });
   }
 
-  void handleGameStarted(void Function() removalHandler) {
+  void handleGameStarted(void Function() startGameHandler) {
     hubConnection.on("ReceiveStartGame", (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final data = args[0] as List<dynamic>;
@@ -73,7 +73,7 @@ class RtuRepository {
             (p) => p.id == _cache.currentPlayerId.toString(),
             orElse: () => Courtier.empty);
         hubConnection.off("ReceiveStartGame");
-        removalHandler();
+        startGameHandler();
       }
     });
   }
