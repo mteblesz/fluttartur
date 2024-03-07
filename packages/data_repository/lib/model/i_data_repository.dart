@@ -3,7 +3,6 @@ import 'package:data_repository/model/model.dart';
 
 /// Temporary measure to ensure compilation of legacy code
 abstract class IDataRepository {
-  Future<Room> getRoomById();
   int get currentRoomId;
 
   Future<void> createAndJoinRoom();

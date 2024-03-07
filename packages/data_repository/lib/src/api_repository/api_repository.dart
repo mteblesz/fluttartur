@@ -3,7 +3,6 @@ import 'package:universal_io/io.dart';
 import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
-import 'package:data_repository/src/data_cache.dart';
 import '../dtos/dtos.dart';
 import 'api_config.dart';
 import 'http_sender.dart';
@@ -16,19 +15,19 @@ part 'kill_requests.dart';
 
 /// Facade for classess communicating with api
 class ApiRepository {
-  ApiRepository(this._cache);
+  ApiRepository({required this.getAuthToken});
 
-  final DataCache _cache;
+  final Function() getAuthToken;
 
   Map<String, String> getAuthHeaders() => <String, String>{
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${_cache.authToken}',
+        'Authorization': 'Bearer ${getAuthToken()}',
       };
 
   //----------------------- example request -----------------------
-  Future<Room> getRoomById() async {
+  Future<Room> getRoomById(int roomId) async {
     final response = await HttpSender.get(
-      Uri.parse(ApiConfig.getRoomByIdUrl(_cache.currentRoomId)),
+      Uri.parse(ApiConfig.getRoomByIdUrl(roomId)),
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
