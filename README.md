@@ -1,11 +1,15 @@
 # fluttartur
 
-Fluttartur is a local-multiplayer game based on rules of "The Resistance: Avalon".
+This project is an implementation of the board game "The Resistance: Avalon" as a mobile app using Flutter. The goal of the app is to simulate a multiplayer game session for 5 to 10 players. It facilitates gameplay in the absence of a physical copy of the game, providing a local multiplayer experience.
 
-Fluttartur is avalable on:
-* Android (latest apk in Actions)
-* web browser at https://teblesz.github.io/fluttartur
+### Game tutorial is available at: 
 
-Known issues:
-* removing players doesn't update removed players UI to lobby
-* apk from gh Actions has errors when logging in with Google: apk built locally works.
+[github.com/mteblesz/docartur](https://github.com/mteblesz/docartur?tab=readme-ov-file#fluttartur-tutorial)
+
+### Fluttartur should be available on:
+
+* Android (latest apk in Actions of this GitHub repo)
+* web browser at [mteblesz.github.io/fluttartur](https://mteblesz.github.io/fluttartur/)
+
+
+### This project uses .NET API: [github.com/mteblesz/servartur](https://github.com/mteblesz/servartur).

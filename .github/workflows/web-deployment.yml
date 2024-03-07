@@ -1,11 +1,8 @@
-name: Web Deployment
-
+name: Flutter Web
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    
+    branches:
+      - main
 jobs:
   build:
     name: Build Web
@@ -13,10 +10,10 @@ jobs:
       my_secret: ${{secrets.commit_secret}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3 
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.7"
+          flutter-version: "3.16.9"
           channel: 'stable'
           cache: true
       - run: flutter config --enable-web
@@ -28,9 +25,9 @@ jobs:
           cd build/web
           git init
           git config --global user.email mteblesz@gmail.com
-          git config --global user.name teblesz
+          git config --global user.name mteblesz
           git status
-          git remote add origin https://${{secrets.commit_secret}}@github.com/teblesz/frontartur.git
+          git remote add origin https://${{secrets.commit_secret}}@github.com/mteblesz/fluttartur.git
           git checkout -b gh-pages
           git add --all
           git commit -m "update"
