@@ -1,21 +1,21 @@
 import 'dart:async';
 
 import 'package:cache/cache.dart';
-import 'package:data_repository/data_repository.dart';
-import 'package:data_repository/models/courtier.dart';
+import 'package:data_repository/model/model.dart';
 import 'package:data_repository/src/api_repository/api_repository.dart';
-import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
+import 'package:data_repository/src/data_cache.dart';
 
 /// Facade for classess communicating with api
 class DataRepository implements IDataRepository {
   DataRepository({
     CacheClient? cacheClient,
   }) {
-    final cache = DataCache(cacheClient ?? CacheClient());
-    _apiRepository = ApiRepository(cache);
-    _rtuRepository = RtuRepository(cache);
+    this._cache = DataCache(cacheClient ?? CacheClient());
+    _apiRepository = ApiRepository(_cache);
+    _rtuRepository = RtuRepository(_cache);
   }
+  late DataCache _cache;
   late ApiRepository _apiRepository;
   late RtuRepository _rtuRepository;
 
@@ -31,7 +31,7 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  int get currentRoomId => _apiRepository.currentRoomId;
+  int get currentRoomId => _cache.currentRoomId;
 
   //----------------------- matchup -----------------------
   @override

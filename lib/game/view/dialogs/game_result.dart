@@ -1,4 +1,4 @@
-import 'package:data_repository/models/courtier.dart';
+import 'package:data_repository/model/model.dart';
 import 'package:fluttartur/fluttartur_icons_icons.dart';
 import 'package:fluttartur/game/cubit/game_cubit.dart';
 import 'package:fluttartur/home/home.dart';

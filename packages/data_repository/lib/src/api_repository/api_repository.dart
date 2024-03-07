@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
-import '../../dtos/dtos.dart';
+import '../dtos/dtos.dart';
 import 'api_config.dart';
 import 'http_sender.dart';
 

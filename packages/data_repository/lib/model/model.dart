@@ -4,3 +4,4 @@ export 'room.dart';
 export 'courtier.dart';
 export 'member.dart';
 export 'squad.dart';
+export 'i_data_repository.dart';

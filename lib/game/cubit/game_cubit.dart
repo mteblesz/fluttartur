@@ -1,6 +1,6 @@
 import 'package:data_repository/data_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:data_repository/models/courtier.dart';
+import 'package:data_repository/model/courtier.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 

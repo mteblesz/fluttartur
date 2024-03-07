@@ -1,6 +1,6 @@
 import 'package:cache/cache.dart';
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:data_repository/models/models.dart';
+import 'package:data_repository/model/model.dart';
 
 class CacheNullException implements Exception {
   const CacheNullException([this.message = 'The cache is unexpectedly null.']);

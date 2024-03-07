@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:authentication_repository/src/models/user.dart';
+import 'package:authentication_repository/models/user.dart';
 import 'package:cache/cache.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart' show kIsWeb;

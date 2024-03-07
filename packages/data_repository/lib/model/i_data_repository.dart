@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:data_repository/models/models.dart';
-
-import '../models/courtier.dart';
+import 'package:data_repository/model/model.dart';
 
 /// Temporary measure to ensure compilation of legacy code
 abstract class IDataRepository {

@@ -1,4 +1,4 @@
-import 'package:data_repository/models/models.dart';
+import 'package:data_repository/model/model.dart';
 
 import 'player_info_dto.dart';
 

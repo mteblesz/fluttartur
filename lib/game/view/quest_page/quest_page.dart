@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:data_repository/data_repository.dart';
-import 'package:data_repository/models/courtier.dart';
+import 'package:data_repository/model/courtier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
