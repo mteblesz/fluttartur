@@ -13,7 +13,6 @@ part 'squad_requests.dart';
 part 'vote_requests.dart';
 part 'kill_requests.dart';
 
-/// Facade for classess communicating with api
 class ApiRepository {
   ApiRepository({required this.getAuthToken});
 
@@ -23,20 +22,6 @@ class ApiRepository {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${getAuthToken()}',
       };
-
-  //----------------------- example request -----------------------
-  Future<Room> getRoomById(int roomId) async {
-    final response = await HttpSender.get(
-      Uri.parse(ApiConfig.getRoomByIdUrl(roomId)),
-      headers: getAuthHeaders(),
-    );
-    if (response.statusCode != 200) {
-      throw GetRoomFailure(response.statusCode, response.body);
-    }
-    Map<String, dynamic> jsonBody = jsonDecode(response.body);
-
-    return RoomInfoDto.fromJson(jsonBody).toRoom();
-  }
 
   // request methods in extensions segregated 'by-api controller'
 }

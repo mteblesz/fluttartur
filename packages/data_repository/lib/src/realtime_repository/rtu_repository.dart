@@ -4,7 +4,6 @@ import 'package:data_repository/src/realtime_repository/rtu_config.dart';
 import '../dtos/dtos.dart';
 import '../../model/model.dart';
 import 'package:signalr_netcore/signalr_client.dart';
-//import 'package:web_socket_channel/status.dart' as status;
 
 class RtuRepository {
   RtuRepository(this._cache) {
