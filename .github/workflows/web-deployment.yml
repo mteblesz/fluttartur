@@ -8,7 +8,7 @@ jobs:
   build:
     name: Build Web
     env:
-      my_secret: ${{secrets.commit_secret}}
+      my_secret: ${{secrets.commit_secret_25}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3 
@@ -25,8 +25,8 @@ jobs:
         run: |
           cd build/web
           git init
-          git config --global user.email mteblesz@gmail.com
-          git config --global user.name mteblesz
+          git config user.email mteblesz@gmail.com
+          git config user.name mteblesz
           git status
           git remote add origin https://${{secrets.COMMIT_SECRET_25}}@github.com/mteblesz/fluttartur.git
           git checkout -b gh-pages
