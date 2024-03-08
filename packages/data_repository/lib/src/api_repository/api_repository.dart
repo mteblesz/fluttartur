@@ -17,7 +17,7 @@ part 'kill_requests.dart';
 class ApiRepository {
   ApiRepository({required this.getAuthToken});
 
-  final Function() getAuthToken;
+  final String Function() getAuthToken;
 
   Map<String, String> getAuthHeaders() => <String, String>{
         'Content-Type': 'application/json',
