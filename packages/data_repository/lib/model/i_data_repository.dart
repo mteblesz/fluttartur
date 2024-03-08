@@ -19,6 +19,9 @@ abstract class IDataRepository {
   void handlePlayerRemoval({required void Function() handler});
   void handleGameStarted({required void Function() handler});
 
+  // -------------
+  Future<List<Player>> listOfEvilPlayers();
+
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
   Stream<Room> streamRoom();
@@ -33,7 +36,7 @@ abstract class IDataRepository {
   Future<List<Player>> playersList();
   Future<int> get playersCount;
 
-  Stream<List<Member>> streamMembersList({required squadId});
+  Stream<List<Player>> streamMembersList({required squadId});
   Future<void> addMember({
     required int questNumber,
     required String playerId,
