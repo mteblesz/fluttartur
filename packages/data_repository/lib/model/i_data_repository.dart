@@ -20,7 +20,8 @@ abstract class IDataRepository {
   void handleGameStarted({required void Function() handler});
 
   // -------------
-  Future<List<Player>> listOfEvilPlayers();
+  Future<List<Player>> getEvilPlayers();
+  Future<List<Player>> getMerlinAndMorgana();
 
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 

@@ -133,8 +133,13 @@ class DataRepository implements IDataRepository {
   TeamRole get currentTeamRole => _cache.currentTeamRole;
 
   @override
-  Future<List<Player>> listOfEvilPlayers() {
+  Future<List<Player>> getEvilPlayers() {
     return _apiRepository.getEvilPlayers(roomId: _cache.currentRoomId);
+  }
+
+  @override
+  Future<List<Player>> getMerlinAndMorgana() {
+    return _apiRepository.getMerlinAndMorgana(roomId: _cache.currentRoomId);
   }
 
 //----------------------------------------------------------------------------

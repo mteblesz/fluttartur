@@ -50,4 +50,24 @@ extension InfoRequests on ApiRepository {
 
     return playerList;
   }
+
+  Future<List<Player>> getMerlinAndMorgana({required int roomId}) async {
+    final response = await HttpSender.get(
+      Uri.parse(ApiConfig.getMerlinAndMorgana(roomId)),
+      headers: getAuthHeaders(),
+    );
+    if (response.statusCode != 200) {
+      throw GetRoomFailure(response.statusCode, response.body);
+    }
+    Map<String, dynamic> jsonBody = jsonDecode(response.body);
+
+    List<PlayerInfoDto> playerInfoList = (jsonBody as List)
+        .map((json) => PlayerInfoDto.fromJson(json as Map<String, dynamic>))
+        .toList();
+
+    List<Player> merlinAndMorgana =
+        playerInfoList.map((info) => info.toPLayer()).toList();
+
+    return merlinAndMorgana;
+  }
 }

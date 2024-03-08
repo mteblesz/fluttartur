@@ -33,8 +33,8 @@ class ApiConfig {
       '$apiUrl/info/evilplayers/$roomId';
   static String getQuestBySquadIdUrl(int roomId) =>
       '$apiUrl/info/quest/$roomId';
-  static String getKnownByPercivalPlayers(int squadId) =>
-      '$apiUrl/info/percival_known/$squadId';
+  static String getMerlinAndMorgana(int squadId) =>
+      '$apiUrl/info/percivalknowns/$squadId';
 
   static String addMemberUrl(int squadId) => '$apiUrl/squad/add/$squadId';
   static String removeMemberUrl(int squadId) => '$apiUrl/squad/remove/$squadId';
