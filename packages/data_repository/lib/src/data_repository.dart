@@ -132,6 +132,11 @@ class DataRepository implements IDataRepository {
   @override
   TeamRole get currentTeamRole => _cache.currentTeamRole;
 
+  @override
+  Future<List<Player>> listOfEvilPlayers() {
+    return _apiRepository.getEvilPlayers(roomId: _cache.currentRoomId);
+  }
+
 //----------------------------------------------------------------------------
 
   @override
@@ -228,7 +233,7 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Stream<List<Member>> streamMembersList({required squadId}) {
+  Stream<List<Player>> streamMembersList({required squadId}) {
     // : implement streamMembersList
     throw UnimplementedError();
   }

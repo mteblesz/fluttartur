@@ -30,4 +30,24 @@ extension InfoRequests on ApiRepository {
     final Role role = Role.values.byName(roleStr.toLowerFirst());
     return TeamRole(team, role);
   }
+
+  Future<List<Player>> getEvilPlayers({required int roomId}) async {
+    final response = await HttpSender.get(
+      Uri.parse(ApiConfig.getEvilPlayersUrl(roomId)),
+      headers: getAuthHeaders(),
+    );
+    if (response.statusCode != 200) {
+      throw GetRoomFailure(response.statusCode, response.body);
+    }
+    Map<String, dynamic> jsonBody = jsonDecode(response.body);
+
+    List<PlayerInfoDto> playerInfoList = (jsonBody as List)
+        .map((json) => PlayerInfoDto.fromJson(json as Map<String, dynamic>))
+        .toList();
+
+    List<Player> playerList =
+        playerInfoList.map((info) => info.toPLayer()).toList();
+
+    return playerList;
+  }
 }
