@@ -25,7 +25,7 @@ abstract class IDataRepository {
   Future<void> startGame({required RolesDef rolesDef});
   void subscribeGameStartedWith({required void Function(bool) doLogic});
   void unsubscribeGameStarted();
-  Future<TeamRole> get currentTeamRole;
+  TeamRole get currentTeamRole;
 
   Player get currentPlayer;
   Stream<Player> streamPlayer();

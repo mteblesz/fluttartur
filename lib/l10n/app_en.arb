@@ -60,6 +60,8 @@
   "squad": "Squad:",
 
 
+  "goodKnight": "Good knight (no role)",
+  "evilEntity": "Evil entity (no role)",
   "defineRoles": "Define roles",
   "goodRoles": "Good",
   "evilRoles": "Evil",

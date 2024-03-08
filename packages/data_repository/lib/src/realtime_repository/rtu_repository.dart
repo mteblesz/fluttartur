@@ -63,7 +63,7 @@ class RtuRepository {
     });
   }
 
-  void handleGameStarted(void Function() startGameHandler) {
+  void handleGameStarted({required void Function() startGameHandler}) {
     hubConnection.on("ReceiveStartGame", (List<Object?>? args) {
       hubConnection.off("ReceiveStartGame");
       startGameHandler();

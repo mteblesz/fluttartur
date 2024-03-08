@@ -115,20 +115,22 @@ class DataRepository implements IDataRepository {
 
   @override
   void handleGameStarted({required void Function() handler}) {
-    _rtuRepository.handleGameStarted(handler);
+    _rtuRepository.handleGameStarted(startGameHandler: () async {
+      await _fetchTeamRole();
+      handler();
+    });
   }
 
 //----------------------------------------------------------------------------
 
-  @override
-  Future<TeamRole> get currentTeamRole async {
-    if (_cache.currentTeamRole.isEmpty) {
-      final playerId = _cache.currentPlayerId;
-      _cache.currentTeamRole =
-          await _apiRepository.getRoleByPlayerId(playerId: playerId);
-    }
-    return _cache.currentTeamRole;
+  Future<void> _fetchTeamRole() async {
+    final playerId = _cache.currentPlayerId;
+    _cache.currentTeamRole =
+        await _apiRepository.getRoleByPlayerId(playerId: playerId);
   }
+
+  @override
+  TeamRole get currentTeamRole => _cache.currentTeamRole;
 
 //----------------------------------------------------------------------------
 

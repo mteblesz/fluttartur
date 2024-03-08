@@ -45,7 +45,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final player = context.read<IDataRepository>().currentPlayer;
+    final teamRole = context.read<IDataRepository>().currentTeamRole;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -58,26 +58,26 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          (player.team ?? "error") == 'good'
+                          (teamRole.team) == Team.good
                               ? AppLocalizations.of(context)!.good
                               : AppLocalizations.of(context)!.evil,
                           style: const TextStyle(fontSize: 30),
                         ),
-                        player.role == null
+                        teamRole.role == Role.empty
                             ? const SizedBox.shrink()
                             : const Text(" - ",
                                 style: const TextStyle(fontSize: 30)),
-                        player.role == null
+                        teamRole.role == Role.empty
                             ? const SizedBox.shrink()
                             : Text(
-                                specialCharacterToText(
-                                    player.role!.toString(), context),
+                                roleToText(teamRole.role, context),
                                 style: const TextStyle(fontSize: 30),
                               ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    !(player.team == "evil" || player.role == 'good_merlin')
+                    !(teamRole.team == Team.evil ||
+                            teamRole.role == Role.merlin)
                         ? const SizedBox.shrink()
                         : Column(
                             children: [
@@ -112,7 +112,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                               ),
                             ],
                           ),
-                    !(player.role == 'good_percival')
+                    !(teamRole.role == Role.percival)
                         ? const SizedBox.shrink()
                         : Column(
                             children: [
@@ -168,20 +168,27 @@ class _CharacterInfoState extends State<_CharacterInfo> {
       ],
     );
   }
-}
 
-// TODO replace this with value class for character and enum
-String specialCharacterToText(String specialCharacter, BuildContext context) {
-  switch (specialCharacter) {
-    case 'good_merlin':
-      return AppLocalizations.of(context)!.merlin;
-    case 'evil_assassin':
-      return AppLocalizations.of(context)!.assassin;
-    case 'good_percival':
-      return AppLocalizations.of(context)!.percival;
-    case 'evil_morgana':
-      return AppLocalizations.of(context)!.morgana;
-    default:
-      return 'error';
+  String roleToText(Role role, BuildContext context) {
+    switch (role) {
+      case Role.merlin:
+        return AppLocalizations.of(context)!.merlin;
+      case Role.assassin:
+        return AppLocalizations.of(context)!.assassin;
+      case Role.percival:
+        return AppLocalizations.of(context)!.percival;
+      case Role.morgana:
+        return AppLocalizations.of(context)!.morgana;
+      case Role.goodKnight:
+        return AppLocalizations.of(context)!.goodKnight;
+      case Role.evilEntity:
+        return AppLocalizations.of(context)!.evilEntity;
+      case Role.mordred:
+        return AppLocalizations.of(context)!.mordred;
+      case Role.oberon:
+        return AppLocalizations.of(context)!.oberon;
+      default:
+        return 'error';
+    }
   }
 }
