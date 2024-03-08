@@ -16,22 +16,29 @@ class ApiConfig {
   static String get apiUrl => '$baseUrl/api';
 
   static String createRoomUrl() => '$apiUrl/matchup/room';
-  static String joinRoomUrl(int id) => '$apiUrl/matchup/join/$id';
+  static String joinRoomUrl(int roomId) => '$apiUrl/matchup/join/$roomId';
   static String setNicknameUrl() => '$apiUrl/matchup/nick';
   static String removePlayerUrl(int playerId, int roomId) =>
       '$apiUrl/matchup/remove/$playerId/from/$roomId';
   static String startGameUrl() => '$apiUrl/matchup/start';
 
-  static String getRoomByIdUrl(int id) => '$apiUrl/info/room/$id';
-  static String getPlayerByIdUrl(int id) => '$apiUrl/info/player/$id';
-  static String getRoleByPlayerIdUrl(int id) => '$apiUrl/info/player/role/$id';
-  static String getGoodPlayersUrl(int id) => '$apiUrl/info/goodplayers/$id';
-  static String getEvilPlayersUrl(int id) => '$apiUrl/info/evilplayers/$id';
-  static String getQuestBySquadIdUrl(int id) => '$apiUrl/info/quest/$id';
+  static String getRoomByIdUrl(int roomId) => '$apiUrl/info/room/$roomId';
+  static String getPlayerByIdUrl(int playerId) =>
+      '$apiUrl/info/player/$playerId';
+  static String getRoleByPlayerIdUrl(int playerId) =>
+      '$apiUrl/info/player/role/$playerId';
+  static String getGoodPlayersUrl(int roomId) =>
+      '$apiUrl/info/goodplayers/$roomId';
+  static String getEvilPlayersUrl(int roomId) =>
+      '$apiUrl/info/evilplayers/$roomId';
+  static String getQuestBySquadIdUrl(int roomId) =>
+      '$apiUrl/info/quest/$roomId';
+  static String getKnownByPercivalPlayers(int squadId) =>
+      '$apiUrl/info/percival_known/$squadId';
 
-  static String addMemberUrl(int id) => '$apiUrl/squad/add/$id';
-  static String removeMemberUrl(int id) => '$apiUrl/squad/remove/$id';
-  static String submitSquadUrl(int id) => '$apiUrl/squad/submit/$id';
+  static String addMemberUrl(int squadId) => '$apiUrl/squad/add/$squadId';
+  static String removeMemberUrl(int squadId) => '$apiUrl/squad/remove/$squadId';
+  static String submitSquadUrl(int squadId) => '$apiUrl/squad/submit/$squadId';
 
   static String voteSquadUrl() => '$apiUrl/vote/squad';
   static String voteQuestUrl() => '$apiUrl/vote/quest';
