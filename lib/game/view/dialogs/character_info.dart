@@ -45,7 +45,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final player = context.read<IDataRepository>().currentCourtier;
+    final player = context.read<IDataRepository>().currentPlayer;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -85,7 +85,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   AppLocalizations.of(widget.gameContext)!
                                       .evilCourtiers,
                                   style: const TextStyle(fontSize: 15)),
-                              FutureBuilder<List<Courtier>>(
+                              FutureBuilder<List<Player>>(
                                 future: widget.gameContext
                                     .read<GameCubit>()
                                     .listOfEvilPlayers(),
@@ -97,7 +97,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   }
-                                  List<Courtier> evilPlayers =
+                                  List<Player> evilPlayers =
                                       snapshot.data ?? List.empty();
                                   return Wrap(
                                     children: <Widget>[
@@ -120,7 +120,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   AppLocalizations.of(widget.gameContext)!
                                       .merlinAndMorgana,
                                   style: const TextStyle(fontSize: 15)),
-                              FutureBuilder<List<Courtier>>(
+                              FutureBuilder<List<Player>>(
                                 future: widget.gameContext
                                     .read<GameCubit>()
                                     .listOfMerlinMorganaPlayers(),
@@ -132,7 +132,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   }
-                                  List<Courtier> evilPlayers =
+                                  List<Player> evilPlayers =
                                       snapshot.data ?? List.empty();
                                   return Wrap(
                                     children: <Widget>[

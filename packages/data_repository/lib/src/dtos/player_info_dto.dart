@@ -1,7 +1,5 @@
 import 'package:data_repository/model/model.dart';
 
-import './utils.dart';
-
 class PlayerInfoDto {
   PlayerInfoDto({
     required this.playerId,
@@ -28,19 +26,6 @@ class PlayerInfoDto {
     return Player(
       id: playerId.toString(),
       nick: nick,
-    );
-  }
-
-  Courtier toCourtier() {
-    if (team == null || role == null) {
-      return Courtier.empty;
-    }
-
-    return Courtier(
-      id: playerId.toString(),
-      nick: nick,
-      team: Team.values.byName(team!.toLowerFirst()),
-      role: Role.values.byName(role!.toLowerFirst()),
     );
   }
 }

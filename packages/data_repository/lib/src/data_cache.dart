@@ -40,14 +40,13 @@ class DataCache {
     _cacheClient.write(key: currentPlayerIdCacheKey, value: id);
   }
 
-  //----------------------- courtier data -----------------------
-  static const currentCourtierCacheKey = '__Courtier_cache_key__';
-  Courtier get currentCourtier {
-    return _cacheClient.read<Courtier>(key: currentCourtierCacheKey) ??
-        Courtier.empty;
+  static const currentTeamRoleCacheKey = '__team_role_cache_key__';
+  TeamRole get currentTeamRole {
+    return _cacheClient.read<TeamRole>(key: currentTeamRoleCacheKey) ??
+        TeamRole.empty;
   }
 
-  set currentCourtier(Courtier courtier) {
-    _cacheClient.write(key: currentCourtierCacheKey, value: courtier);
+  set currentTeamRole(TeamRole teamRole) {
+    _cacheClient.write(key: currentTeamRoleCacheKey, value: teamRole);
   }
 }

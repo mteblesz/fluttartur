@@ -86,7 +86,7 @@ class _PlayerCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: player.id ==
-                            context.read<IDataRepository>().currentCourtier.id
+                            context.read<IDataRepository>().currentPlayer.id
                         ? FontWeight.bold
                         : null,
                   ),
@@ -155,7 +155,7 @@ class _MemberCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: member.playerId ==
-                        context.read<IDataRepository>().currentCourtier.id
+                        context.read<IDataRepository>().currentPlayer.id
                     ? FontWeight.bold
                     : null,
               ),

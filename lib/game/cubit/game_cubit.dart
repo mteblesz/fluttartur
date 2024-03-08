@@ -1,6 +1,6 @@
 import 'package:data_repository/data_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:data_repository/model/courtier.dart';
+import 'package:data_repository/model/player.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -42,7 +42,7 @@ class GameCubit extends Cubit<GameState> {
 
   /// add player to squad
   Future<void> addMember({required Player player}) async {
-    //if (!_dataRepository.currentCourtier.isLeader) return;
+    //if (!_dataRepository.currentPlayer.isLeader) return;
     if (state.status != GameStatus.squadChoice) return;
 
     if (state.isSquadFull) return;
@@ -59,7 +59,7 @@ class GameCubit extends Cubit<GameState> {
 
   /// remove player from squad
   Future<void> removeMember({required Member member}) async {
-    //if (!_dataRepository.currentCourtier.isLeader) return;
+    //if (!_dataRepository.currentPlayer.isLeader) return;
     if (state.status != GameStatus.squadChoice) return;
 
     await _dataRepository.removeMember(
@@ -174,15 +174,15 @@ class GameCubit extends Cubit<GameState> {
     return _dataRepository.isCurrentPlayerAMember();
   }
 
-  Future<List<Courtier>> listOfEvilPlayers() async {
-    final players = await _dataRepository.courtiersList();
-    return players.where((p) => p.team == 'evil').toList();
+  Future<List<Player>> listOfEvilPlayers() async {
+    final players = await _dataRepository.playersList();
+    return players.where((p) => "p.team" == 'evil').toList();
   }
 
-  Future<List<Courtier>> listOfMerlinMorganaPlayers() async {
-    final players = await _dataRepository.courtiersList();
+  Future<List<Player>> listOfMerlinMorganaPlayers() async {
+    final players = await _dataRepository.playersList();
     return players
-        .where((p) => p.role == 'evil_morgana' || p.role == 'good_merlin')
+        .where((p) => "p.role" == 'evil_morgana' || "p.role" == 'good_merlin')
         .toList();
   }
 
@@ -241,19 +241,19 @@ class GameCubit extends Cubit<GameState> {
   //_dataRepository.currentRoom.specialCharacters.contains("evil_assassin");
 
   bool isAssassin() => false;
-  //_dataRepository.currentCourtier.role == "evil_assassin";
+  //_dataRepository.currentPlayer.role == "evil_assassin";
 
   Stream<bool?> streamMerlinKilled() {
     return _dataRepository.streamMerlinKilled();
   }
 
-  Future<void> killPlayer({required Courtier player}) async {
+  Future<void> killPlayer({required Player player}) async {
     //await _dataRepository.updateMerlinKilled(player.role == "good_merlin");
   }
 
-  Future<List<Courtier>> listOfGoodPlayers() async {
-    final players = await _dataRepository.courtiersList();
-    return players.where((p) => p.team == 'good').toList();
+  Future<List<Player>> listOfGoodPlayers() async {
+    final players = await _dataRepository.playersList();
+    return players.where((p) => "p.team" == 'good').toList();
   }
 
   //--------------------------------quest info logic----------------------------

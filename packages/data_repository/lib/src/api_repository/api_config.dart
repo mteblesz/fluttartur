@@ -24,6 +24,7 @@ class ApiConfig {
 
   static String getRoomByIdUrl(int id) => '$apiUrl/info/room/$id';
   static String getPlayerByIdUrl(int id) => '$apiUrl/info/player/$id';
+  static String getRoleByPlayerIdUrl(int id) => '$apiUrl/info/player/role/$id';
   static String getGoodPlayersUrl(int id) => '$apiUrl/info/goodplayers/$id';
   static String getEvilPlayersUrl(int id) => '$apiUrl/info/evilplayers/$id';
   static String getQuestBySquadIdUrl(int id) => '$apiUrl/info/quest/$id';

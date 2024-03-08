@@ -14,7 +14,7 @@ class DataRepository implements IDataRepository {
   }) {
     _cache = DataCache(cacheClient ?? CacheClient());
     _apiRepository = ApiRepository(getAuthToken: () => _cache.authToken);
-    _rtuRepository = RtuRepository(_cache);
+    _rtuRepository = RtuRepository();
   }
   late DataCache _cache;
   late ApiRepository _apiRepository;
@@ -32,7 +32,7 @@ class DataRepository implements IDataRepository {
       final playerId = await _apiRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
-      await _rtuRepository.connect();
+      await _rtuRepository.connect(roomId: roomId);
     } on Exception catch (_) {
       _rtuRepository.dispose();
     }
@@ -44,7 +44,7 @@ class DataRepository implements IDataRepository {
       int playerId = await _apiRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
-      await _rtuRepository.connect();
+      await _rtuRepository.connect(roomId: roomId);
     } on Exception catch (_) {
       _rtuRepository.dispose();
     }
@@ -99,7 +99,10 @@ class DataRepository implements IDataRepository {
 
   @override
   void handlePlayerRemoval({required void Function() handler}) {
-    _rtuRepository.handlePlayerRemoval(handler);
+    _rtuRepository.handlePlayerRemoval(
+      playerId: _cache.currentPlayerId,
+      removalHandler: handler,
+    );
   }
 
   @override
@@ -113,6 +116,18 @@ class DataRepository implements IDataRepository {
   @override
   void handleGameStarted({required void Function() handler}) {
     _rtuRepository.handleGameStarted(handler);
+  }
+
+//----------------------------------------------------------------------------
+
+  @override
+  Future<TeamRole> get currentTeamRole async {
+    if (_cache.currentTeamRole.isEmpty) {
+      final playerId = _cache.currentPlayerId;
+      _cache.currentTeamRole =
+          await _apiRepository.getRoleByPlayerId(playerId: playerId);
+    }
+    return _cache.currentTeamRole;
   }
 
 //----------------------------------------------------------------------------
@@ -164,10 +179,6 @@ class DataRepository implements IDataRepository {
   @override
   // : implement currentPlayer
   Player get currentPlayer => throw UnimplementedError();
-
-  // : implement currentCourtier
-  @override
-  Courtier get currentCourtier => throw UnimplementedError();
 
   @override
   Future<List<Squad>> getApprovedSquads() {
@@ -303,12 +314,6 @@ class DataRepository implements IDataRepository {
   @override
   voteSquad(bool vote) {
     // : implement voteSquad
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Courtier>> courtiersList() {
-    // TODO: implement courtiersList
     throw UnimplementedError();
   }
 }
