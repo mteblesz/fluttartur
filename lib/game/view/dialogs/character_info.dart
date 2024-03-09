@@ -45,7 +45,13 @@ class _DialogContentState extends State<_DialogContent> {
         Builder(builder: (context) {
           return _characterHidden
               ? const SizedBox.shrink()
-              : _TeamRoleInfo(gameContext: widget.gameContext);
+              : Column(
+                  children: [
+                    _TeamAndRole(),
+                    const SizedBox(height: 10),
+                    _getTeamRoleAdditionalInfo(gameContext: widget.gameContext)
+                  ],
+                );
         }),
         const SizedBox(height: 10),
         ElevatedButton(
@@ -65,38 +71,20 @@ class _DialogContentState extends State<_DialogContent> {
       ],
     );
   }
-}
 
-class _TeamRoleInfo extends StatelessWidget {
-  const _TeamRoleInfo({required this.gameContext});
-  final BuildContext gameContext;
+  Widget _getTeamRoleAdditionalInfo({required BuildContext gameContext}) {
+    final teamRole = gameContext.read<IDataRepository>().currentTeamRole;
 
-  @override
-  Widget build(BuildContext context) {
-    final teamRole = context.read<IDataRepository>().currentTeamRole;
-    final bool useMordredOberonTitle =
-        gameContext.read<IDataRepository>().currentRolesDef.hasOberonAndMordred;
-    return Column(
-      children: [
-        _TeamAndRole(),
-        const SizedBox(height: 10),
-        teamRole.team == Team.evil && teamRole.role != Role.oberon
-            ? _InfoForEvilPlayers(
-                gameContext: gameContext,
-                useOberonTitle: useMordredOberonTitle,
-              )
-            : const SizedBox.shrink(),
-        teamRole.role == Role.merlin
-            ? _InfoForMerlin(
-                gameContext: gameContext,
-                useMordredTitle: useMordredOberonTitle,
-              )
-            : const SizedBox.shrink(),
-        (teamRole.role == Role.percival)
-            ? _InfoForPercival(gameContext: gameContext)
-            : const SizedBox.shrink(), // to func TODO
-      ],
-    );
+    if (teamRole.team == Team.evil && teamRole.role != Role.oberon) {
+      return _InfoForEvilPlayers(gameContext: gameContext);
+    }
+    if (teamRole.role == Role.merlin) {
+      return _InfoForMerlin(gameContext: gameContext);
+    }
+    if (teamRole.role == Role.percival) {
+      _InfoForPercival(gameContext: gameContext);
+    }
+    return const SizedBox.shrink();
   }
 }
 
@@ -151,13 +139,8 @@ class _TeamAndRole extends StatelessWidget {
 
 /// info for evil players, but not for oberon
 class _InfoForEvilPlayers extends StatelessWidget {
-  const _InfoForEvilPlayers({
-    required this.gameContext,
-    this.useOberonTitle = false,
-  });
-
+  const _InfoForEvilPlayers({required this.gameContext});
   final BuildContext gameContext;
-  final bool useOberonTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +148,7 @@ class _InfoForEvilPlayers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          useOberonTitle
-              ? AppLocalizations.of(gameContext)!.evilCourtiers_noOberon
-              : AppLocalizations.of(gameContext)!.evilCourtiers,
+          AppLocalizations.of(gameContext)!.evilCourtiers,
           style: const TextStyle(fontSize: 15),
         ),
         Center(
@@ -201,12 +182,8 @@ class _InfoForEvilPlayers extends StatelessWidget {
 }
 
 class _InfoForMerlin extends StatelessWidget {
-  const _InfoForMerlin({
-    required this.gameContext,
-    this.useMordredTitle = false,
-  });
+  const _InfoForMerlin({required this.gameContext});
   final BuildContext gameContext;
-  final bool useMordredTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -214,9 +191,7 @@ class _InfoForMerlin extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          useMordredTitle
-              ? AppLocalizations.of(gameContext)!.evilCourtiers_noMordred
-              : AppLocalizations.of(gameContext)!.evilCourtiers,
+          AppLocalizations.of(gameContext)!.evilCourtiers,
           style: const TextStyle(fontSize: 15),
         ),
         Center(

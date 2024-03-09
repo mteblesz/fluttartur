@@ -50,14 +50,4 @@ class DataCache {
   set currentTeamRole(TeamRole teamRole) {
     _cacheClient.write(key: currentTeamRoleCacheKey, value: teamRole);
   }
-
-  static const currentRolesDefCacheKey = '__roles_def_cache_key__';
-  RolesDef get currentRolesDef {
-    //null unsafe;
-    return _cacheClient.read<RolesDef>(key: currentTeamRoleCacheKey)!;
-  }
-
-  set currentRolesDef(RolesDef rolesDef) {
-    _cacheClient.write(key: currentTeamRoleCacheKey, value: rolesDef);
-  }
 }

@@ -23,7 +23,6 @@ abstract class IDataRepository {
 
   // -------------
   TeamRole get currentTeamRole;
-  RolesDef get currentRolesDef;
   Future<List<Player>> getMerlinAndMorgana();
   Future<List<Player>> getEvilPlayersForMerlin();
   Future<List<Player>> getEvilPlayersForEvil();
