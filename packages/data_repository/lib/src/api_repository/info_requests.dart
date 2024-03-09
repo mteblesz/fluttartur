@@ -31,13 +31,14 @@ extension InfoRequests on ApiRepository {
     return TeamRole(team, role);
   }
 
-  Future<List<Player>> getEvilPlayers({required int roomId}) async {
+  Future<List<Player>> _getPlayerListFromUrl({required String url}) async {
     final response = await HttpSender.get(
-      Uri.parse(ApiConfig.getEvilPlayersUrl(roomId)),
+      Uri.parse(url),
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw GetRoomFailure(response.statusCode, response.body);
+      throw GetRoomFailure(
+          response.statusCode, response.body); // TODO add propper exceptions
     }
     List<dynamic> jsonBody = jsonDecode(response.body);
 
@@ -51,25 +52,25 @@ extension InfoRequests on ApiRepository {
     return playerList;
   }
 
-  Future<List<Player>> getMerlinAndMorgana({required int roomId}) async {
-    final response = await HttpSender.get(
-      Uri.parse(ApiConfig.getMerlinAndMorgana(roomId)),
-      headers: getAuthHeaders(),
-    );
-    if (response.statusCode != 200) {
-      throw GetRoomFailure(
-          response.statusCode, response.body); // TODO add propper exceptions
-    }
+  Future<List<Player>> getMerlinAndMorgana({required int roomId}) {
+    return _getPlayerListFromUrl(url: ApiConfig.getMerlinAndMorgana(roomId));
+  }
 
-    List<dynamic> jsonBody = jsonDecode(response.body);
+  Future<List<Player>> getEvilPlayersForMerlin({required int roomId}) {
+    return _getPlayerListFromUrl(
+        url: ApiConfig.getEvilPlayersForMerlinUrl(roomId));
+  }
 
-    List<PlayerInfoDto> playerInfoList = jsonBody
-        .map((json) => PlayerInfoDto.fromJson(json as Map<String, dynamic>))
-        .toList();
+  Future<List<Player>> getEvilPlayersForEvil({required int roomId}) {
+    return _getPlayerListFromUrl(
+        url: ApiConfig.getEvilPlayersForEvilUrl(roomId));
+  }
 
-    List<Player> merlinAndMorgana =
-        playerInfoList.map((info) => info.toPLayer()).toList();
+  Future<List<Player>> getEvilPlayers({required int roomId}) {
+    return _getPlayerListFromUrl(url: ApiConfig.getEvilPlayersUrl(roomId));
+  }
 
-    return merlinAndMorgana;
+  Future<List<Player>> getGoodPlayers({required int roomId}) {
+    return _getPlayerListFromUrl(url: ApiConfig.getGoodPlayersUrl(roomId));
   }
 }

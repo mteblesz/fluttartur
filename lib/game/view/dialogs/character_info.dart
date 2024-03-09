@@ -45,7 +45,7 @@ class _DialogContentState extends State<_DialogContent> {
         Builder(builder: (context) {
           return _characterHidden
               ? const SizedBox.shrink()
-              : _TeamRoleInfo(widget: widget);
+              : _TeamRoleInfo(gameContext: widget.gameContext);
         }),
         const SizedBox(height: 10),
         ElevatedButton(
@@ -68,12 +68,8 @@ class _DialogContentState extends State<_DialogContent> {
 }
 
 class _TeamRoleInfo extends StatelessWidget {
-  const _TeamRoleInfo({
-    super.key,
-    required this.widget,
-  });
-
-  final _DialogContent widget;
+  const _TeamRoleInfo({required this.gameContext});
+  final BuildContext gameContext;
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +78,15 @@ class _TeamRoleInfo extends StatelessWidget {
       children: [
         _TeamAndRole(),
         const SizedBox(height: 10),
-        !(teamRole.team == Team.evil || teamRole.role == Role.merlin)
-            ? const SizedBox.shrink()
-            : _InfoForEvilPlayersAndMerlin(widget: widget),
-        !(teamRole.role == Role.percival)
-            ? const SizedBox.shrink()
-            : _InfoForPercival(widget: widget),
+        teamRole.team == Team.evil && teamRole.role != Role.oberon
+            ? _InfoForEvilPlayers(gameContext: gameContext)
+            : const SizedBox.shrink(),
+        teamRole.role == Role.merlin
+            ? _InfoForMerlin(gameContext: gameContext)
+            : const SizedBox.shrink(),
+        (teamRole.role == Role.percival)
+            ? _InfoForPercival(gameContext: gameContext)
+            : const SizedBox.shrink(),
       ],
     );
   }
@@ -142,14 +141,11 @@ class _TeamAndRole extends StatelessWidget {
   }
 }
 
-/// info for evil players and merlin
-class _InfoForEvilPlayersAndMerlin extends StatelessWidget {
-  const _InfoForEvilPlayersAndMerlin({
-    super.key,
-    required this.widget,
-  });
+/// info for evil players, but not for oberon
+class _InfoForEvilPlayers extends StatelessWidget {
+  const _InfoForEvilPlayers({required this.gameContext});
 
-  final _DialogContent widget;
+  final BuildContext gameContext;
 
   @override
   Widget build(BuildContext context) {
@@ -157,12 +153,57 @@ class _InfoForEvilPlayersAndMerlin extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          AppLocalizations.of(widget.gameContext)!.evilCourtiers,
+          AppLocalizations.of(gameContext)!.evilCourtiers,
+          // TODO without mordred if hes present (add something to list like mordred<unknown>)
           style: const TextStyle(fontSize: 15),
         ),
         Center(
           child: FutureBuilder<List<Player>>(
-            future: widget.gameContext.read<IDataRepository>().getEvilPlayers(),
+            future: gameContext.read<IDataRepository>().getEvilPlayersForEvil(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              List<Player> evilPlayers = snapshot.data ?? List.empty();
+              return Wrap(
+                children: <Widget>[
+                  ...evilPlayers.map(
+                    (player) => Text("${player.nick}, ",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoForMerlin extends StatelessWidget {
+  const _InfoForMerlin({required this.gameContext});
+  final BuildContext gameContext;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          AppLocalizations.of(gameContext)!.evilCourtiers,
+          // TODO without mordred if hes present (add something to list like mordred<unknown>)
+          style: const TextStyle(fontSize: 15),
+        ),
+        Center(
+          child: FutureBuilder<List<Player>>(
+            future:
+                gameContext.read<IDataRepository>().getEvilPlayersForMerlin(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -191,25 +232,19 @@ class _InfoForEvilPlayersAndMerlin extends StatelessWidget {
 }
 
 class _InfoForPercival extends StatelessWidget {
-  const _InfoForPercival({
-    super.key,
-    required this.widget,
-  });
-
-  final _DialogContent widget;
+  const _InfoForPercival({required this.gameContext});
+  final BuildContext gameContext;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(AppLocalizations.of(widget.gameContext)!.merlinAndMorgana,
+        Text(AppLocalizations.of(gameContext)!.merlinAndMorgana,
             style: const TextStyle(fontSize: 15)),
         Center(
           child: FutureBuilder<List<Player>>(
-            future: widget.gameContext
-                .read<IDataRepository>()
-                .getMerlinAndMorgana(),
+            future: gameContext.read<IDataRepository>().getMerlinAndMorgana(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();

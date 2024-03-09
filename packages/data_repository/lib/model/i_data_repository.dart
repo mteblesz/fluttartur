@@ -23,8 +23,12 @@ abstract class IDataRepository {
 
   // -------------
   TeamRole get currentTeamRole;
-  Future<List<Player>> getEvilPlayers();
   Future<List<Player>> getMerlinAndMorgana();
+  Future<List<Player>> getEvilPlayersForMerlin();
+  Future<List<Player>> getEvilPlayersForEvil();
+  Future<List<Player>> getEvilPlayers();
+  Future<List<Player>> getGoodPlayers();
+//----------------------------------------------------------------------------
 
   // -------------
   // TODO old stuff for backwards-compatibility during changes (to be removed)

@@ -31,10 +31,14 @@ class ApiConfig {
       '$apiUrl/info/goodplayers/$roomId';
   static String getEvilPlayersUrl(int roomId) =>
       '$apiUrl/info/evilplayers/$roomId';
-  static String getQuestBySquadIdUrl(int roomId) =>
-      '$apiUrl/info/quest/$roomId';
+  static String getEvilPlayersForEvilUrl(int roomId) =>
+      '$apiUrl/info/evilknows/$roomId';
+  static String getEvilPlayersForMerlinUrl(int roomId) =>
+      '$apiUrl/info/merlinknows/$roomId';
   static String getMerlinAndMorgana(int squadId) =>
       '$apiUrl/info/percivalknowns/$squadId';
+  static String getQuestBySquadIdUrl(int roomId) =>
+      '$apiUrl/info/quest/$roomId';
 
   static String addMemberUrl(int squadId) => '$apiUrl/squad/add/$squadId';
   static String removeMemberUrl(int squadId) => '$apiUrl/squad/remove/$squadId';
