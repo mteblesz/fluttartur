@@ -1,4 +1,3 @@
-import 'package:fluttartur/home/home.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -117,10 +116,6 @@ class _StartGameButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfStartGame.isSubmissionSuccess) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            // for host, other guys wait for signalR
-            context.read<HomeCubit>().goToGame();
-          });
           return const CircularProgressIndicator();
         }
         return const _StartGameButton();

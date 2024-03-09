@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import '../../model/model.dart';
 
 class StartGameDto {
   int roomId;

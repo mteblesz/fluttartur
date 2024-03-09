@@ -29,8 +29,8 @@
   "remove": "Remove",
 
   "game": "King's Court",
-  "forgotCharacter": "Forgot character?",
-  "yourCharacterIs": "Your character is:",
+  "forgotRole": "Forgot role?",
+  "yourRoleIs": "Your are:",
   "good": "Good",
   "evil": "Evil",
   "closeInfo": "Close info",
@@ -44,7 +44,7 @@
   "goodTeamWon": "Good won!\nKingdom is saved.",
   "evilTeamWon": "Evil won!\nKigdom is lost.",
   "evilCourtiers": "Evil courtiers:",
-  "merlinAndMorgana": "Merlin and Morgana\nare among::",
+  "merlinAndMorgana": "Merlin and Morgana\nare among:",
   "exitGame": "Exit Game",
   "submitSquad": "Submit squad",
   "voteForThisSquad": "Vote for this squad",
@@ -60,6 +60,11 @@
   "squad": "Squad:",
 
 
+  "evilCourtiers_noOberon": "Evil courtiers (except Oberon):",
+  "evilCourtiers_noMordred": "Evil courtiers (except Mordred):",
+  "goodKnight": "a common knight",
+  "evilEntity": "a common spy",
+  "noRole": "(no role)",
   "defineRoles": "Define roles",
   "goodRoles": "Good",
   "evilRoles": "Evil",

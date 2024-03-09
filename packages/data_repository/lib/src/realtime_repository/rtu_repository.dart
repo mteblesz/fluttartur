@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'package:data_repository/src/data_cache.dart';
 import 'package:data_repository/src/realtime_repository/rtu_config.dart';
-import '../../dtos/dtos.dart';
-import '../../models/models.dart';
+import '../dtos/dtos.dart';
+import '../../model/model.dart';
 import 'package:signalr_netcore/signalr_client.dart';
-//import 'package:web_socket_channel/status.dart' as status;
 
 class RtuRepository {
-  RtuRepository(this._cache) {
+  RtuRepository() {
     final serverUrl = RtuConfig.url;
     hubConnection = HubConnectionBuilder().withUrl(serverUrl).build();
     hubConnection.onclose(({error}) {
@@ -15,14 +13,13 @@ class RtuRepository {
     });
   }
 
-  final DataCache _cache;
   late HubConnection hubConnection;
 
-  Future<void> connect() async {
+  Future<void> connect({required int roomId}) async {
     await hubConnection.start();
     await hubConnection.invoke(
       "JoinRoomGroup",
-      args: [_cache.currentRoomId.toString()],
+      args: [roomId.toString()],
     );
   }
 
@@ -50,11 +47,14 @@ class RtuRepository {
     _playerStreamController.close();
   }
 
-  void handlePlayerRemoval(void Function() removalHandler) {
+  void handlePlayerRemoval({
+    required int playerId,
+    required void Function() removalHandler,
+  }) {
     hubConnection.on("ReceiveRemoval", (List<Object?>? args) {
       if (args != null && args.isNotEmpty) {
         final removedplayerId = args[0] as String;
-        if (removedplayerId == _cache.currentPlayerId.toString()) {
+        if (removedplayerId == playerId.toString()) {
           hubConnection.off("ReceiveRemoval");
           removalHandler();
           dispose();
@@ -63,18 +63,10 @@ class RtuRepository {
     });
   }
 
-  void handleGameStarted(void Function() startGameHandler) {
+  void handleGameStarted({required void Function() startGameHandler}) {
     hubConnection.on("ReceiveStartGame", (List<Object?>? args) {
-      if (args != null && args.isNotEmpty && args[0] is List) {
-        final data = args[0] as List<dynamic>;
-        final dtos = data.map((data) => PlayerInfoDto.fromJson(data));
-        final updatedPlayers = dtos.map((e) => e.toCourtier()).toList();
-        _cache.currentCourtier = updatedPlayers.firstWhere(
-            (p) => p.id == _cache.currentPlayerId.toString(),
-            orElse: () => Courtier.empty);
-        hubConnection.off("ReceiveStartGame");
-        startGameHandler();
-      }
+      hubConnection.off("ReceiveStartGame");
+      startGameHandler();
     });
   }
 }

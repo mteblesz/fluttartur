@@ -29,8 +29,8 @@
   "remove": "Wyrzuć",
 
   "game": "Dwór króla",
-  "forgotCharacter": "Przypomnij rolę",
-  "yourCharacterIs": "Twoja rola to: ",
+  "forgotRole": "Przypomnij rolę",
+  "yourRoleIs": "Twoja rola to: ",
   "good": "Dobry",
   "evil": "Zły",
   "closeInfo": "Zamknij",
@@ -59,6 +59,11 @@
   "court": "Dworzanie:",
   "squad": "Drużyna:",
 
+  "evilCourtiers_noOberon": "Źli dworzanie (bez Oberona):",
+  "evilCourtiers_noMordred": "Źli dworzanie (bez Mordreda):",
+  "goodKnight": "zwykły rycerz",
+  "evilEntity": "zwykły szpieg",
+  "noRole": "(bez roli)",
   "defineRoles": "Wybierz postacie",
   "goodRoles": "Dobre:",
   "evilRoles": "Złe:",
