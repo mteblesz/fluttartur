@@ -13,7 +13,7 @@ Future<void> pushCharacterInfoDialog(BuildContext gameContext) {
         return AlertDialog(
           title: Text(AppLocalizations.of(gameContext)!.yourCharacterIs,
               style: const TextStyle(fontSize: 20)),
-          content: _CharacterInfo(gameContext: gameContext),
+          content: _DialogContent(gameContext: gameContext),
           actions: [
             TextButton(
               onPressed: () {
@@ -27,128 +27,26 @@ Future<void> pushCharacterInfoDialog(BuildContext gameContext) {
       });
 }
 
-class _CharacterInfo extends StatefulWidget {
-  const _CharacterInfo({required this.gameContext});
+class _DialogContent extends StatefulWidget {
+  const _DialogContent({required this.gameContext});
   final BuildContext gameContext;
 
   @override
-  State<_CharacterInfo> createState() => _CharacterInfoState();
+  State<_DialogContent> createState() => _DialogContentState();
 }
 
-class _CharacterInfoState extends State<_CharacterInfo> {
+class _DialogContentState extends State<_DialogContent> {
   bool _characterHidden = true;
-  void showHideCharacter() {
-    setState(() {
-      _characterHidden = !_characterHidden;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    final teamRole = context.read<IDataRepository>().currentTeamRole;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Builder(builder: (context) {
           return _characterHidden
               ? const SizedBox.shrink()
-              : Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          (teamRole.team) == Team.good
-                              ? AppLocalizations.of(context)!.good
-                              : AppLocalizations.of(context)!.evil,
-                          style: const TextStyle(fontSize: 30),
-                        ),
-                        teamRole.role == Role.empty
-                            ? const SizedBox.shrink()
-                            : const Text(" - ",
-                                style: const TextStyle(fontSize: 30)),
-                        teamRole.role == Role.empty
-                            ? const SizedBox.shrink()
-                            : Text(
-                                roleToText(teamRole.role, context),
-                                style: const TextStyle(fontSize: 30),
-                              ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    !(teamRole.team == Team.evil ||
-                            teamRole.role == Role.merlin)
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: [
-                              Text(
-                                  AppLocalizations.of(widget.gameContext)!
-                                      .evilCourtiers,
-                                  style: const TextStyle(fontSize: 15)),
-                              FutureBuilder<List<Player>>(
-                                future: widget.gameContext
-                                    .read<GameCubit>()
-                                    .getEvilPlayers(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const CircularProgressIndicator();
-                                  }
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-                                  List<Player> evilPlayers =
-                                      snapshot.data ?? List.empty();
-                                  return Wrap(
-                                    children: <Widget>[
-                                      ...evilPlayers.map(
-                                        (player) => Text("${player.nick}, ",
-                                            style:
-                                                const TextStyle(fontSize: 13)),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                    !(teamRole.role == Role.percival)
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: [
-                              Text(
-                                  AppLocalizations.of(widget.gameContext)!
-                                      .merlinAndMorgana,
-                                  style: const TextStyle(fontSize: 15)),
-                              FutureBuilder<List<Player>>(
-                                future: widget.gameContext
-                                    .read<GameCubit>()
-                                    .getMerlinAndMorgana(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const CircularProgressIndicator();
-                                  }
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-                                  List<Player> evilPlayers =
-                                      snapshot.data ?? List.empty();
-                                  return Wrap(
-                                    children: <Widget>[
-                                      ...evilPlayers.map(
-                                        (player) => Text("${player.nick}, ",
-                                            style:
-                                                const TextStyle(fontSize: 13)),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                  ],
-                );
+              : _TeamRoleInfo(widget: widget);
         }),
         const SizedBox(height: 10),
         ElevatedButton(
@@ -168,6 +66,58 @@ class _CharacterInfoState extends State<_CharacterInfo> {
       ],
     );
   }
+}
+
+class _TeamRoleInfo extends StatelessWidget {
+  const _TeamRoleInfo({
+    super.key,
+    required this.widget,
+  });
+
+  final _DialogContent widget;
+
+  @override
+  Widget build(BuildContext context) {
+    final teamRole = context.read<IDataRepository>().currentTeamRole;
+    return Column(
+      children: [
+        _TeamAndRole(teamRole: teamRole),
+        const SizedBox(height: 10),
+        !(teamRole.team == Team.evil || teamRole.role == Role.merlin)
+            ? const SizedBox.shrink()
+            : _InfoForEvilPlayersAndMerlin(widget: widget),
+        !(teamRole.role == Role.percival)
+            ? const SizedBox.shrink()
+            : _InfoForPercival(widget: widget),
+      ],
+    );
+  }
+}
+
+class _TeamAndRole extends StatelessWidget {
+  const _TeamAndRole({required this.teamRole});
+
+  final TeamRole teamRole;
+
+  @override
+  Widget build(BuildContext context) {
+    final teamString = (teamRole.team) == Team.good
+        ? AppLocalizations.of(context)!.good
+        : AppLocalizations.of(context)!.evil;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          roleToText(teamRole.role, context),
+          style: const TextStyle(fontSize: 25),
+        ),
+        Text(
+          "(${teamString})",
+          style: const TextStyle(fontSize: 25),
+        ),
+      ],
+    );
+  }
 
   String roleToText(Role role, BuildContext context) {
     switch (role) {
@@ -179,16 +129,97 @@ class _CharacterInfoState extends State<_CharacterInfo> {
         return AppLocalizations.of(context)!.percival;
       case Role.morgana:
         return AppLocalizations.of(context)!.morgana;
-      case Role.goodKnight:
-        return AppLocalizations.of(context)!.goodKnight;
-      case Role.evilEntity:
-        return AppLocalizations.of(context)!.evilEntity;
       case Role.mordred:
         return AppLocalizations.of(context)!.mordred;
       case Role.oberon:
         return AppLocalizations.of(context)!.oberon;
+      case Role.goodKnight:
+        return AppLocalizations.of(context)!.goodKnight;
+      case Role.evilEntity:
+        return AppLocalizations.of(context)!.evilEntity;
+      case Role.empty:
+        return '__empty__';
       default:
         return 'error';
     }
+  }
+}
+
+/// info for evil players and merlin
+class _InfoForEvilPlayersAndMerlin extends StatelessWidget {
+  const _InfoForEvilPlayersAndMerlin({
+    super.key,
+    required this.widget,
+  });
+
+  final _DialogContent widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(AppLocalizations.of(widget.gameContext)!.evilCourtiers,
+            style: const TextStyle(fontSize: 15)),
+        FutureBuilder<List<Player>>(
+          future: widget.gameContext.read<GameCubit>().getEvilPlayers(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            List<Player> evilPlayers = snapshot.data ?? List.empty();
+            return Wrap(
+              children: <Widget>[
+                ...evilPlayers.map(
+                  (player) => Text("${player.nick}, ",
+                      style: const TextStyle(fontSize: 13)),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoForPercival extends StatelessWidget {
+  const _InfoForPercival({
+    super.key,
+    required this.widget,
+  });
+
+  final _DialogContent widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(AppLocalizations.of(widget.gameContext)!.merlinAndMorgana,
+            style: const TextStyle(fontSize: 15)),
+        FutureBuilder<List<Player>>(
+          future: widget.gameContext.read<GameCubit>().getMerlinAndMorgana(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            List<Player> evilPlayers = snapshot.data ?? List.empty();
+            return Wrap(
+              children: <Widget>[
+                ...evilPlayers.map(
+                  (player) => Text("${player.nick}, ",
+                      style: const TextStyle(fontSize: 13)),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
   }
 }

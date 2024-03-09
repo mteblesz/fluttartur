@@ -59,8 +59,9 @@
   "court": "Dworzanie:",
   "squad": "Drużyna:",
 
-  "goodKnight": "Dobry rycerz (bez roli)",
-  "evilEntity": "Poplecznik zła (bez roli)",
+  "goodKnight": "zwykły rycerz",
+  "evilEntity": "zwykły szpieg",
+  "noRole": "(bez roli)",
   "defineRoles": "Wybierz postacie",
   "goodRoles": "Dobre:",
   "evilRoles": "Złe:",

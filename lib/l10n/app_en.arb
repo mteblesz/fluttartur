@@ -30,7 +30,7 @@
 
   "game": "King's Court",
   "forgotCharacter": "Forgot character?",
-  "yourCharacterIs": "Your character is:",
+  "yourCharacterIs": "Your are:",
   "good": "Good",
   "evil": "Evil",
   "closeInfo": "Close info",
@@ -60,8 +60,9 @@
   "squad": "Squad:",
 
 
-  "goodKnight": "Good knight (no role)",
-  "evilEntity": "Evil entity (no role)",
+  "goodKnight": "a common knight",
+  "evilEntity": "a common spy",
+  "noRole": "(no role)",
   "defineRoles": "Define roles",
   "goodRoles": "Good",
   "evilRoles": "Evil",
