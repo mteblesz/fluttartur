@@ -49,7 +49,7 @@ class _DialogContentState extends State<_DialogContent> {
                   children: [
                     _TeamAndRole(),
                     const SizedBox(height: 10),
-                    _getTeamRoleAdditionalInfo(gameContext: widget.gameContext)
+                    _TeamRoleAdditionalInfo(gameContext: widget.gameContext),
                   ],
                 );
         }),
@@ -70,21 +70,6 @@ class _DialogContentState extends State<_DialogContent> {
         )
       ],
     );
-  }
-
-  Widget _getTeamRoleAdditionalInfo({required BuildContext gameContext}) {
-    final teamRole = gameContext.read<IDataRepository>().currentTeamRole;
-
-    if (teamRole.team == Team.evil && teamRole.role != Role.oberon) {
-      return _InfoForEvilPlayers(gameContext: gameContext);
-    }
-    if (teamRole.role == Role.merlin) {
-      return _InfoForMerlin(gameContext: gameContext);
-    }
-    if (teamRole.role == Role.percival) {
-      _InfoForPercival(gameContext: gameContext);
-    }
-    return const SizedBox.shrink();
   }
 }
 
@@ -134,6 +119,27 @@ class _TeamAndRole extends StatelessWidget {
       default:
         return 'error';
     }
+  }
+}
+
+class _TeamRoleAdditionalInfo extends StatelessWidget {
+  const _TeamRoleAdditionalInfo({required this.gameContext});
+
+  final BuildContext gameContext;
+
+  @override
+  Widget build(BuildContext context) {
+    final teamRole = gameContext.read<IDataRepository>().currentTeamRole;
+    if (teamRole.team == Team.evil && teamRole.role != Role.oberon) {
+      return _InfoForEvilPlayers(gameContext: gameContext);
+    }
+    if (teamRole.role == Role.merlin) {
+      return _InfoForMerlin(gameContext: gameContext);
+    }
+    if (teamRole.role == Role.percival) {
+      _InfoForPercival(gameContext: gameContext);
+    }
+    return const SizedBox.shrink();
   }
 }
 
