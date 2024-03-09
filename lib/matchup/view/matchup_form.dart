@@ -117,10 +117,6 @@ class _StartGameButtonSpace extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         if (state.statusOfStartGame.isSubmissionSuccess) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            // for host, other guys wait for signalR
-            context.read<HomeCubit>().goToGame();
-          });
           return const CircularProgressIndicator();
         }
         return const _StartGameButton();
