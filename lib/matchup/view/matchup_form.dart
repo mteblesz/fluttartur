@@ -1,4 +1,3 @@
-import 'package:fluttartur/home/home.dart';
 import 'package:fluttartur/matchup/matchup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -57,11 +57,13 @@ extension InfoRequests on ApiRepository {
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw GetRoomFailure(response.statusCode, response.body);
+      throw GetRoomFailure(
+          response.statusCode, response.body); // TODO add propper exceptions
     }
-    Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
-    List<PlayerInfoDto> playerInfoList = (jsonBody as List)
+    List<dynamic> jsonBody = jsonDecode(response.body);
+
+    List<PlayerInfoDto> playerInfoList = jsonBody
         .map((json) => PlayerInfoDto.fromJson(json as Map<String, dynamic>))
         .toList();
 

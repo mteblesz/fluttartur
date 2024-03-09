@@ -45,7 +45,10 @@ class _GameAppBarActions extends StatelessWidget {
     return PopupMenuButton(
       itemBuilder: (_) => [
         PopupMenuItem(
-          child: Text(AppLocalizations.of(context)!.forgotCharacter),
+          child: Text(
+            AppLocalizations.of(context)!.forgotRole,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           onTap: () => pushCharacterInfoDialog(context),
         ),
         PopupMenuItem(

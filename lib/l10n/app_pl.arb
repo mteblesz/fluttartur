@@ -29,8 +29,8 @@
   "remove": "Wyrzuć",
 
   "game": "Dwór króla",
-  "forgotCharacter": "Przypomnij rolę",
-  "yourCharacterIs": "Twoja rola to: ",
+  "forgotRole": "Przypomnij rolę",
+  "yourRoleIs": "Twoja rola to: ",
   "good": "Dobry",
   "evil": "Zły",
   "closeInfo": "Zamknij",

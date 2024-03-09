@@ -1,6 +1,5 @@
 import 'package:data_repository/data_repository.dart';
 import 'package:data_repository/model/model.dart';
-import 'package:fluttartur/game/cubit/game_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,7 +10,7 @@ Future<void> pushCharacterInfoDialog(BuildContext gameContext) {
       context: gameContext,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(gameContext)!.yourCharacterIs,
+          title: Text(AppLocalizations.of(gameContext)!.yourRoleIs,
               style: const TextStyle(fontSize: 20)),
           content: _DialogContent(gameContext: gameContext),
           actions: [
@@ -176,7 +175,10 @@ class _InfoForEvilPlayersAndMerlin extends StatelessWidget {
                 children: <Widget>[
                   ...evilPlayers.map(
                     (player) => Text("${player.nick}, ",
-                        style: const TextStyle(fontSize: 13)),
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        )),
                   ),
                 ],
               );
@@ -203,26 +205,32 @@ class _InfoForPercival extends StatelessWidget {
       children: [
         Text(AppLocalizations.of(widget.gameContext)!.merlinAndMorgana,
             style: const TextStyle(fontSize: 15)),
-        FutureBuilder<List<Player>>(
-          future:
-              widget.gameContext.read<IDataRepository>().getMerlinAndMorgana(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            List<Player> evilPlayers = snapshot.data ?? List.empty();
-            return Wrap(
-              children: <Widget>[
-                ...evilPlayers.map(
-                  (player) => Text("${player.nick}, ",
-                      style: const TextStyle(fontSize: 13)),
-                ),
-              ],
-            );
-          },
+        Center(
+          child: FutureBuilder<List<Player>>(
+            future: widget.gameContext
+                .read<IDataRepository>()
+                .getMerlinAndMorgana(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              List<Player> evilPlayers = snapshot.data ?? List.empty();
+              return Wrap(
+                children: <Widget>[
+                  ...evilPlayers.map(
+                    (player) => Text("${player.nick}, ",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ],
     );
