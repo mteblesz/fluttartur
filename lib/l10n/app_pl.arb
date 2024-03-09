@@ -59,6 +59,8 @@
   "court": "Dworzanie:",
   "squad": "Drużyna:",
 
+  "evilCourtiers_noOberon": "Źli dworzanie (bez Oberona):",
+  "evilCourtiers_noMordred": "Źli dworzanie (bez Mordreda):",
   "goodKnight": "zwykły rycerz",
   "evilEntity": "zwykły szpieg",
   "noRole": "(bez roli)",

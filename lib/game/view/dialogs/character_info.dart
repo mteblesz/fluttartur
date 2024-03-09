@@ -74,19 +74,27 @@ class _TeamRoleInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final teamRole = context.read<IDataRepository>().currentTeamRole;
+    final bool useMordredOberonTitle =
+        gameContext.read<IDataRepository>().currentRolesDef.hasOberonAndMordred;
     return Column(
       children: [
         _TeamAndRole(),
         const SizedBox(height: 10),
         teamRole.team == Team.evil && teamRole.role != Role.oberon
-            ? _InfoForEvilPlayers(gameContext: gameContext)
+            ? _InfoForEvilPlayers(
+                gameContext: gameContext,
+                useOberonTitle: useMordredOberonTitle,
+              )
             : const SizedBox.shrink(),
         teamRole.role == Role.merlin
-            ? _InfoForMerlin(gameContext: gameContext)
+            ? _InfoForMerlin(
+                gameContext: gameContext,
+                useMordredTitle: useMordredOberonTitle,
+              )
             : const SizedBox.shrink(),
         (teamRole.role == Role.percival)
             ? _InfoForPercival(gameContext: gameContext)
-            : const SizedBox.shrink(),
+            : const SizedBox.shrink(), // to func TODO
       ],
     );
   }
@@ -143,9 +151,13 @@ class _TeamAndRole extends StatelessWidget {
 
 /// info for evil players, but not for oberon
 class _InfoForEvilPlayers extends StatelessWidget {
-  const _InfoForEvilPlayers({required this.gameContext});
+  const _InfoForEvilPlayers({
+    required this.gameContext,
+    this.useOberonTitle = false,
+  });
 
   final BuildContext gameContext;
+  final bool useOberonTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +165,9 @@ class _InfoForEvilPlayers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          AppLocalizations.of(gameContext)!.evilCourtiers,
-          // TODO without mordred if hes present (add something to list like mordred<unknown>)
+          useOberonTitle
+              ? AppLocalizations.of(gameContext)!.evilCourtiers_noOberon
+              : AppLocalizations.of(gameContext)!.evilCourtiers,
           style: const TextStyle(fontSize: 15),
         ),
         Center(
@@ -188,16 +201,22 @@ class _InfoForEvilPlayers extends StatelessWidget {
 }
 
 class _InfoForMerlin extends StatelessWidget {
-  const _InfoForMerlin({required this.gameContext});
+  const _InfoForMerlin({
+    required this.gameContext,
+    this.useMordredTitle = false,
+  });
   final BuildContext gameContext;
+  final bool useMordredTitle;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          AppLocalizations.of(gameContext)!.evilCourtiers,
-          // TODO without mordred if hes present (add something to list like mordred<unknown>)
+          useMordredTitle
+              ? AppLocalizations.of(gameContext)!.evilCourtiers_noMordred
+              : AppLocalizations.of(gameContext)!.evilCourtiers,
           style: const TextStyle(fontSize: 15),
         ),
         Center(

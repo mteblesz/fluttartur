@@ -111,6 +111,7 @@ class DataRepository implements IDataRepository {
       roomId: _cache.currentRoomId,
       rolesDef: rolesDef,
     );
+    _cache.currentRolesDef = rolesDef;
   }
 
   @override
@@ -131,6 +132,9 @@ class DataRepository implements IDataRepository {
 
   @override
   TeamRole get currentTeamRole => _cache.currentTeamRole;
+
+  @override
+  RolesDef get currentRolesDef => _cache.currentRolesDef;
 
   @override
   Future<List<Player>> getMerlinAndMorgana() {

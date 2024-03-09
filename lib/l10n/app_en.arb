@@ -60,6 +60,8 @@
   "squad": "Squad:",
 
 
+  "evilCourtiers_noOberon": "Evil courtiers (except Oberon):",
+  "evilCourtiers_noMordred": "Evil courtiers (except Mordred):",
   "goodKnight": "a common knight",
   "evilEntity": "a common spy",
   "noRole": "(no role)",

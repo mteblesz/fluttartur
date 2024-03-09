@@ -40,6 +40,7 @@ class DataCache {
     _cacheClient.write(key: currentPlayerIdCacheKey, value: id);
   }
 
+  //----------------------- game data -----------------------
   static const currentTeamRoleCacheKey = '__team_role_cache_key__';
   TeamRole get currentTeamRole {
     return _cacheClient.read<TeamRole>(key: currentTeamRoleCacheKey) ??
@@ -48,5 +49,15 @@ class DataCache {
 
   set currentTeamRole(TeamRole teamRole) {
     _cacheClient.write(key: currentTeamRoleCacheKey, value: teamRole);
+  }
+
+  static const currentRolesDefCacheKey = '__roles_def_cache_key__';
+  RolesDef get currentRolesDef {
+    //null unsafe;
+    return _cacheClient.read<RolesDef>(key: currentTeamRoleCacheKey)!;
+  }
+
+  set currentRolesDef(RolesDef rolesDef) {
+    _cacheClient.write(key: currentTeamRoleCacheKey, value: rolesDef);
   }
 }

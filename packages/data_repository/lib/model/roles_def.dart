@@ -17,6 +17,14 @@ class RolesDef extends Equatable {
         hasOberonAndMordred,
       ];
 
+  static const empty = RolesDef(
+    hasMerlinAndAssassin: false,
+    hasPercivalAndMorgana: false,
+    hasOberonAndMordred: false,
+  );
+  bool get isEmpty => this == RolesDef.empty;
+  bool get isNotEmpty => this != RolesDef.empty;
+
   RolesDef copyWith(
     bool? hasMerlinAndAssassin,
     bool? hasPercivalAndMorgana,
