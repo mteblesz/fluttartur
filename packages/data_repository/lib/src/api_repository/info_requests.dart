@@ -24,8 +24,8 @@ extension InfoRequests on ApiRepository {
     }
     Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
-    final String teamStr = jsonBody["Team"] as String;
-    final String roleStr = jsonBody["Role"] as String;
+    final String teamStr = jsonBody["team"] as String;
+    final String roleStr = jsonBody["role"] as String;
     final Team team = Team.values.byName(teamStr.toLowerFirst());
     final Role role = Role.values.byName(roleStr.toLowerFirst());
     return TeamRole(team, role);
