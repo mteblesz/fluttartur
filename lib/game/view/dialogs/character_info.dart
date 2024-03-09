@@ -88,7 +88,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                               FutureBuilder<List<Player>>(
                                 future: widget.gameContext
                                     .read<GameCubit>()
-                                    .listOfEvilPlayers(),
+                                    .getEvilPlayers(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -123,7 +123,7 @@ class _CharacterInfoState extends State<_CharacterInfo> {
                               FutureBuilder<List<Player>>(
                                 future: widget.gameContext
                                     .read<GameCubit>()
-                                    .listOfMerlinMorganaPlayers(),
+                                    .getMerlinAndMorgana(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {

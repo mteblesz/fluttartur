@@ -42,7 +42,7 @@ Future<void> pushGameResultsDialog(BuildContext gameContext) {
               Text(AppLocalizations.of(gameContext)!.evilCourtiers,
                   style: const TextStyle(fontSize: 25)),
               FutureBuilder<List<Player>>(
-                future: gameContext.read<GameCubit>().listOfEvilPlayers(),
+                future: gameContext.read<GameCubit>().getEvilPlayers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();

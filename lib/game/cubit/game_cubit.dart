@@ -1,43 +1,29 @@
 import 'package:data_repository/data_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:data_repository/model/player.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   final IDataRepository _dataRepository;
 
-  GameCubit(this._dataRepository) : super(const GameState()) {
-    _dataRepository.subscribeSquadIsSubmittedWith(
-      doLogic: doSquadLoop,
-    ); //first squad
-    _dataRepository.subscribeCurrentSquadIdWith(
-      doLogic: (currentSquadId) {
-        _dataRepository.unsubscribeSquadIsSubmitted();
-        _dataRepository.subscribeSquadIsSubmittedWith(
-          squadId: currentSquadId,
-          doLogic: doSquadLoop,
-        );
-      },
-    ); // subs to next squads
-  }
-
-  @override
-  Future<void> close() {
-    _dataRepository.unsubscribeCurrentSquadId();
-    return super.close();
-  }
+  GameCubit(this._dataRepository) : super(const GameState());
 
   Stream<List<Player>> streamPlayersList() {
     return _dataRepository.streamPlayersList();
   }
 
-  Stream<List<Member>> streamMembersList({required squadId}) {
-    return _dataRepository.streamMembersList(squadId: squadId);
+  Stream<List<Player>> streamMembersList({required squadId}) {
+    return _dataRepository.streamPlayersList();
   }
 
+  Future<List<Player>> getEvilPlayers() {
+    return _dataRepository.getEvilPlayers();
+  }
+
+  Future<List<Player>> getMerlinAndMorgana() {
+    return _dataRepository.getMerlinAndMorgana();
+  }
   //--------------------------------leader's logic------------------------------
 
   /// add player to squad
@@ -53,12 +39,12 @@ class GameCubit extends Cubit<GameState> {
       nick: player.nick,
     );
 
-    final isSquadFull = await this.isSquadFull();
+    final isSquadFull = true;
     emit(state.copyWith(isSquadFull: isSquadFull));
   }
 
   /// remove player from squad
-  Future<void> removeMember({required Member member}) async {
+  Future<void> removeMember({required Player member}) async {
     //if (!_dataRepository.currentPlayer.isLeader) return;
     if (state.status != GameStatus.squadChoice) return;
 
@@ -71,52 +57,11 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> submitSquad() async {
-    final isSquadRequiredSize = await this.isSquadFull();
+    final isSquadRequiredSize = true;
     if (!isSquadRequiredSize) return;
     await _dataRepository.submitSquad();
-    // leader counts squad votes
-    _dataRepository.subscribeSquadVotesWith(doLogic: _assessSquadVoteResults);
   }
 
-  Future<void> _assessSquadVoteResults(Map<String, bool> votes) async {
-    final playersCount = await _dataRepository.playersCount;
-    if (playersCount > votes.length) return;
-
-    _dataRepository.unsubscribeSquadVotes();
-    final positiveVotesCount = votes.values.where((v) => v == true).length;
-    if (positiveVotesCount > votes.length / 2) {
-      await _dataRepository.updateSquadIsApproved();
-      _dataRepository.subscribeQuestVotesWith(doLogic: _assessQuestVoteResults);
-    } else {
-      await _dataRepository.updateSquadIsApproved(isApproved: false);
-      //await _dataRepository.nextLeader();
-      await _dataRepository.nextSquad(questNumber: state.questNumber);
-    }
-  }
-
-  Future<void> _assessQuestVoteResults(List<bool?> votes) async {
-    // TODO change vote to enum and check them with any == voteenum.empty
-    final membersCount = await _dataRepository.membersCount;
-    if (membersCount > votes.length) return;
-    if (votes.any((v) => v == null)) return;
-
-    _dataRepository.unsubscribeQuestVotes();
-
-    final playersCount = await _dataRepository.playersCount;
-    final isTwoFailsQuest =
-        this.isTwoFailsQuest(playersCount, state.questNumber);
-
-    final negativeVotesCount = votes.where((v) => v == false).length;
-    if ((isTwoFailsQuest && negativeVotesCount >= 2) ||
-        (!isTwoFailsQuest && negativeVotesCount >= 1)) {
-      await _dataRepository.updateSquadIsSuccessfull(isSuccessfull: false);
-    } else {
-      await _dataRepository.updateSquadIsSuccessfull();
-    }
-
-    //await _dataRepository.nextLeader();
-    await _dataRepository.nextSquad(questNumber: state.questNumber + 1);
-  }
   //--------------------------------players's logic-----------------------------
 
   Future<void> voteSquad(bool vote) async {
@@ -158,7 +103,7 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> closeQuestResults() async {
-    final winningTeam = await _winningTeamIs();
+    final winningTeam = true;
     if (winningTeam == null) {
       emit(state.copyWith(status: GameStatus.squadChoice));
       emit(state.copyWith(
@@ -172,67 +117,6 @@ class GameCubit extends Cubit<GameState> {
 
   Future<bool> isCurrentPlayerAMember() async {
     return _dataRepository.isCurrentPlayerAMember();
-  }
-
-  Future<List<Player>> listOfEvilPlayers() async {
-    final players = await _dataRepository.playersList();
-    return players.where((p) => "p.team" == 'evil').toList();
-  }
-
-  Future<List<Player>> listOfMerlinMorganaPlayers() async {
-    final players = await _dataRepository.playersList();
-    return players
-        .where((p) => "p.role" == 'evil_morgana' || "p.role" == 'good_merlin')
-        .toList();
-  }
-
-//--------------------------------game rules logic------------------------------
-  bool isTwoFailsQuest(int playersCount, int questNumber) =>
-      playersCount >= 7 && questNumber == 4;
-
-  Future<bool?> _winningTeamIs() async {
-    final approvedSquads = await _dataRepository.getApprovedSquads();
-
-    int successCount = 0, failCount = 0;
-    for (var squad in approvedSquads) {
-      if (squad.isSuccessfull == null) {
-        throw const SquadMissingFieldOnResultsFailure();
-      }
-      if (squad.isSuccessfull!) {
-        successCount++;
-      } else {
-        failCount++;
-      }
-    }
-    if (successCount >= 3) return true;
-    if (failCount >= 3) return false;
-    return null;
-  }
-
-  static const List<List<int>> squadRequiredSizes = [
-    [2, 3, 2, 3, 3],
-    [2, 3, 4, 3, 4],
-    [2, 3, 3, 4, 4],
-    [3, 4, 4, 5, 5],
-    [3, 4, 4, 5, 5],
-    [3, 4, 4, 5, 5],
-  ];
-
-  int squadFullSize(int playersCount, int questNumber) {
-    if (kDebugMode && (playersCount < 5 || playersCount > 10)) {
-      return playersCount < 2 ? playersCount : 2;
-    }
-    return squadRequiredSizes[playersCount - 5][questNumber - 1];
-  }
-
-  Future<bool> isSquadFull() async {
-    // TODO move this to a field in squad
-    final membersCount = await _dataRepository.membersCount;
-    final playersCount = await _dataRepository.playersCount;
-    if (membersCount > squadFullSize(playersCount, state.questNumber)) {
-      throw const MembersLimitExceededFailure();
-    }
-    return membersCount == squadFullSize(playersCount, state.questNumber);
   }
 
   //--------------------------------merlin killing logic------------------------
@@ -252,8 +136,7 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<List<Player>> listOfGoodPlayers() async {
-    final players = await _dataRepository.playersList();
-    return players.where((p) => "p.team" == 'good').toList();
+    return await _dataRepository.playersList();
   }
 
   //--------------------------------quest info logic----------------------------
@@ -265,8 +148,6 @@ class GameCubit extends Cubit<GameState> {
     }
     return await _dataRepository.questVotesInfo(questNumber);
   }
-
-  // GameCubit
 }
 
 class MembersLimitExceededFailure implements Exception {

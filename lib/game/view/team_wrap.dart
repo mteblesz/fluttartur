@@ -110,7 +110,7 @@ class _SquadListView extends StatelessWidget {
         var currentSquadId = snapshot.data;
         return currentSquadId == null
             ? const Text('<squad is empty>')
-            : StreamBuilder<List<Member>>(
+            : StreamBuilder<List<Player>>(
                 stream: context
                     .read<GameCubit>()
                     .streamMembersList(squadId: currentSquadId),
@@ -139,7 +139,7 @@ class _MemberCard extends StatelessWidget {
     required this.member,
   });
 
-  final Member member;
+  final Player member;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +154,7 @@ class _MemberCard extends StatelessWidget {
               member.nick,
               style: TextStyle(
                 fontSize: 23,
-                fontWeight: member.playerId ==
+                fontWeight: member.id ==
                         context.read<IDataRepository>().currentPlayer.id
                     ? FontWeight.bold
                     : null,
