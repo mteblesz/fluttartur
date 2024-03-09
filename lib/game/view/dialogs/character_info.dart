@@ -81,7 +81,7 @@ class _TeamRoleInfo extends StatelessWidget {
     final teamRole = context.read<IDataRepository>().currentTeamRole;
     return Column(
       children: [
-        _TeamAndRole(teamRole: teamRole),
+        _TeamAndRole(),
         const SizedBox(height: 10),
         !(teamRole.team == Team.evil || teamRole.role == Role.merlin)
             ? const SizedBox.shrink()
@@ -95,15 +95,13 @@ class _TeamRoleInfo extends StatelessWidget {
 }
 
 class _TeamAndRole extends StatelessWidget {
-  const _TeamAndRole({required this.teamRole});
-
-  final TeamRole teamRole;
-
   @override
   Widget build(BuildContext context) {
+    final teamRole = context.read<IDataRepository>().currentTeamRole;
     final teamString = (teamRole.team) == Team.good
         ? AppLocalizations.of(context)!.good
         : AppLocalizations.of(context)!.evil;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -112,7 +110,7 @@ class _TeamAndRole extends StatelessWidget {
           style: const TextStyle(fontSize: 25),
         ),
         Text(
-          "(${teamString})",
+          "($teamString)",
           style: const TextStyle(fontSize: 25),
         ),
       ],
