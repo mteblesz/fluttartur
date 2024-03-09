@@ -155,28 +155,33 @@ class _InfoForEvilPlayersAndMerlin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(AppLocalizations.of(widget.gameContext)!.evilCourtiers,
-            style: const TextStyle(fontSize: 15)),
-        FutureBuilder<List<Player>>(
-          future: widget.gameContext.read<GameCubit>().getEvilPlayers(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            List<Player> evilPlayers = snapshot.data ?? List.empty();
-            return Wrap(
-              children: <Widget>[
-                ...evilPlayers.map(
-                  (player) => Text("${player.nick}, ",
-                      style: const TextStyle(fontSize: 13)),
-                ),
-              ],
-            );
-          },
+        Text(
+          AppLocalizations.of(widget.gameContext)!.evilCourtiers,
+          style: const TextStyle(fontSize: 15),
+        ),
+        Center(
+          child: FutureBuilder<List<Player>>(
+            future: widget.gameContext.read<IDataRepository>().getEvilPlayers(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              List<Player> evilPlayers = snapshot.data ?? List.empty();
+              return Wrap(
+                children: <Widget>[
+                  ...evilPlayers.map(
+                    (player) => Text("${player.nick}, ",
+                        style: const TextStyle(fontSize: 13)),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ],
     );
@@ -194,11 +199,13 @@ class _InfoForPercival extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(AppLocalizations.of(widget.gameContext)!.merlinAndMorgana,
             style: const TextStyle(fontSize: 15)),
         FutureBuilder<List<Player>>(
-          future: widget.gameContext.read<GameCubit>().getMerlinAndMorgana(),
+          future:
+              widget.gameContext.read<IDataRepository>().getMerlinAndMorgana(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();

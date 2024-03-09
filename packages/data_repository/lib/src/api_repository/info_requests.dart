@@ -39,9 +39,9 @@ extension InfoRequests on ApiRepository {
     if (response.statusCode != 200) {
       throw GetRoomFailure(response.statusCode, response.body);
     }
-    Map<String, dynamic> jsonBody = jsonDecode(response.body);
+    List<dynamic> jsonBody = jsonDecode(response.body);
 
-    List<PlayerInfoDto> playerInfoList = (jsonBody as List)
+    List<PlayerInfoDto> playerInfoList = jsonBody
         .map((json) => PlayerInfoDto.fromJson(json as Map<String, dynamic>))
         .toList();
 
