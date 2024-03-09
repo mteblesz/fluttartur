@@ -85,8 +85,8 @@ class _PlayerCard extends StatelessWidget {
                   player.nick,
                   style: TextStyle(
                     fontSize: 23,
-                    fontWeight: player.id ==
-                            context.read<IDataRepository>().currentPlayer.id
+                    fontWeight: player.id == 0 //TODO uncomment
+                        //context.read<IDataRepository>().currentPlayer.id
                         ? FontWeight.bold
                         : null,
                   ),
@@ -104,32 +104,31 @@ class _SquadListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO move curretnsqadid to cubit and make blocbuilder here instead
-    return StreamBuilder<String>(
-      stream: context.read<IDataRepository>().streamCurrentSquadId(),
+    return //StreamBuilder<String>(
+        //   stream: context.read<IDataRepository>().streamCurrentSquadId(),
+        //   builder: (context, snapshot) {
+        //     var currentSquadId = snapshot.data;
+        //     return currentSquadId == null
+        //         ? const Text('<squad is empty>')
+        //         :
+        StreamBuilder<List<Player>>(
+      stream: context.read<GameCubit>().streamMembersList(),
       builder: (context, snapshot) {
-        var currentSquadId = snapshot.data;
-        return currentSquadId == null
+        var members = snapshot.data;
+        return members == null
             ? const Text('<squad is empty>')
-            : StreamBuilder<List<Player>>(
-                stream: context
-                    .read<GameCubit>()
-                    .streamMembersList(squadId: currentSquadId),
-                builder: (context, snapshot) {
-                  var members = snapshot.data;
-                  return members == null
-                      ? const Text('<squad is empty>')
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            ...members.map(
-                              (member) => _MemberCard(member: member),
-                            ),
-                          ],
-                        );
-                },
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  ...members.map(
+                    (member) => _MemberCard(member: member),
+                  ),
+                ],
               );
       },
     );
+    //  },
+    // );
   }
 }
 
@@ -154,8 +153,8 @@ class _MemberCard extends StatelessWidget {
               member.nick,
               style: TextStyle(
                 fontSize: 23,
-                fontWeight: member.id ==
-                        context.read<IDataRepository>().currentPlayer.id
+                fontWeight: member.id == 1 //TODO uncomment
+                    // context.read<IDataRepository>().currentPlayer.id
                     ? FontWeight.bold
                     : null,
               ),

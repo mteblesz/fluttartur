@@ -26,11 +26,11 @@ class GameForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _QuestTiles(),
-          Expanded(
-            child: _TeamWrap(),
-          ),
-          _GameButtons(),
+          //_QuestTiles(), //TODO uncomment
+          // Expanded(
+          //   child: _TeamWrap(),
+          // ),
+          // _GameButtons(),
         ],
       ),
     );

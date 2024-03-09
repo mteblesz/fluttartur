@@ -121,7 +121,7 @@ class DataRepository implements IDataRepository {
     });
   }
 
-//----------------------------------------------------------------------------
+//------------------------------ game -----------------------------------------
 
   Future<void> _fetchTeamRole() async {
     final playerId = _cache.currentPlayerId;
@@ -145,32 +145,15 @@ class DataRepository implements IDataRepository {
 //----------------------------------------------------------------------------
 
   @override
+  Stream<List<Player>> streamMembersList() {
+    return streamPlayersList(); // TODO
+  }
+//----------------------------------------------------------------------------
+
+  @override
   Future<List<Player>> playersList() {
     // : implement playersList
     throw UnimplementedError();
-  }
-
-  @override
-  Stream<Player> streamPlayer() {
-    // : implement streamPlayer
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<Room> streamRoom() {
-    // : implement streamRoom
-    throw UnimplementedError();
-  }
-
-  @override
-  void subscribeGameStartedWith({required void Function(bool p1) doLogic}) {
-    //stopListeningPlayers()
-    // : implement subscribeGameStartedWith
-  }
-
-  @override
-  void unsubscribeGameStarted() {
-    // : implement unsubscribeGameStarted
   }
 
   // ----------------------------------------------------------------------
@@ -205,18 +188,10 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  // : implement membersCount
-  Future<int> get membersCount => throw UnimplementedError();
-
-  @override
   Future<void> nextSquad({required int questNumber}) {
     // : implement nextSquad
     throw UnimplementedError();
   }
-
-  @override
-  // : implement playersCount
-  Future<int> get playersCount => throw UnimplementedError();
 
   @override
   Future<List<bool>> questVotesInfo(int questNumber) {
@@ -228,18 +203,6 @@ class DataRepository implements IDataRepository {
   Future<void> removeMember(
       {required int questNumber, required String memberId}) {
     // : implement removeMember
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<String> streamCurrentSquadId() {
-    // : implement streamCurrentSquadId
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<Player>> streamMembersList({required squadId}) {
-    // : implement streamMembersList
     throw UnimplementedError();
   }
 

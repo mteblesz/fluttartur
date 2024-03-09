@@ -13,8 +13,8 @@ class GameCubit extends Cubit<GameState> {
     return _dataRepository.streamPlayersList();
   }
 
-  Stream<List<Player>> streamMembersList({required squadId}) {
-    return _dataRepository.streamPlayersList();
+  Stream<List<Player>> streamMembersList() {
+    return _dataRepository.streamPlayersList(); // TODO
   }
 
   Future<List<Player>> getEvilPlayers() {
@@ -24,6 +24,15 @@ class GameCubit extends Cubit<GameState> {
   Future<List<Player>> getMerlinAndMorgana() {
     return _dataRepository.getMerlinAndMorgana();
   }
+
+  bool squadFullSize(int playersCount, int questNumber) {
+    return true; // TODO wrong wrong
+  }
+
+  bool isTwoFailsQuest(int playersCount, int questNumber) {
+    return false; // TODO wrong wrong
+  }
+
   //--------------------------------leader's logic------------------------------
 
   /// add player to squad

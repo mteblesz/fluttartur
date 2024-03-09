@@ -72,7 +72,8 @@ class _QuestTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final questStatus = gameState.questStatuses[questNumber - 1];
     return FutureBuilder<int>(
-      future: context.read<IDataRepository>().playersCount,
+      future:
+          null, //context.read<IDataRepository>().playersCount, //TODO uncomment
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
