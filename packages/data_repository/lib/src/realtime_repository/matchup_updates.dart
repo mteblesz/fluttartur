@@ -7,7 +7,7 @@ extension SquadsInfoUpdates on RtuRepository {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final data = args[0] as List<dynamic>;
         final dtos = data.map((data) => PlayerInfoDto.fromJson(data));
-        final updatedPlayers = dtos.map((e) => e.toPLayer()).toList();
+        final updatedPlayers = dtos.map((e) => e.toPlayer()).toList();
         _playerStreamController.add(updatedPlayers);
       }
     });

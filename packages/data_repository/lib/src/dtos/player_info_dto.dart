@@ -22,7 +22,7 @@ class PlayerInfoDto {
     );
   }
 
-  Player toPLayer() {
+  Player toPlayer() {
     return Player(
       id: playerId.toString(),
       nick: nick,

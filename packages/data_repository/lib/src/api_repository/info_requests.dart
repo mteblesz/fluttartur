@@ -47,7 +47,7 @@ extension InfoRequests on ApiRepository {
         .toList();
 
     List<Player> playerList =
-        playerInfoList.map((info) => info.toPLayer()).toList();
+        playerInfoList.map((info) => info.toPlayer()).toList();
 
     return playerList;
   }
