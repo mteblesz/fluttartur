@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'enums.dart';
+
 class Room extends Equatable {
   final int roomId;
   final RoomStatus status;
@@ -21,12 +23,4 @@ class Room extends Equatable {
 
   @override
   List<Object?> get props => [roomId, status, currentSquadId];
-}
-
-enum RoomStatus {
-  unknown,
-  matchup,
-  playing,
-  assassination,
-  result,
 }

@@ -26,8 +26,8 @@ extension InfoRequests on RestRepository {
 
     final String teamStr = jsonBody["team"] as String;
     final String roleStr = jsonBody["role"] as String;
-    final Team team = Team.values.byName(teamStr.toLowerFirst());
-    final Role role = Role.values.byName(roleStr.toLowerFirst());
+    final Team team = Team.values.byName(teamStr);
+    final Role role = Role.values.byName(roleStr);
     return TeamRole(team, role);
   }
 

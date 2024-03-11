@@ -1,3 +1,11 @@
+enum RoomStatus {
+  unknown,
+  matchup,
+  playing,
+  assassination,
+  result,
+}
+
 enum Team {
   empty,
   evil,
