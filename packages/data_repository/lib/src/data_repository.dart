@@ -202,10 +202,6 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  // : implement currentPlayer
-  Player get currentPlayer => throw UnimplementedError();
-
-  @override
   Future<List<Squad>> getApprovedSquads() {
     // : implement getApprovedSquads
     throw UnimplementedError();
