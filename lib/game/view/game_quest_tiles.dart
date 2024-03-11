@@ -37,35 +37,37 @@ class _QuestTile extends StatelessWidget {
   final GameState gameState;
 
   Color _questTileColor(QuestStatus? questStatus) {
-    switch (questStatus) {
-      case QuestStatus.success:
-        return Colors.green.shade700;
-      case QuestStatus.fail:
-        return Colors.red.shade700;
-      case QuestStatus.ongoing:
-        return const Color.fromARGB(255, 64, 134, 169);
-      case QuestStatus.upcoming:
-        return const Color.fromARGB(255, 13, 66, 110);
-      case QuestStatus.error:
-      case null:
-        return const Color.fromARGB(255, 35, 35, 35);
-    }
+    // switch (questStatus) {
+    //   case QuestStatus.success:
+    //     return Colors.green.shade700;
+    //   case QuestStatus.fail:
+    //     return Colors.red.shade700;
+    //   case QuestStatus.ongoing:
+    //     return const Color.fromARGB(255, 64, 134, 169);
+    //   case QuestStatus.upcoming:
+    //     return const Color.fromARGB(255, 13, 66, 110);
+    //   case QuestStatus.error:
+    //   case null:
+    //     return const Color.fromARGB(255, 35, 35, 35);
+    // }
+    return const Color.fromARGB(255, 35, 35, 35);
   }
 
   IconData _questTileIconData(QuestStatus? questStatus) {
-    switch (questStatus) {
-      case QuestStatus.success:
-        return FluttarturIcons.crown;
-      case QuestStatus.fail:
-        return FluttarturIcons.crossed_swords;
-      case QuestStatus.ongoing:
-        return FluttarturIcons.group;
-      case QuestStatus.upcoming:
-        return FluttarturIcons.locked_fortress;
-      case QuestStatus.error:
-      case null:
-        return Icons.error_outline;
-    }
+    // switch (questStatus) {
+    //   case QuestStatus.success:
+    //     return FluttarturIcons.crown;
+    //   case QuestStatus.fail:
+    //     return FluttarturIcons.crossed_swords;
+    //   case QuestStatus.ongoing:
+    //     return FluttarturIcons.group;
+    //   case QuestStatus.upcoming:
+    //     return FluttarturIcons.locked_fortress;
+    //   case QuestStatus.error:
+    //   case null:
+    //     return Icons.error_outline;
+    // }
+    return Icons.error_outline;
   }
 
   @override

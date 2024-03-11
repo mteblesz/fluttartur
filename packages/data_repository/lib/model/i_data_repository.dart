@@ -28,15 +28,12 @@ abstract class IDataRepository {
   Future<List<Player>> getEvilPlayersForEvil();
   Future<List<Player>> getEvilPlayers();
   Future<List<Player>> getGoodPlayers();
-  Future<List<Player>> getEvilPlayersForGood();
-  Future<List<Player>> getGoodPlayersForEvil();
-  Future<List<Player>> getGoodPlayersForGood();
-  Future<List<Player>> getGoodPlayersForMerlin();
-  Stream<SquadInfoDto> streamCurrentSquad();
+
+  Stream<Squad> streamCurrentSquad();
   void subscribeCurrentSquad();
   void unsubscribeCurrentSquad();
 
-  Stream<List<QuestInfoShortDto>> streamQuestsSummary();
+  Stream<List<QuestInfoShort>> streamQuestsSummary();
   void subscribeQuestsSummary();
   void unsubscribeQuestsSummary();
 

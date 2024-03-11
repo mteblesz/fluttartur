@@ -159,15 +159,14 @@ class DataRepository implements IDataRepository {
 
 //------------------------------ squad/quest info -------------------------------------
   @override
-  Stream<SquadInfoDto> streamCurrentSquad() =>
-      _rtuRepository.currentSquadStream;
+  Stream<Squad> streamCurrentSquad() => _rtuRepository.currentSquadStream;
   @override
   void subscribeCurrentSquad() => _rtuRepository.subscribeCurrentSquad();
   @override
   void unsubscribeCurrentSquad() => _rtuRepository.unsubscribeCurrentSquad();
 
   @override
-  Stream<List<QuestInfoShortDto>> streamQuestsSummary() =>
+  Stream<List<QuestInfoShort>> streamQuestsSummary() =>
       _rtuRepository.questsSummaryStream;
   @override
   void subscribeQuestsSummary() => _rtuRepository.subscribeQuestsSummary();

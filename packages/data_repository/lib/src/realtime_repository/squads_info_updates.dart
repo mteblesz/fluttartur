@@ -2,11 +2,11 @@ part of 'rtu_repository.dart';
 
 extension SquadsInfoUpdates on RtuRepository {
   void subscribeCurrentSquad() {
-    _currentSquadStreamController = StreamController<SquadInfoDto>.broadcast();
+    _currentSquadStreamController = StreamController<Squad>.broadcast();
     hubConnection.on(RtuConfig.ReceiveCurrentSquad, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is Map<String, dynamic>) {
-        final squadInfo =
-            SquadInfoDto.fromJson(args[0] as Map<String, dynamic>);
+        final dto = SquadInfoDto.fromJson(args[0] as Map<String, dynamic>);
+        final squadInfo = dto.toSquad();
         _currentSquadStreamController.add(squadInfo);
       }
     });
@@ -21,12 +21,12 @@ extension SquadsInfoUpdates on RtuRepository {
 
   void subscribeQuestsSummary() {
     _questsSummaryStreamController =
-        StreamController<List<QuestInfoShortDto>>.broadcast();
+        StreamController<List<QuestInfoShort>>.broadcast();
     hubConnection.on(RtuConfig.ReceiveQuestsSummary, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
-        final questSummaryList = (args[0] as List)
-            .map((e) => QuestInfoShortDto.fromJson(e as Map<String, dynamic>))
-            .toList();
+        final data = args[0] as List<dynamic>;
+        final dtos = data.map((data) => QuestInfoShortDto.fromJson(data));
+        final questSummaryList = dtos.map((e) => e.toQuestInfoShort()).toList();
         _questsSummaryStreamController.add(questSummaryList);
       }
     });

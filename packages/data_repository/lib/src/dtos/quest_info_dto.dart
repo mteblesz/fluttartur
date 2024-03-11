@@ -1,6 +1,6 @@
 import 'package:data_repository/src/dtos/dtos.dart';
 
-import '../../model/enums.dart';
+import '../../model/model.dart';
 
 class QuestInfoDto {
   int squadId;
@@ -10,7 +10,7 @@ class QuestInfoDto {
   SquadStatus status;
   PlayerInfoDto leader;
   List<PlayerInfoDto> members;
-  List<SquadVoteInfoDto> squadVoteInfo;
+  List<VoteInfoDto> squadVoteInfo;
   int? questVoteSuccessCount;
 
   QuestInfoDto({
@@ -36,10 +36,25 @@ class QuestInfoDto {
       members: (json['members'] as List)
           .map((e) => PlayerInfoDto.fromJson(e))
           .toList(),
-      squadVoteInfo: (json['squadVoteInfo'] as List)
-          .map((e) => SquadVoteInfoDto.fromJson(e))
+      squadVoteInfo: (json['voteInfo'] as List)
+          .map((e) => VoteInfoDto.fromJson(e))
           .toList(),
       questVoteSuccessCount: json['questVoteSuccessCount'],
+    );
+  }
+
+  QuestInfo toQuestInfo() {
+    return QuestInfo(
+      squadId: squadId.toString(),
+      questNumber: questNumber,
+      squadNumber: squadNumber,
+      requiredPlayersNumber: requiredPlayersNumber,
+      status: SquadQuestStatusMapping.map(status),
+      leader: leader.toPlayer(),
+      members: members.map((member) => member.toPlayer()).toList(),
+      squadVoteInfo:
+          squadVoteInfo.map((voteInfo) => voteInfo.toVoteInfo()).toList(),
+      questVoteSuccessCount: questVoteSuccessCount,
     );
   }
 }

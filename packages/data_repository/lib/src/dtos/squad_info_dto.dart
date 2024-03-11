@@ -1,4 +1,4 @@
-import '../../model/enums.dart';
+import '../../model/model.dart';
 import 'player_info_dto.dart';
 
 class SquadInfoDto {
@@ -32,5 +32,17 @@ class SquadInfoDto {
           .map((e) => PlayerInfoDto.fromJson(e))
           .toList(),
     );
+  }
+
+  Squad toSquad() {
+    return Squad.empty; // TODO
+    // squadId: squadId,
+    // questNumber: questNumber,
+    // squadFailsToEvilWinCount: squadFailsToEvilWinCount,
+    // requiredPlayersNumber: requiredPlayersNumber,
+    // status: status,
+    // leader: leader.toPlayer(),
+    // members: members.map((member) => member.toPlayer()).toList(),
+    //);
   }
 }

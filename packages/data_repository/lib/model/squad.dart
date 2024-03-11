@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'enums.dart';
+
 class Squad extends Equatable {
   final String id;
   final int questNumber;
@@ -43,15 +45,4 @@ class Squad extends Equatable {
   @override
   List<Object?> get props =>
       [id, questNumber, status, isSubmitted, isApproved, isSuccessfull, votes];
-}
-
-enum SquadStatus {
-  unknown,
-  squadVoting,
-  submitted,
-  approved,
-  rejected,
-  questVoting,
-  successfull,
-  failed,
 }

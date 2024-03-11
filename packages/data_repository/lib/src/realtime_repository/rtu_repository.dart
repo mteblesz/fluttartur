@@ -33,11 +33,10 @@ class RtuRepository {
   late StreamController<List<Player>> _playerStreamController;
   Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
-  late StreamController<SquadInfoDto> _currentSquadStreamController;
-  Stream<SquadInfoDto> get currentSquadStream =>
-      _currentSquadStreamController.stream;
+  late StreamController<Squad> _currentSquadStreamController;
+  Stream<Squad> get currentSquadStream => _currentSquadStreamController.stream;
 
-  late StreamController<List<QuestInfoShortDto>> _questsSummaryStreamController;
-  Stream<List<QuestInfoShortDto>> get questsSummaryStream =>
+  late StreamController<List<QuestInfoShort>> _questsSummaryStreamController;
+  Stream<List<QuestInfoShort>> get questsSummaryStream =>
       _questsSummaryStreamController.stream;
 }

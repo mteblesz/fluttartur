@@ -1,4 +1,4 @@
-import 'package:data_repository/model/enums.dart';
+import '../../model/model.dart';
 
 class QuestInfoShortDto {
   int? squadId;
@@ -25,13 +25,13 @@ class QuestInfoShortDto {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'squadId': squadId,
-      'questNumber': questNumber,
-      'requiredPlayersNumber': requiredPlayersNumber,
-      'isDoubleFail': isDoubleFail,
-      'status': status.index,
-    };
+  QuestInfoShort toQuestInfoShort() {
+    return QuestInfoShort(
+      squadId: squadId,
+      questNumber: questNumber,
+      requiredPlayersNumber: requiredPlayersNumber,
+      isDoubleFail: isDoubleFail,
+      status: SquadQuestStatusMapping.map(status),
+    );
   }
 }
