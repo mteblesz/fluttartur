@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cache/cache.dart';
 import 'package:data_repository/model/model.dart';
 import 'dtos/dtos.dart';
-import 'package:data_repository/src/api_repository/api_repository.dart';
+import 'package:data_repository/src/rest_repository/rest_repository.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
 
@@ -13,11 +13,11 @@ class DataRepository implements IDataRepository {
     CacheClient? cacheClient,
   }) {
     _cache = DataCache(cacheClient ?? CacheClient());
-    _apiRepository = ApiRepository(getAuthToken: () => _cache.authToken);
+    _restRepository = RestRepository(getAuthToken: () => _cache.authToken);
     _rtuRepository = RtuRepository();
   }
   late DataCache _cache;
-  late ApiRepository _apiRepository;
+  late RestRepository _restRepository;
   late RtuRepository _rtuRepository;
 
   //----------------------- info -----------------------
@@ -28,8 +28,8 @@ class DataRepository implements IDataRepository {
   @override
   Future<void> createAndJoinRoom() async {
     try {
-      final roomId = await _apiRepository.createRoom();
-      final playerId = await _apiRepository.joinRoom(roomId: roomId);
+      final roomId = await _restRepository.createRoom();
+      final playerId = await _restRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
       await _rtuRepository.connect(roomId: roomId);
@@ -41,7 +41,7 @@ class DataRepository implements IDataRepository {
   @override
   Future<void> joinRoom({required int roomId}) async {
     try {
-      int playerId = await _apiRepository.joinRoom(roomId: roomId);
+      int playerId = await _restRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
       await _rtuRepository.connect(roomId: roomId);
@@ -52,7 +52,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> setNickname({required String nick}) async {
-    await _apiRepository.setNickname(
+    await _restRepository.setNickname(
         dto: NicknameSetDto(
       roomId: _cache.currentRoomId,
       playerId: _cache.currentPlayerId,
@@ -62,8 +62,8 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> addDummyPlayer({required String nick}) async {
-    int playerId = await _apiRepository.joinRoom(roomId: _cache.currentRoomId);
-    await _apiRepository.setNickname(
+    int playerId = await _restRepository.joinRoom(roomId: _cache.currentRoomId);
+    await _restRepository.setNickname(
         dto: NicknameSetDto(
       roomId: _cache.currentRoomId,
       playerId: playerId,
@@ -83,7 +83,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> leaveRoom() async {
-    await _apiRepository.removePlayer(
+    await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
       removedPlayerId: _cache.currentPlayerId,
     );
@@ -91,7 +91,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> removePlayer({required int playerId}) async {
-    await _apiRepository.removePlayer(
+    await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
       removedPlayerId: playerId,
     );
@@ -107,7 +107,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> startGame({required RolesDef rolesDef}) async {
-    await _apiRepository.startGame(
+    await _restRepository.startGame(
       roomId: _cache.currentRoomId,
       rolesDef: rolesDef,
     );
@@ -126,7 +126,7 @@ class DataRepository implements IDataRepository {
   Future<void> _fetchTeamRole() async {
     final playerId = _cache.currentPlayerId;
     _cache.currentTeamRole =
-        await _apiRepository.getRoleByPlayerId(playerId: playerId);
+        await _restRepository.getRoleByPlayerId(playerId: playerId);
   }
 
   @override
@@ -134,27 +134,28 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<List<Player>> getMerlinAndMorgana() {
-    return _apiRepository.getMerlinAndMorgana(roomId: _cache.currentRoomId);
+    return _restRepository.getMerlinAndMorgana(roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getEvilPlayersForMerlin() {
-    return _apiRepository.getEvilPlayersForMerlin(roomId: _cache.currentRoomId);
+    return _restRepository.getEvilPlayersForMerlin(
+        roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getEvilPlayersForEvil() {
-    return _apiRepository.getEvilPlayersForEvil(roomId: _cache.currentRoomId);
+    return _restRepository.getEvilPlayersForEvil(roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getEvilPlayers() {
-    return _apiRepository.getEvilPlayers(roomId: _cache.currentRoomId);
+    return _restRepository.getEvilPlayers(roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getGoodPlayers() {
-    return _apiRepository.getGoodPlayers(roomId: _cache.currentRoomId);
+    return _restRepository.getGoodPlayers(roomId: _cache.currentRoomId);
   }
 
 //------------------------------ squad/quest info -------------------------------------

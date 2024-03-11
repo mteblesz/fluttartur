@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:data_repository/data_repository.dart';
 import '../dtos/dtos.dart';
 import '../../utils.dart';
-import 'api_config.dart';
+import 'rest_config.dart';
 import 'http_sender.dart';
 
 part 'info_requests.dart';
@@ -14,8 +14,8 @@ part 'squad_requests.dart';
 part 'vote_requests.dart';
 part 'kill_requests.dart';
 
-class ApiRepository {
-  ApiRepository({required this.getAuthToken});
+class RestRepository {
+  RestRepository({required this.getAuthToken});
 
   final String Function() getAuthToken;
 
@@ -24,5 +24,5 @@ class ApiRepository {
         'Authorization': 'Bearer ${getAuthToken()}',
       };
 
-  // request methods in extensions segregated 'by-api controller'
+  // request methods in extensions segregated 'by controller'
 }

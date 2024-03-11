@@ -1,9 +1,9 @@
-part of 'api_repository.dart';
+part of 'rest_repository.dart';
 
-extension MatchupRequests on ApiRepository {
+extension MatchupRequests on RestRepository {
   Future<int> createRoom() async {
     final response = await HttpSender.post(
-      Uri.parse(ApiConfig.createRoomUrl()),
+      Uri.parse(RestConfig.createRoomUrl()),
       headers: getAuthHeaders(),
     );
 
@@ -19,7 +19,7 @@ extension MatchupRequests on ApiRepository {
   /// helper method for joinRoom
   Future<int> joinRoom({required int roomId}) async {
     final response = await HttpSender.post(
-      Uri.parse(ApiConfig.joinRoomUrl(roomId)),
+      Uri.parse(RestConfig.joinRoomUrl(roomId)),
       headers: getAuthHeaders(),
     );
 
@@ -33,7 +33,7 @@ extension MatchupRequests on ApiRepository {
 
   Future<void> setNickname({required NicknameSetDto dto}) async {
     final response = await HttpSender.patch(
-      Uri.parse(ApiConfig.setNicknameUrl()),
+      Uri.parse(RestConfig.setNicknameUrl()),
       headers: getAuthHeaders(),
       body: jsonEncode(dto.toJson()),
     );
@@ -49,7 +49,7 @@ extension MatchupRequests on ApiRepository {
   }) async {
     final response = await HttpSender.delete(
       Uri.parse(
-        ApiConfig.removePlayerUrl(removedPlayerId, roomId),
+        RestConfig.removePlayerUrl(removedPlayerId, roomId),
       ),
       headers: getAuthHeaders(),
     );
@@ -68,7 +68,7 @@ extension MatchupRequests on ApiRepository {
       areOberonAndMordredInGame: rolesDef.hasOberonAndMordred,
     );
     final response = await HttpSender.put(
-      Uri.parse(ApiConfig.startGameUrl()),
+      Uri.parse(RestConfig.startGameUrl()),
       headers: getAuthHeaders(),
       body: jsonEncode(dto.toJson()),
     );

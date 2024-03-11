@@ -1,9 +1,9 @@
-part of 'api_repository.dart';
+part of 'rest_repository.dart';
 
-extension InfoRequests on ApiRepository {
+extension InfoRequests on RestRepository {
   Future<Room> getRoomById({required int roomId}) async {
     final response = await HttpSender.get(
-      Uri.parse(ApiConfig.getRoomByIdUrl(roomId)),
+      Uri.parse(RestConfig.getRoomByIdUrl(roomId)),
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
@@ -16,7 +16,7 @@ extension InfoRequests on ApiRepository {
 
   Future<TeamRole> getRoleByPlayerId({required int playerId}) async {
     final response = await HttpSender.get(
-      Uri.parse(ApiConfig.getRoleByPlayerIdUrl(playerId)),
+      Uri.parse(RestConfig.getRoleByPlayerIdUrl(playerId)),
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
@@ -53,24 +53,24 @@ extension InfoRequests on ApiRepository {
   }
 
   Future<List<Player>> getMerlinAndMorgana({required int roomId}) {
-    return _getPlayerListFromUrl(url: ApiConfig.getMerlinAndMorgana(roomId));
+    return _getPlayerListFromUrl(url: RestConfig.getMerlinAndMorgana(roomId));
   }
 
   Future<List<Player>> getEvilPlayersForMerlin({required int roomId}) {
     return _getPlayerListFromUrl(
-        url: ApiConfig.getEvilPlayersForMerlinUrl(roomId));
+        url: RestConfig.getEvilPlayersForMerlinUrl(roomId));
   }
 
   Future<List<Player>> getEvilPlayersForEvil({required int roomId}) {
     return _getPlayerListFromUrl(
-        url: ApiConfig.getEvilPlayersForEvilUrl(roomId));
+        url: RestConfig.getEvilPlayersForEvilUrl(roomId));
   }
 
   Future<List<Player>> getEvilPlayers({required int roomId}) {
-    return _getPlayerListFromUrl(url: ApiConfig.getEvilPlayersUrl(roomId));
+    return _getPlayerListFromUrl(url: RestConfig.getEvilPlayersUrl(roomId));
   }
 
   Future<List<Player>> getGoodPlayers({required int roomId}) {
-    return _getPlayerListFromUrl(url: ApiConfig.getGoodPlayersUrl(roomId));
+    return _getPlayerListFromUrl(url: RestConfig.getGoodPlayersUrl(roomId));
   }
 }

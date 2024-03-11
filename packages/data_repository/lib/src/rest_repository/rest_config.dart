@@ -1,7 +1,7 @@
 import 'package:universal_io/io.dart';
 import 'package:flutter/foundation.dart';
 
-class ApiConfig {
+class RestConfig {
   static String get baseUrl {
     if (Platform.isAndroid) {
       return 'https://10.0.2.2:7700';
