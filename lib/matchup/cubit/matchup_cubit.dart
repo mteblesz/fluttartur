@@ -32,7 +32,7 @@ class MatchupCubit extends Cubit<MatchupState> {
 
   Future<void> removePlayer(Player player) async {
     if (!isHost) return;
-    _dataRepository.removePlayer(playerId: int.parse(player.id));
+    _dataRepository.removePlayer(playerId: player.playerId);
   }
 
   Future<void> startGame() async {

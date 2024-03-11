@@ -45,7 +45,7 @@ class QuestInfoDto {
 
   QuestInfo toQuestInfo() {
     return QuestInfo(
-      squadId: squadId.toString(),
+      squadId: squadId,
       questNumber: questNumber,
       squadNumber: squadNumber,
       requiredPlayersNumber: requiredPlayersNumber,

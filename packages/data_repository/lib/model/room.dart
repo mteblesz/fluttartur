@@ -1,19 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class Room extends Equatable {
-  final String id;
+  final int roomId;
   final RoomStatus status;
   final String? currentSquadId;
 
   Room({
-    required this.id,
+    required this.roomId,
     required this.status,
     required this.currentSquadId,
   }) {}
 
-  /// Empty room which represents that user is currently not in any room.
   static Room empty = Room(
-    id: '',
+    roomId: -1,
     status: RoomStatus.unknown,
     currentSquadId: '',
   );
@@ -21,7 +20,7 @@ class Room extends Equatable {
   bool get isNotEmpty => this != Room.empty;
 
   @override
-  List<Object?> get props => [id, status, currentSquadId];
+  List<Object?> get props => [roomId, status, currentSquadId];
 }
 
 enum RoomStatus {

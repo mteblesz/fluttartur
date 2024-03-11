@@ -51,7 +51,7 @@ class _PlayerListView extends StatelessWidget {
                   ...players.map(
                     (player) => _PlayerCard(
                         player: player,
-                        isLeader: player.id == "" //currentSquad.leaderId,
+                        isLeader: player.playerId == "" //currentSquad.leaderId,
                         // TODO change bloc above
                         ),
                   ),
@@ -85,7 +85,7 @@ class _PlayerCard extends StatelessWidget {
                   player.nick,
                   style: TextStyle(
                     fontSize: 23,
-                    fontWeight: player.id == 0 //TODO uncomment
+                    fontWeight: player.playerId == 0 //TODO uncomment
                         //context.read<IDataRepository>().currentPlayer.id
                         ? FontWeight.bold
                         : null,
@@ -153,7 +153,7 @@ class _MemberCard extends StatelessWidget {
               member.nick,
               style: TextStyle(
                 fontSize: 23,
-                fontWeight: member.id == 1 //TODO uncomment
+                fontWeight: member.playerId == 1 //TODO uncomment
                     // context.read<IDataRepository>().currentPlayer.id
                     ? FontWeight.bold
                     : null,

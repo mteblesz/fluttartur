@@ -44,7 +44,7 @@ class GameCubit extends Cubit<GameState> {
 
     await _dataRepository.addMember(
       questNumber: state.questNumber,
-      playerId: player.id,
+      playerId: player.playerId,
       nick: player.nick,
     );
 
@@ -59,7 +59,7 @@ class GameCubit extends Cubit<GameState> {
 
     await _dataRepository.removeMember(
       questNumber: state.questNumber,
-      memberId: member.id,
+      memberId: member.playerId,
     );
 
     emit(state.copyWith(isSquadFull: false));

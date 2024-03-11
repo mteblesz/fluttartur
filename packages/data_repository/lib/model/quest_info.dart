@@ -1,7 +1,7 @@
 import 'package:data_repository/model/model.dart';
 
 class QuestInfo {
-  final String squadId;
+  final int squadId;
   final int questNumber;
   final int squadNumber;
   final int requiredPlayersNumber;

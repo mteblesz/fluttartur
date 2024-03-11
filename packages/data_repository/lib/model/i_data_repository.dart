@@ -47,12 +47,12 @@ abstract class IDataRepository {
   Stream<List<Player>> streamMembersList();
   Future<void> addMember({
     required int questNumber,
-    required String playerId,
+    required int playerId,
     required String nick,
   });
   Future<void> removeMember({
     required int questNumber,
-    required String memberId,
+    required int memberId,
   });
 
   Future<void> submitSquad();
@@ -60,12 +60,12 @@ abstract class IDataRepository {
   Future<void> nextSquad({required int questNumber});
 
   void subscribeSquadIsSubmittedWith({
-    String squadId = '',
+    int squadId = -1,
     required void Function(Squad) doLogic,
   });
   void unsubscribeSquadIsSubmitted();
 
-  String currentSquadId = "";
+  int currentSquadId = -1;
   void subscribeCurrentSquadIdWith({
     required void Function(String) doLogic,
   });

@@ -24,7 +24,7 @@ class PlayerInfoDto {
 
   Player toPlayer() {
     return Player(
-      id: playerId.toString(),
+      playerId: playerId,
       nick: nick,
     );
   }

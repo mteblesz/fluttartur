@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'enums.dart';
 
 class Squad extends Equatable {
-  final String id;
+  final int squadId;
   final int questNumber;
   final SquadStatus status; // remove guys below TODO
   final bool isSubmitted;
@@ -12,7 +12,7 @@ class Squad extends Equatable {
   final Map<String, bool> votes; // attributed by playerId
 
   const Squad({
-    required this.id,
+    required this.squadId,
     required this.questNumber,
     required this.status,
     required this.isSubmitted,
@@ -22,7 +22,7 @@ class Squad extends Equatable {
   });
 
   Squad.init(this.questNumber)
-      : id = '',
+      : squadId = -1,
         status = SquadStatus.unknown,
         isSubmitted = false,
         isApproved = null,
@@ -31,7 +31,7 @@ class Squad extends Equatable {
 
   /// Empty Squad
   static const empty = Squad(
-    id: '',
+    squadId: -1,
     questNumber: 0,
     status: SquadStatus.unknown,
     isSubmitted: false,
@@ -43,6 +43,13 @@ class Squad extends Equatable {
   bool get isNotEmpty => this != Squad.empty;
 
   @override
-  List<Object?> get props =>
-      [id, questNumber, status, isSubmitted, isApproved, isSuccessfull, votes];
+  List<Object?> get props => [
+        squadId,
+        questNumber,
+        status,
+        isSubmitted,
+        isApproved,
+        isSuccessfull,
+        votes
+      ];
 }

@@ -192,13 +192,11 @@ class DataRepository implements IDataRepository {
   //  old stuff for backwards-compatibility during changes (to be removed)
 
   @override
-  String currentSquadId = "";
+  int currentSquadId = -1;
 
   @override
   Future<void> addMember(
-      {required int questNumber,
-      required String playerId,
-      required String nick}) {
+      {required int questNumber, required int playerId, required String nick}) {
     // : implement addMember
     throw UnimplementedError();
   }
@@ -232,8 +230,7 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> removeMember(
-      {required int questNumber, required String memberId}) {
+  Future<void> removeMember({required int questNumber, required int memberId}) {
     // : implement removeMember
     throw UnimplementedError();
   }
@@ -264,7 +261,7 @@ class DataRepository implements IDataRepository {
 
   @override
   void subscribeSquadIsSubmittedWith(
-      {String squadId = '', required void Function(Squad p1) doLogic}) {
+      {int squadId = -1, required void Function(Squad p1) doLogic}) {
     // : implement subscribeSquadIsSubmittedWith
   }
 
