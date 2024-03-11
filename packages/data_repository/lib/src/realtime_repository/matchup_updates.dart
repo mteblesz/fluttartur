@@ -1,6 +1,6 @@
 part of 'rtu_repository.dart';
 
-extension SquadsInfoUpdates on RtuRepository {
+extension MatchupUpdates on RtuRepository {
   void subscribePlayersList() {
     _playerStreamController = StreamController<List<Player>>.broadcast();
     hubConnection.on(RtuConfig.ReceivePlayerList, (List<Object?>? args) {

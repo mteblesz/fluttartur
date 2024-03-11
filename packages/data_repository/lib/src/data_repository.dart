@@ -121,7 +121,7 @@ class DataRepository implements IDataRepository {
     });
   }
 
-//------------------------------ game -----------------------------------------
+//------------------------------ game init -------------------------------------
 
   Future<void> _fetchTeamRole() async {
     final playerId = _cache.currentPlayerId;
@@ -156,6 +156,23 @@ class DataRepository implements IDataRepository {
   Future<List<Player>> getGoodPlayers() {
     return _apiRepository.getGoodPlayers(roomId: _cache.currentRoomId);
   }
+
+//------------------------------ squad/quest info -------------------------------------
+  @override
+  Stream<SquadInfoDto> streamCurrentSquad() =>
+      _rtuRepository.currentSquadStream;
+  @override
+  void subscribeCurrentSquad() => _rtuRepository.subscribeCurrentSquad();
+  @override
+  void unsubscribeCurrentSquad() => _rtuRepository.unsubscribeCurrentSquad();
+
+  @override
+  Stream<List<QuestInfoShortDto>> streamQuestsSummary() =>
+      _rtuRepository.questsSummaryStream;
+  @override
+  void subscribeQuestsSummary() => _rtuRepository.subscribeQuestsSummary();
+  @override
+  void unsubscribeQuestsSummary() => _rtuRepository.unsubscribeQuestsSummary();
 
 //----------------------------------------------------------------------------
 

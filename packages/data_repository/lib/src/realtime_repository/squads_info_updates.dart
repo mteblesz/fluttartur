@@ -19,10 +19,10 @@ extension SquadsInfoUpdates on RtuRepository {
 
   // SQUADS
 
-  void subscribeSquadList() {
+  void subscribeQuestsSummary() {
     _questsSummaryStreamController =
         StreamController<List<QuestInfoShortDto>>.broadcast();
-    hubConnection.on(RtuConfig.ReceiveSquadsSummary, (List<Object?>? args) {
+    hubConnection.on(RtuConfig.ReceiveQuestsSummary, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final questSummaryList = (args[0] as List)
             .map((e) => QuestInfoShortDto.fromJson(e as Map<String, dynamic>))
@@ -32,8 +32,8 @@ extension SquadsInfoUpdates on RtuRepository {
     });
   }
 
-  void unsubscribeSquadList() {
-    hubConnection.off(RtuConfig.ReceiveSquadsSummary);
+  void unsubscribeQuestsSummary() {
+    hubConnection.off(RtuConfig.ReceiveQuestsSummary);
     _questsSummaryStreamController.close();
   }
 }
