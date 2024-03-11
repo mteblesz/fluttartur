@@ -59,3 +59,14 @@ class TeamRole extends Equatable {
   bool get isEmpty => this == empty;
   bool get isNotEmpty => this != empty;
 }
+
+enum SquadStatus {
+  pending,
+  squadVoting,
+  submitted,
+  approved,
+  rejected,
+  questVoting,
+  successful,
+  failed,
+}
