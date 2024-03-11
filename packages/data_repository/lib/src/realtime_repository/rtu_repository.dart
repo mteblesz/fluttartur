@@ -21,7 +21,7 @@ class RtuRepository {
   Future<void> connect({required int roomId}) async {
     await hubConnection.start();
     await hubConnection.invoke(
-      "JoinRoomGroup",
+      RtuConfig.JoinRoomGroup,
       args: [roomId.toString()],
     );
   }

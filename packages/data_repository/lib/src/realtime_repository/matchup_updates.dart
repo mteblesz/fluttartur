@@ -3,7 +3,7 @@ part of 'rtu_repository.dart';
 extension SquadsInfoUpdates on RtuRepository {
   void subscribePlayersList() {
     _playerStreamController = StreamController<List<Player>>.broadcast();
-    hubConnection.on("ReceivePlayerList", (List<Object?>? args) {
+    hubConnection.on(RtuConfig.ReceivePlayerList, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final data = args[0] as List<dynamic>;
         final dtos = data.map((data) => PlayerInfoDto.fromJson(data));
@@ -14,7 +14,7 @@ extension SquadsInfoUpdates on RtuRepository {
   }
 
   void unsubscribePlayersList() {
-    hubConnection.off("ReceivePlayerList");
+    hubConnection.off(RtuConfig.ReceivePlayerList);
     _playerStreamController.close();
   }
 
@@ -22,11 +22,11 @@ extension SquadsInfoUpdates on RtuRepository {
     required int playerId,
     required void Function() removalHandler,
   }) {
-    hubConnection.on("ReceiveRemoval", (List<Object?>? args) {
+    hubConnection.on(RtuConfig.ReceiveRemoval, (List<Object?>? args) {
       if (args != null && args.isNotEmpty) {
         final removedplayerId = args[0] as String;
         if (removedplayerId == playerId.toString()) {
-          hubConnection.off("ReceiveRemoval");
+          hubConnection.off(RtuConfig.ReceiveRemoval);
           removalHandler();
           dispose();
         }
@@ -35,8 +35,8 @@ extension SquadsInfoUpdates on RtuRepository {
   }
 
   void handleGameStarted({required void Function() startGameHandler}) {
-    hubConnection.on("ReceiveStartGame", (List<Object?>? args) {
-      hubConnection.off("ReceiveStartGame");
+    hubConnection.on(RtuConfig.ReceiveStartGame, (List<Object?>? args) {
+      hubConnection.off(RtuConfig.ReceiveStartGame);
       startGameHandler();
     });
   }
