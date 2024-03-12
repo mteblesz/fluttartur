@@ -25,7 +25,8 @@ class _TeamWrap extends StatelessWidget {
                 OutlinedText(AppLocalizations.of(context)!.squad,
                     style: const TextStyle(fontSize: 30)),
                 SingleChildScrollView(
-                  child: _SquadListView(),
+                  child: //_SquadListView(), //TODO uncomment
+                      const Text("<members list>"), //TODO remove
                 ),
               ],
             ),
@@ -39,11 +40,17 @@ class _TeamWrap extends StatelessWidget {
 class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Player>>(
-      stream: context.read<GameCubit>().streamPlayersList(),
+    return FutureBuilder<List<Player>>(
+      future: context.read<IDataRepository>().getPlayers(),
       builder: (context, snapshot) {
-        var players = snapshot.data;
-        return players == null
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        List<Player> players = snapshot.data ?? List.empty();
+        return players.isEmpty
             ? const Text("<court is empty>")
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
