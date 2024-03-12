@@ -35,10 +35,13 @@ class RestConfig {
       '$apiUrl/info/evilknows/$roomId';
   static String getEvilPlayersForMerlinUrl(int roomId) =>
       '$apiUrl/info/merlinknows/$roomId';
-  static String getMerlinAndMorgana(int squadId) =>
+  static String getMerlinAndMorganaUrl(int squadId) =>
       '$apiUrl/info/percivalknowns/$squadId';
   static String getQuestBySquadIdUrl(int roomId) =>
       '$apiUrl/info/quest/$roomId';
+
+  static String leaveGameUrl(int playerId) => '$apiUrl/game/leave/$playerId';
+  static String getPlayersUrl(int roomId) => '$apiUrl/game/players/$roomId';
 
   static String addMemberUrl(int squadId) => '$apiUrl/squad/add/$squadId';
   static String removeMemberUrl(int squadId) => '$apiUrl/squad/remove/$squadId';

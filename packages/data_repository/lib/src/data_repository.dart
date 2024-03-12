@@ -82,7 +82,7 @@ class DataRepository implements IDataRepository {
   void unsubscribePlayersList() => _rtuRepository.unsubscribePlayersList();
 
   @override
-  Future<void> leaveRoom() async {
+  Future<void> leaveMatchup() async {
     await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
       removedPlayerId: _cache.currentPlayerId,
@@ -100,7 +100,7 @@ class DataRepository implements IDataRepository {
   @override
   void handlePlayerRemoval({required void Function() handler}) {
     _rtuRepository.handlePlayerRemoval(
-      playerId: _cache.currentPlayerId,
+      currentPlayerId: _cache.currentPlayerId,
       removalHandler: handler,
     );
   }
@@ -156,6 +156,26 @@ class DataRepository implements IDataRepository {
   @override
   Future<List<Player>> getGoodPlayers() {
     return _restRepository.getGoodPlayers(roomId: _cache.currentRoomId);
+  }
+
+//------------------------------ game misc -------------------------------------
+  @override
+  Future<void> leaveGame() async {
+    await _restRepository.leaveGame(
+      playerId: _cache.currentPlayerId,
+    );
+  }
+
+  @override
+  Future<List<Player>> getPlayers() {
+    return _restRepository.getPlayers(roomId: _cache.currentRoomId);
+  }
+
+  @override
+  void handlePlayerLeftGame({
+    required void Function(Player) handler,
+  }) {
+    _rtuRepository.handlePlayerLeftGame(playerLeftHandler: handler);
   }
 
 //------------------------------ squad/quest info -------------------------------------

@@ -20,7 +20,7 @@ extension InfoRequests on RestRepository {
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw GetRoomFailure(response.statusCode, response.body);
+      throw GetRoleFailure(response.statusCode, response.body);
     }
     Map<String, dynamic> jsonBody = jsonDecode(response.body);
 
@@ -37,14 +37,12 @@ extension InfoRequests on RestRepository {
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw GetRoomFailure(
+      throw GetFilteredPlayersListFailure(
           response.statusCode, response.body); // TODO add propper exceptions
     }
     List<dynamic> jsonBody = jsonDecode(response.body);
 
-    List<PlayerInfoDto> playerInfoList = jsonBody
-        .map((json) => PlayerInfoDto.fromJson(json as Map<String, dynamic>))
-        .toList();
+    final playerInfoList = jsonBody.map((json) => PlayerInfoDto.fromJson(json));
 
     List<Player> playerList =
         playerInfoList.map((info) => info.toPlayer()).toList();
@@ -53,7 +51,8 @@ extension InfoRequests on RestRepository {
   }
 
   Future<List<Player>> getMerlinAndMorgana({required int roomId}) {
-    return _getPlayerListFromUrl(url: RestConfig.getMerlinAndMorgana(roomId));
+    return _getPlayerListFromUrl(
+        url: RestConfig.getMerlinAndMorganaUrl(roomId));
   }
 
   Future<List<Player>> getEvilPlayersForMerlin({required int roomId}) {

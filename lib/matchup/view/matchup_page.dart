@@ -60,7 +60,7 @@ class _MatchupAppBarActions extends StatelessWidget {
         ),
         PopupMenuItem(
           child: Text(AppLocalizations.of(context)!.leaveRoom),
-          onTap: () => context.read<HomeCubit>().leaveRoom(),
+          onTap: () => context.read<HomeCubit>().leaveMatchup(),
         ),
       ],
     );

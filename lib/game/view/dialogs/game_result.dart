@@ -70,7 +70,7 @@ Future<void> pushGameResultsDialog(BuildContext gameContext) {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                gameContext.read<HomeCubit>().leaveRoom();
+                gameContext.read<HomeCubit>().leaveMatchup();
               },
               child: Text(AppLocalizations.of(gameContext)!.exitGame,
                   style: const TextStyle(fontSize: 20)),

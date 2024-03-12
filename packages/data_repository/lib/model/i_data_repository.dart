@@ -15,7 +15,7 @@ abstract class IDataRepository {
   void unsubscribePlayersList();
 
   Future<void> removePlayer({required int playerId});
-  Future<void> leaveRoom();
+  Future<void> leaveMatchup();
   void handlePlayerRemoval({required void Function() handler});
 
   Future<void> startGame({required RolesDef rolesDef});
@@ -23,11 +23,16 @@ abstract class IDataRepository {
 
   // -------------
   TeamRole get currentTeamRole;
+
   Future<List<Player>> getMerlinAndMorgana();
   Future<List<Player>> getEvilPlayersForMerlin();
   Future<List<Player>> getEvilPlayersForEvil();
   Future<List<Player>> getEvilPlayers();
   Future<List<Player>> getGoodPlayers();
+
+  Future<void> leaveGame();
+  Future<List<Player>> getPlayers();
+  void handlePlayerLeftGame({required void Function(Player) handler});
 
   Stream<Squad> streamCurrentSquad();
   void subscribeCurrentSquad();

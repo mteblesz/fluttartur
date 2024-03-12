@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'package:data_repository/src/realtime_repository/rtu_config.dart';
+import 'package:data_repository/src/realtime_repository/config.dart';
 import '../dtos/dtos.dart';
 import '../../model/model.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 part 'squads_info_updates.dart';
 part 'matchup_updates.dart';
+part 'game_updates.dart';
 
 class RtuRepository {
   RtuRepository() {

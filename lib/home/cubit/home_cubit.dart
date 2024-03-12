@@ -12,6 +12,10 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// directs to game pages
   void goToGame() {
+    _dataRepository.handlePlayerLeftGame(
+      // TODO push some notification to the user
+      handler: (p) => goToLobby(),
+    );
     emit(state.copyWith(status: HomeStatus.inGame));
   }
 
@@ -33,7 +37,12 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// directs back to lobby
-  void leaveRoom() {
-    _dataRepository.leaveRoom();
+  void leaveMatchup() {
+    _dataRepository.leaveMatchup();
+  }
+
+  /// directs back to lobby
+  void leaveGame() {
+    _dataRepository.leaveGame();
   }
 }

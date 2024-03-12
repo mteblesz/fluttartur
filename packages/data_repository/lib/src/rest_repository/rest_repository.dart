@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:data_repository/data_repository.dart';
 import '../dtos/dtos.dart';
-import 'rest_config.dart';
+import 'config.dart';
 import 'http_sender.dart';
 
 part 'info_requests.dart';
@@ -12,6 +12,7 @@ part 'matchup_requests.dart';
 part 'squad_requests.dart';
 part 'vote_requests.dart';
 part 'kill_requests.dart';
+part 'game_requests.dart';
 
 class RestRepository {
   RestRepository({required this.getAuthToken});

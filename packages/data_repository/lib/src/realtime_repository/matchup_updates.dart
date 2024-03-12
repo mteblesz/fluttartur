@@ -19,13 +19,13 @@ extension MatchupUpdates on RtuRepository {
   }
 
   void handlePlayerRemoval({
-    required int playerId,
+    required int currentPlayerId,
     required void Function() removalHandler,
   }) {
     hubConnection.on(RtuConfig.ReceiveRemoval, (List<Object?>? args) {
       if (args != null && args.isNotEmpty) {
         final removedplayerId = args[0] as String;
-        if (removedplayerId == playerId.toString()) {
+        if (removedplayerId == currentPlayerId.toString()) {
           hubConnection.off(RtuConfig.ReceiveRemoval);
           removalHandler();
           dispose();
