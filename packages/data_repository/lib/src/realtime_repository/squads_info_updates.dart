@@ -26,8 +26,11 @@ extension SquadsInfoUpdates on RtuRepository {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final data = args[0] as List<dynamic>;
         final dtos = data.map((data) => QuestInfoShortDto.fromJson(data));
-        final questSummaryList = dtos.map((e) => e.toQuestInfoShort()).toList();
-        _questsSummaryStreamController.add(questSummaryList);
+        final questSummary = dtos.map((e) => e.toQuestInfoShort()).toList();
+        if (questSummary.length != 5) {
+          throw Exception('Invalid number of quests in summary');
+        }
+        _questsSummaryStreamController.add(questSummary);
       }
     });
   }

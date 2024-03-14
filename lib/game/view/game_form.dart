@@ -28,7 +28,7 @@ class GameForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //_QuestTiles(), //TODO uncomment
+          _QuestTiles(),
           Expanded(
             child: _TeamWrap(),
           ),

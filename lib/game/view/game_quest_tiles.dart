@@ -7,18 +7,17 @@ class _QuestTiles extends StatelessWidget {
       color: const Color.fromARGB(172, 63, 63, 63),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: BlocBuilder<GameCubit, GameState>(
-            buildWhen: (previous, current) =>
-                previous.questStatuses != current.questStatuses,
-            builder: (context, state) {
+        child: StreamBuilder<List<QuestInfoShort>>(
+            stream: context.read<IDataRepository>().streamQuestsSummary(),
+            builder: (context, snapshot) {
+              var questsSummary = snapshot.data;
+              if (questsSummary == null) {
+                return const CircularProgressIndicator();
+              }
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _QuestTile(questNumber: 1, gameState: state),
-                  _QuestTile(questNumber: 2, gameState: state),
-                  _QuestTile(questNumber: 3, gameState: state),
-                  _QuestTile(questNumber: 4, gameState: state),
-                  _QuestTile(questNumber: 5, gameState: state),
+                  ...questsSummary.map((qi) => _QuestTile(questInfo: qi)),
                 ],
               );
             }),
@@ -28,112 +27,98 @@ class _QuestTiles extends StatelessWidget {
 }
 
 class _QuestTile extends StatelessWidget {
-  const _QuestTile({
-    required this.questNumber,
-    required this.gameState,
-  });
+  const _QuestTile({required this.questInfo});
 
-  final int questNumber;
-  final GameState gameState;
-
-  Color _questTileColor(QuestStatus? questStatus) {
-    // switch (questStatus) {
-    //   case QuestStatus.success:
-    //     return Colors.green.shade700;
-    //   case QuestStatus.fail:
-    //     return Colors.red.shade700;
-    //   case QuestStatus.ongoing:
-    //     return const Color.fromARGB(255, 64, 134, 169);
-    //   case QuestStatus.upcoming:
-    //     return const Color.fromARGB(255, 13, 66, 110);
-    //   case QuestStatus.error:
-    //   case null:
-    //     return const Color.fromARGB(255, 35, 35, 35);
-    // }
-    return const Color.fromARGB(255, 35, 35, 35);
-  }
-
-  IconData _questTileIconData(QuestStatus? questStatus) {
-    // switch (questStatus) {
-    //   case QuestStatus.success:
-    //     return FluttarturIcons.crown;
-    //   case QuestStatus.fail:
-    //     return FluttarturIcons.crossed_swords;
-    //   case QuestStatus.ongoing:
-    //     return FluttarturIcons.group;
-    //   case QuestStatus.upcoming:
-    //     return FluttarturIcons.locked_fortress;
-    //   case QuestStatus.error:
-    //   case null:
-    //     return Icons.error_outline;
-    // }
-    return Icons.error_outline;
-  }
+  final QuestInfoShort questInfo;
 
   @override
   Widget build(BuildContext context) {
-    final questStatus = gameState.questStatuses[questNumber - 1];
-    return FutureBuilder<int>(
-      future:
-          null, //context.read<IDataRepository>().playersCount, //TODO uncomment
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-
-        final playersCount = snapshot.data ?? 5;
-        final squadFullSize =
-            context.read<GameCubit>().squadFullSize(playersCount, questNumber);
-        final isTwoFailsQuest = context
-            .read<GameCubit>()
-            .isTwoFailsQuest(playersCount, questNumber);
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            isTwoFailsQuest
-                ? CircleAvatar(
-                    radius: 27,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: _questTileColor(questStatus),
-                      child: IconButton(
-                        iconSize: 36,
-                        color: Colors.white,
-                        icon: Icon(_questTileIconData(questStatus)),
-                        onPressed: () {
-                          context.read<GameCubit>().questVotesInfo(questNumber);
-                        },
-                      ),
-                    ),
-                  )
-                : CircleAvatar(
-                    radius: 30,
-                    backgroundColor: _questTileColor(questStatus),
-                    child: IconButton(
-                      iconSize: 40,
-                      color: Colors.white,
-                      icon: Icon(_questTileIconData(questStatus)),
-                      onPressed: () {
-                        // TODO !! quest info
-                      },
-                    ),
+    final appearance = _QuestTileAppearance.fromStatus(questInfo.status);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        questInfo.isDoubleFail // TODO remkae this circles to less redundant
+            ? CircleAvatar(
+                radius: 27,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: appearance.bgColor,
+                  child: IconButton(
+                    iconSize: 36,
+                    color: Colors.white,
+                    icon: Icon(appearance.iconData),
+                    onPressed: () {
+                      // TODO !! quest info
+                    },
                   ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(isTwoFailsQuest ? "Ⅱ" : "",
-                    style: const TextStyle(fontSize: 18)),
-                Text("$squadFullSize", style: const TextStyle(fontSize: 20)),
-              ],
+                ),
+              )
+            : CircleAvatar(
+                radius: 30,
+                backgroundColor: appearance.bgColor,
+                child: IconButton(
+                  iconSize: 40,
+                  color: Colors.white,
+                  icon: Icon(appearance.iconData),
+                  onPressed: () {
+                    // TODO !! quest info
+                  },
+                ),
+              ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(
+              questInfo.isDoubleFail ? "Ⅱ" : "",
+              style: const TextStyle(fontSize: 18),
+            ),
+            Text(
+              "${questInfo.requiredPlayersNumber}",
+              style: const TextStyle(fontSize: 20),
             ),
           ],
-        );
-      },
+        ),
+      ],
     );
+  }
+}
+
+class _QuestTileAppearance {
+  final Color bgColor;
+  final IconData iconData;
+
+  _QuestTileAppearance(this.bgColor, this.iconData);
+
+  factory _QuestTileAppearance.fromStatus(QuestStatus questStatus) {
+    switch (questStatus) {
+      case QuestStatus.successful:
+        return _QuestTileAppearance(
+          Colors.green.shade700,
+          FluttarturIcons.crown,
+        );
+      case QuestStatus.failed:
+        return _QuestTileAppearance(
+          Colors.red.shade700,
+          FluttarturIcons.crossed_swords,
+        );
+      case QuestStatus.ongoing:
+        return _QuestTileAppearance(
+          const Color.fromARGB(255, 64, 134, 169),
+          FluttarturIcons.group,
+        );
+      case QuestStatus.upcoming:
+        return _QuestTileAppearance(
+          const Color.fromARGB(255, 13, 66, 110),
+          FluttarturIcons.locked_fortress,
+        );
+      case QuestStatus.rejected: // should not appear in list, equal to error
+      case QuestStatus.error:
+        return _QuestTileAppearance(
+          const Color.fromARGB(255, 35, 35, 35),
+          Icons.error_outline,
+        );
+    }
   }
 }
