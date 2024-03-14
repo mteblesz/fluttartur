@@ -2,7 +2,6 @@ part of 'rtu_repository.dart';
 
 extension MatchupUpdates on RtuRepository {
   void subscribePlayersList() {
-    _playerStreamController = StreamController<List<Player>>.broadcast();
     hubConnection.on(RtuConfig.ReceivePlayerList, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final data = args[0] as List<dynamic>;

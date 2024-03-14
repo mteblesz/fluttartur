@@ -31,13 +31,16 @@ class RtuRepository {
     hubConnection.stop();
   }
 
-  late StreamController<List<Player>> _playerStreamController;
+  final StreamController<List<Player>> _playerStreamController =
+      StreamController<List<Player>>.broadcast();
   Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
-  late StreamController<Squad> _currentSquadStreamController;
+  final StreamController<Squad> _currentSquadStreamController =
+      StreamController<Squad>.broadcast();
   Stream<Squad> get currentSquadStream => _currentSquadStreamController.stream;
 
-  late StreamController<List<QuestInfoShort>> _questsSummaryStreamController;
+  final StreamController<List<QuestInfoShort>> _questsSummaryStreamController =
+      StreamController<List<QuestInfoShort>>.broadcast();
   Stream<List<QuestInfoShort>> get questsSummaryStream =>
       _questsSummaryStreamController.stream;
 }
