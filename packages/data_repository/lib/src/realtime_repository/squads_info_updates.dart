@@ -2,6 +2,7 @@ part of 'rtu_repository.dart';
 
 extension SquadsInfoUpdates on RtuRepository {
   void subscribeCurrentSquad() {
+    _currentSquadStreamController = StreamController<Squad>.broadcast();
     hubConnection.on(RtuConfig.ReceiveCurrentSquad, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is Map<String, dynamic>) {
         final dto = SquadInfoDto.fromJson(args[0] as Map<String, dynamic>);
@@ -19,6 +20,8 @@ extension SquadsInfoUpdates on RtuRepository {
   // SQUADS
 
   void subscribeQuestsSummary() {
+    _questsSummaryStreamController =
+        StreamController<List<QuestInfoShort>>.broadcast();
     hubConnection.on(RtuConfig.ReceiveQuestsSummary, (List<Object?>? args) {
       if (args != null && args.isNotEmpty && args[0] is List) {
         final data = args[0] as List<dynamic>;
