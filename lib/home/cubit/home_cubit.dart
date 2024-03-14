@@ -8,6 +8,10 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._dataRepository) : super(const HomeState());
 
+  // TODO maybe all database calls from here should be maybe moved
+  //to datarepo constructor as handlers when they call methods of this class,
+  //else be called when joining or statign rom in methods of data repo
+
   final IDataRepository _dataRepository;
 
   /// directs to lobby page

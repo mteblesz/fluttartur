@@ -39,7 +39,7 @@ class MatchupCubit extends Cubit<MatchupState> {
     if (!isHost) return;
     emit(state.copyWith(statusOfStartGame: FormzStatus.submissionInProgress));
     try {
-      await _dataRepository.startGame(rolesDef: state.rolesDef);
+      _dataRepository.startGame(rolesDef: state.rolesDef);
       emit(state.copyWith(statusOfStartGame: FormzStatus.submissionSuccess));
     } on DataRepoFailure catch (e) {
       emit(state.copyWith(
