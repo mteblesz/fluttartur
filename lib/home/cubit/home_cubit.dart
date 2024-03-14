@@ -30,8 +30,8 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// directs back to lobby
-  void leaveMatchup() async {
-    await _dataRepository.leaveMatchup(); // disposes rtu
+  void leaveMatchup() {
+    _dataRepository.leaveMatchup(); // disposes rtu
     goToLobby();
   }
 
