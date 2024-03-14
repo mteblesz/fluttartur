@@ -14,6 +14,8 @@ class HomeCubit extends Cubit<HomeState> {
   void goToLobby() {
     emit(state.copyWith(status: HomeStatus.inLobby));
     _dataRepository.unsubscribePlayersList();
+    _dataRepository.unsubscribeQuestsSummary();
+    _dataRepository.unsubscribeCurrentSquad();
   }
 
   /// directs to matchup page
@@ -39,6 +41,8 @@ class HomeCubit extends Cubit<HomeState> {
       // TODO push some notification to the user instead this:
       handler: (p) => goToLobby(),
     );
+    _dataRepository.subscribeQuestsSummary();
+    _dataRepository.subscribeCurrentSquad();
     emit(state.copyWith(status: HomeStatus.inGame));
   }
 
