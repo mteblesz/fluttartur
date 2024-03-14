@@ -10,13 +10,10 @@ class HomeCubit extends Cubit<HomeState> {
 
   final IDataRepository _dataRepository;
 
-  /// directs to game pages
-  void goToGame() {
-    _dataRepository.handlePlayerLeftGame(
-      // TODO push some notification to the user
-      handler: (p) => goToLobby(),
-    );
-    emit(state.copyWith(status: HomeStatus.inGame));
+  /// directs to lobby page
+  void goToLobby() {
+    emit(state.copyWith(status: HomeStatus.inLobby));
+    _dataRepository.unsubscribePlayersList();
   }
 
   /// directs to matchup page
@@ -30,19 +27,24 @@ class HomeCubit extends Cubit<HomeState> {
         status: isHost ? HomeStatus.inMathupIsHost : HomeStatus.inMathup));
   }
 
-  /// directs to lobby page
-  void goToLobby() {
-    emit(state.copyWith(status: HomeStatus.inLobby));
-    _dataRepository.unsubscribePlayersList();
+  /// directs back to lobby
+  void leaveMatchup() async {
+    await _dataRepository.leaveMatchup(); // disposes rtu
+    goToLobby();
+  }
+
+  /// directs to game pages
+  void goToGame() {
+    _dataRepository.handlePlayerLeftGame(
+      // TODO push some notification to the user instead this:
+      handler: (p) => goToLobby(),
+    );
+    emit(state.copyWith(status: HomeStatus.inGame));
   }
 
   /// directs back to lobby
-  void leaveMatchup() {
-    _dataRepository.leaveMatchup();
-  }
-
-  /// directs back to lobby
-  void leaveGame() {
-    _dataRepository.leaveGame();
+  void leaveGame() async {
+    await _dataRepository.leaveGame(); // disposes rtu
+    goToLobby();
   }
 }

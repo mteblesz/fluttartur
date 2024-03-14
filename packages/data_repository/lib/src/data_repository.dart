@@ -83,6 +83,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> leaveMatchup() async {
+    _rtuRepository.dispose();
     await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
       removedPlayerId: _cache.currentPlayerId,
@@ -161,6 +162,7 @@ class DataRepository implements IDataRepository {
 //------------------------------ game misc -------------------------------------
   @override
   Future<void> leaveGame() async {
+    _rtuRepository.dispose();
     await _restRepository.leaveGame(
       playerId: _cache.currentPlayerId,
     );
