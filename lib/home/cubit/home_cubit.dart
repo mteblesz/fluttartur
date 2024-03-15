@@ -8,14 +8,10 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._dataRepository) : super(const HomeState());
 
-  // TODO maybe all database calls from here should be maybe moved
-  //to datarepo constructor as handlers when they call methods of this class,
-  //else be called when joining or statign rom in methods of data repo
-
   final IDataRepository _dataRepository;
 
   /// directs to lobby page
-  void goToLobby() {
+  void _goToLobby() {
     emit(state.copyWith(status: HomeStatus.inLobby));
     _dataRepository.unsubscribePlayersList();
     _dataRepository.unsubscribeQuestsSummary();
@@ -25,7 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
     // TODO to be done by a BLoC event maybe?
-    _dataRepository.handlePlayerRemoval(handler: () => goToLobby());
+    _dataRepository.handlePlayerRemoval(handler: () => _goToLobby());
     _dataRepository.handleGameStarted(handler: () => goToGame());
     _dataRepository.subscribePlayersList();
 
@@ -36,15 +32,13 @@ class HomeCubit extends Cubit<HomeState> {
   /// directs back to lobby
   void leaveMatchup() {
     _dataRepository.leaveMatchup(); // disposes rtu
-    goToLobby();
+    _goToLobby();
   }
 
   /// directs to game pages
   void goToGame() {
-    _dataRepository.handlePlayerLeftGame(
-      // TODO push some notification to the user instead this:
-      handler: (p) => goToLobby(),
-    );
+    // TODO push some notification to the user instead this:
+    _dataRepository.handlePlayerLeftGame(handler: (p) => leaveGame());
     _dataRepository.subscribeQuestsSummary();
     _dataRepository.subscribeCurrentSquad();
     emit(state.copyWith(status: HomeStatus.inGame));
@@ -53,6 +47,6 @@ class HomeCubit extends Cubit<HomeState> {
   /// directs back to lobby
   void leaveGame() async {
     await _dataRepository.leaveGame(); // disposes rtu
-    goToLobby();
+    _goToLobby();
   }
 }

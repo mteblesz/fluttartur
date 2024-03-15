@@ -27,24 +27,17 @@ class DataRepository implements IDataRepository {
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
-    try {
-      final roomId = await _restRepository.createRoom();
-      final playerId = await _restRepository.joinRoom(roomId: roomId);
-      _cache.currentPlayerId = playerId;
-      _cache.currentRoomId = roomId;
-      await _rtuRepository.connect(roomId: roomId);
-    } on Exception catch (_) {
-      _rtuRepository.dispose();
-    }
+    final roomId = await _restRepository.createRoom();
+    await joinRoom(roomId: roomId);
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
     try {
+      await _rtuRepository.connect(roomId: roomId);
       int playerId = await _restRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
-      await _rtuRepository.connect(roomId: roomId);
     } on Exception catch (_) {
       _rtuRepository.dispose();
     }
@@ -122,6 +115,14 @@ class DataRepository implements IDataRepository {
     });
   }
 
+  @override
+  Future<void> leaveGame() async {
+    _rtuRepository.dispose();
+    await _restRepository.leaveGame(
+      playerId: _cache.currentPlayerId,
+    );
+  }
+
 //------------------------------ game init -------------------------------------
 
   Future<void> _fetchTeamRole() async {
@@ -160,13 +161,6 @@ class DataRepository implements IDataRepository {
   }
 
 //------------------------------ game misc -------------------------------------
-  @override
-  Future<void> leaveGame() async {
-    _rtuRepository.dispose();
-    await _restRepository.leaveGame(
-      playerId: _cache.currentPlayerId,
-    );
-  }
 
   @override
   Future<List<Player>> getPlayers() {

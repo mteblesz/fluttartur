@@ -32,15 +32,15 @@ class RtuRepository {
   }
 
   StreamController<List<Player>> _playerStreamController =
-      StreamController<List<Player>>.broadcast();
+      StreamController<List<Player>>();
   Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
   StreamController<Squad> _currentSquadStreamController =
-      StreamController<Squad>.broadcast();
+      StreamController<Squad>();
   Stream<Squad> get currentSquadStream => _currentSquadStreamController.stream;
 
   StreamController<List<QuestInfoShort>> _questsSummaryStreamController =
-      StreamController<List<QuestInfoShort>>.broadcast();
+      StreamController<List<QuestInfoShort>>();
   Stream<List<QuestInfoShort>> get questsSummaryStream =>
       _questsSummaryStreamController.stream;
 }
