@@ -115,6 +115,14 @@ class DataRepository implements IDataRepository {
     });
   }
 
+  @override
+  Future<void> leaveGame() async {
+    _rtuRepository.dispose();
+    await _restRepository.leaveGame(
+      playerId: _cache.currentPlayerId,
+    );
+  }
+
 //------------------------------ game init -------------------------------------
 
   Future<void> _fetchTeamRole() async {
@@ -153,13 +161,6 @@ class DataRepository implements IDataRepository {
   }
 
 //------------------------------ game misc -------------------------------------
-  @override
-  Future<void> leaveGame() async {
-    _rtuRepository.dispose();
-    await _restRepository.leaveGame(
-      playerId: _cache.currentPlayerId,
-    );
-  }
 
   @override
   Future<List<Player>> getPlayers() {
