@@ -18,8 +18,6 @@ extension SquadsInfoUpdates on RtuRepository {
     _currentSquadStreamController.close();
   }
 
-  // SQUADS
-
   void subscribeQuestsSummary() {
     _questsSummaryStreamController.close();
     _questsSummaryStreamController = StreamController<List<QuestInfoShort>>();
