@@ -10,30 +10,36 @@ class HomeCubit extends Cubit<HomeState> {
 
   final IDataRepository _dataRepository;
 
-  /// directs to game pages
-  void goToGame() {
-    emit(state.copyWith(status: HomeStatus.inGame));
+  /// directs to lobby page
+  void _goToLobby() {
+    emit(state.copyWith(status: HomeStatus.inLobby));
   }
 
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
     // TODO to be done by a BLoC event maybe?
-    _dataRepository.handlePlayerRemoval(handler: () => goToLobby());
+    _dataRepository.handlePlayerRemoval(handler: () => _goToLobby());
     _dataRepository.handleGameStarted(handler: () => goToGame());
-    _dataRepository.subscribePlayersList();
-
     emit(state.copyWith(
         status: isHost ? HomeStatus.inMathupIsHost : HomeStatus.inMathup));
   }
 
-  /// directs to lobby page
-  void goToLobby() {
-    emit(state.copyWith(status: HomeStatus.inLobby));
-    _dataRepository.unsubscribePlayersList();
+  /// directs back to lobby
+  void leaveMatchup() {
+    _dataRepository.leaveMatchup(); // disposes rtu
+    _goToLobby();
+  }
+
+  /// directs to game pages
+  void goToGame() {
+    // TODO push some notification to the user instead this:
+    _dataRepository.handlePlayerLeftGame(handler: (p) => leaveGame());
+    emit(state.copyWith(status: HomeStatus.inGame));
   }
 
   /// directs back to lobby
-  void leaveRoom() {
-    _dataRepository.leaveRoom();
+  void leaveGame() async {
+    await _dataRepository.leaveGame(); // disposes rtu
+    _goToLobby();
   }
 }

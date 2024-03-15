@@ -44,7 +44,7 @@ class GameCubit extends Cubit<GameState> {
 
     await _dataRepository.addMember(
       questNumber: state.questNumber,
-      playerId: player.id,
+      playerId: player.playerId,
       nick: player.nick,
     );
 
@@ -59,7 +59,7 @@ class GameCubit extends Cubit<GameState> {
 
     await _dataRepository.removeMember(
       questNumber: state.questNumber,
-      memberId: member.id,
+      memberId: member.playerId,
     );
 
     emit(state.copyWith(isSquadFull: false));
@@ -98,7 +98,9 @@ class GameCubit extends Cubit<GameState> {
         if (squad.isSuccessfull == null) return;
         emit(state.copyWith(
             questStatuses: state.insertToQuestStatuses(
-          squad.isSuccessfull == true ? QuestStatus.success : QuestStatus.fail,
+          squad.isSuccessfull == true
+              ? QuestStatus.successful
+              : QuestStatus.failed,
         )));
 
         emit(state.copyWith(lastQuestOutcome: squad.isSuccessfull));
@@ -152,7 +154,8 @@ class GameCubit extends Cubit<GameState> {
 
   Future<List<bool>>? questVotesInfo(int questNumber) async {
     final questStatus = state.questStatuses[questNumber - 1];
-    if (questStatus != QuestStatus.success && questStatus != QuestStatus.fail) {
+    if (questStatus != QuestStatus.successful &&
+        questStatus != QuestStatus.failed) {
       return List<bool>.empty();
     }
     return await _dataRepository.questVotesInfo(questNumber);

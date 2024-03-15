@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cache/cache.dart';
 import 'package:data_repository/model/model.dart';
 import 'dtos/dtos.dart';
-import 'package:data_repository/src/api_repository/api_repository.dart';
+import 'package:data_repository/src/rest_repository/rest_repository.dart';
 import 'package:data_repository/src/realtime_repository/rtu_repository.dart';
 import 'package:data_repository/src/data_cache.dart';
 
@@ -13,11 +13,11 @@ class DataRepository implements IDataRepository {
     CacheClient? cacheClient,
   }) {
     _cache = DataCache(cacheClient ?? CacheClient());
-    _apiRepository = ApiRepository(getAuthToken: () => _cache.authToken);
+    _restRepository = RestRepository(getAuthToken: () => _cache.authToken);
     _rtuRepository = RtuRepository();
   }
   late DataCache _cache;
-  late ApiRepository _apiRepository;
+  late RestRepository _restRepository;
   late RtuRepository _rtuRepository;
 
   //----------------------- info -----------------------
@@ -27,32 +27,27 @@ class DataRepository implements IDataRepository {
   //----------------------- matchup -----------------------
   @override
   Future<void> createAndJoinRoom() async {
-    try {
-      final roomId = await _apiRepository.createRoom();
-      final playerId = await _apiRepository.joinRoom(roomId: roomId);
-      _cache.currentPlayerId = playerId;
-      _cache.currentRoomId = roomId;
-      await _rtuRepository.connect(roomId: roomId);
-    } on Exception catch (_) {
-      _rtuRepository.dispose();
-    }
+    final roomId = await _restRepository.createRoom();
+    await joinRoom(roomId: roomId);
   }
 
   @override
   Future<void> joinRoom({required int roomId}) async {
     try {
-      int playerId = await _apiRepository.joinRoom(roomId: roomId);
+      await _rtuRepository.connect(roomId: roomId);
+      subscribePlayersList();
+      int playerId = await _restRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
-      await _rtuRepository.connect(roomId: roomId);
     } on Exception catch (_) {
+      unsubscribePlayersList();
       _rtuRepository.dispose();
     }
   }
 
   @override
   Future<void> setNickname({required String nick}) async {
-    await _apiRepository.setNickname(
+    await _restRepository.setNickname(
         dto: NicknameSetDto(
       roomId: _cache.currentRoomId,
       playerId: _cache.currentPlayerId,
@@ -62,8 +57,8 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> addDummyPlayer({required String nick}) async {
-    int playerId = await _apiRepository.joinRoom(roomId: _cache.currentRoomId);
-    await _apiRepository.setNickname(
+    int playerId = await _restRepository.joinRoom(roomId: _cache.currentRoomId);
+    await _restRepository.setNickname(
         dto: NicknameSetDto(
       roomId: _cache.currentRoomId,
       playerId: playerId,
@@ -82,8 +77,10 @@ class DataRepository implements IDataRepository {
   void unsubscribePlayersList() => _rtuRepository.unsubscribePlayersList();
 
   @override
-  Future<void> leaveRoom() async {
-    await _apiRepository.removePlayer(
+  Future<void> leaveMatchup() async {
+    unsubscribePlayersList();
+    _rtuRepository.dispose();
+    await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
       removedPlayerId: _cache.currentPlayerId,
     );
@@ -91,7 +88,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> removePlayer({required int playerId}) async {
-    await _apiRepository.removePlayer(
+    await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
       removedPlayerId: playerId,
     );
@@ -100,14 +97,14 @@ class DataRepository implements IDataRepository {
   @override
   void handlePlayerRemoval({required void Function() handler}) {
     _rtuRepository.handlePlayerRemoval(
-      playerId: _cache.currentPlayerId,
+      currentPlayerId: _cache.currentPlayerId,
       removalHandler: handler,
     );
   }
 
   @override
   Future<void> startGame({required RolesDef rolesDef}) async {
-    await _apiRepository.startGame(
+    await _restRepository.startGame(
       roomId: _cache.currentRoomId,
       rolesDef: rolesDef,
     );
@@ -116,17 +113,30 @@ class DataRepository implements IDataRepository {
   @override
   void handleGameStarted({required void Function() handler}) {
     _rtuRepository.handleGameStarted(startGameHandler: () async {
+      subscribeQuestsSummary();
+      subscribeCurrentSquad();
       await _fetchTeamRole();
       handler();
     });
   }
 
-//------------------------------ game -----------------------------------------
+  @override
+  Future<void> leaveGame() async {
+    unsubscribePlayersList();
+    unsubscribeQuestsSummary();
+    unsubscribeCurrentSquad();
+    _rtuRepository.dispose();
+    await _restRepository.leaveGame(
+      playerId: _cache.currentPlayerId,
+    );
+  }
+
+//------------------------------ game init -------------------------------------
 
   Future<void> _fetchTeamRole() async {
     final playerId = _cache.currentPlayerId;
     _cache.currentTeamRole =
-        await _apiRepository.getRoleByPlayerId(playerId: playerId);
+        await _restRepository.getRoleByPlayerId(playerId: playerId);
   }
 
   @override
@@ -134,28 +144,59 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<List<Player>> getMerlinAndMorgana() {
-    return _apiRepository.getMerlinAndMorgana(roomId: _cache.currentRoomId);
+    return _restRepository.getMerlinAndMorgana(roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getEvilPlayersForMerlin() {
-    return _apiRepository.getEvilPlayersForMerlin(roomId: _cache.currentRoomId);
+    return _restRepository.getEvilPlayersForMerlin(
+        roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getEvilPlayersForEvil() {
-    return _apiRepository.getEvilPlayersForEvil(roomId: _cache.currentRoomId);
+    return _restRepository.getEvilPlayersForEvil(roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getEvilPlayers() {
-    return _apiRepository.getEvilPlayers(roomId: _cache.currentRoomId);
+    return _restRepository.getEvilPlayers(roomId: _cache.currentRoomId);
   }
 
   @override
   Future<List<Player>> getGoodPlayers() {
-    return _apiRepository.getGoodPlayers(roomId: _cache.currentRoomId);
+    return _restRepository.getGoodPlayers(roomId: _cache.currentRoomId);
   }
+
+//------------------------------ game misc -------------------------------------
+
+  @override
+  Future<List<Player>> getPlayers() {
+    return _restRepository.getPlayers(roomId: _cache.currentRoomId);
+  }
+
+  @override
+  void handlePlayerLeftGame({
+    required void Function(Player) handler,
+  }) {
+    _rtuRepository.handlePlayerLeftGame(playerLeftHandler: handler);
+  }
+
+//------------------------------ squad/quest info -------------------------------------
+  @override
+  Stream<Squad> streamCurrentSquad() => _rtuRepository.currentSquadStream;
+  @override
+  void subscribeCurrentSquad() => _rtuRepository.subscribeCurrentSquad();
+  @override
+  void unsubscribeCurrentSquad() => _rtuRepository.unsubscribeCurrentSquad();
+
+  @override
+  Stream<List<QuestInfoShort>> streamQuestsSummary() =>
+      _rtuRepository.questsSummaryStream;
+  @override
+  void subscribeQuestsSummary() => _rtuRepository.subscribeQuestsSummary();
+  @override
+  void unsubscribeQuestsSummary() => _rtuRepository.unsubscribeQuestsSummary();
 
 //----------------------------------------------------------------------------
 
@@ -175,20 +216,14 @@ class DataRepository implements IDataRepository {
   //  old stuff for backwards-compatibility during changes (to be removed)
 
   @override
-  String currentSquadId = "";
+  int currentSquadId = -1;
 
   @override
   Future<void> addMember(
-      {required int questNumber,
-      required String playerId,
-      required String nick}) {
+      {required int questNumber, required int playerId, required String nick}) {
     // : implement addMember
     throw UnimplementedError();
   }
-
-  @override
-  // : implement currentPlayer
-  Player get currentPlayer => throw UnimplementedError();
 
   @override
   Future<List<Squad>> getApprovedSquads() {
@@ -215,8 +250,7 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> removeMember(
-      {required int questNumber, required String memberId}) {
+  Future<void> removeMember({required int questNumber, required int memberId}) {
     // : implement removeMember
     throw UnimplementedError();
   }
@@ -247,7 +281,7 @@ class DataRepository implements IDataRepository {
 
   @override
   void subscribeSquadIsSubmittedWith(
-      {String squadId = '', required void Function(Squad p1) doLogic}) {
+      {int squadId = -1, required void Function(Squad p1) doLogic}) {
     // : implement subscribeSquadIsSubmittedWith
   }
 

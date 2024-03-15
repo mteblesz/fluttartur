@@ -1,4 +1,10 @@
-import 'package:equatable/equatable.dart';
+enum RoomStatus {
+  unknown,
+  matchup,
+  playing,
+  assassination,
+  result,
+}
 
 enum Team {
   empty,
@@ -33,29 +39,41 @@ class RoleTeamMapping {
   };
 }
 
-class TeamRole extends Equatable {
-  final Team team;
-  final Role role;
+enum SquadStatus {
+  unknown,
+  upcoming,
+  squadVoting,
+  submitted,
+  approved,
+  rejected,
+  questVoting,
+  successful,
+  failed,
+  error,
+}
 
-  const TeamRole(this.team, this.role);
+enum QuestStatus {
+  upcoming,
+  ongoing,
+  rejected,
+  successful,
+  failed,
+  error,
+}
 
-  @override
-  List<Object?> get props => [team, role];
+class SquadQuestStatusMapping {
+  static QuestStatus map(SquadStatus status) => _dictionary[status]!;
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    if (other is TeamRole) {
-      return other.team == team && other.role == role;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode => Object.hash(team, role);
-
-  static const empty = TeamRole(Team.empty, Role.empty);
-  bool get isEmpty => this == empty;
-  bool get isNotEmpty => this != empty;
+  static final Map<SquadStatus, QuestStatus> _dictionary = {
+    SquadStatus.failed: QuestStatus.failed,
+    SquadStatus.unknown: QuestStatus.error,
+    SquadStatus.upcoming: QuestStatus.upcoming,
+    SquadStatus.squadVoting: QuestStatus.ongoing,
+    SquadStatus.submitted: QuestStatus.ongoing,
+    SquadStatus.approved: QuestStatus.ongoing,
+    SquadStatus.rejected: QuestStatus.rejected,
+    SquadStatus.questVoting: QuestStatus.ongoing,
+    SquadStatus.successful: QuestStatus.successful,
+    SquadStatus.error: QuestStatus.error,
+  };
 }

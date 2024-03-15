@@ -15,7 +15,7 @@ abstract class IDataRepository {
   void unsubscribePlayersList();
 
   Future<void> removePlayer({required int playerId});
-  Future<void> leaveRoom();
+  Future<void> leaveMatchup();
   void handlePlayerRemoval({required void Function() handler});
 
   Future<void> startGame({required RolesDef rolesDef});
@@ -23,11 +23,25 @@ abstract class IDataRepository {
 
   // -------------
   TeamRole get currentTeamRole;
+
   Future<List<Player>> getMerlinAndMorgana();
   Future<List<Player>> getEvilPlayersForMerlin();
   Future<List<Player>> getEvilPlayersForEvil();
   Future<List<Player>> getEvilPlayers();
   Future<List<Player>> getGoodPlayers();
+
+  Future<void> leaveGame();
+  Future<List<Player>> getPlayers();
+  void handlePlayerLeftGame({required void Function(Player) handler});
+
+  Stream<Squad> streamCurrentSquad();
+  void subscribeCurrentSquad();
+  void unsubscribeCurrentSquad();
+
+  Stream<List<QuestInfoShort>> streamQuestsSummary();
+  void subscribeQuestsSummary();
+  void unsubscribeQuestsSummary();
+
 //----------------------------------------------------------------------------
 
   // -------------
@@ -38,12 +52,12 @@ abstract class IDataRepository {
   Stream<List<Player>> streamMembersList();
   Future<void> addMember({
     required int questNumber,
-    required String playerId,
+    required int playerId,
     required String nick,
   });
   Future<void> removeMember({
     required int questNumber,
-    required String memberId,
+    required int memberId,
   });
 
   Future<void> submitSquad();
@@ -51,12 +65,12 @@ abstract class IDataRepository {
   Future<void> nextSquad({required int questNumber});
 
   void subscribeSquadIsSubmittedWith({
-    String squadId = '',
+    int squadId = -1,
     required void Function(Squad) doLogic,
   });
   void unsubscribeSquadIsSubmitted();
 
-  String currentSquadId = "";
+  int currentSquadId = -1;
   void subscribeCurrentSquadIdWith({
     required void Function(String) doLogic,
   });

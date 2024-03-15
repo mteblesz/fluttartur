@@ -28,7 +28,7 @@ class RoomInfoDto {
 
   Room toRoom() {
     return Room(
-      id: roomId.toString(),
+      roomId: roomId,
       status: RoomStatus.values.byName(status),
       currentSquadId: currentSquadId?.toString(),
     );

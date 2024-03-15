@@ -1,7 +1,7 @@
 import 'package:universal_io/io.dart';
 import 'package:flutter/foundation.dart';
 
-class ApiConfig {
+class RestConfig {
   static String get baseUrl {
     if (Platform.isAndroid) {
       return 'https://10.0.2.2:7700';
@@ -35,10 +35,13 @@ class ApiConfig {
       '$apiUrl/info/evilknows/$roomId';
   static String getEvilPlayersForMerlinUrl(int roomId) =>
       '$apiUrl/info/merlinknows/$roomId';
-  static String getMerlinAndMorgana(int squadId) =>
+  static String getMerlinAndMorganaUrl(int squadId) =>
       '$apiUrl/info/percivalknowns/$squadId';
   static String getQuestBySquadIdUrl(int roomId) =>
       '$apiUrl/info/quest/$roomId';
+
+  static String leaveGameUrl(int playerId) => '$apiUrl/game/leave/$playerId';
+  static String getPlayersUrl(int roomId) => '$apiUrl/game/players/$roomId';
 
   static String addMemberUrl(int squadId) => '$apiUrl/squad/add/$squadId';
   static String removeMemberUrl(int squadId) => '$apiUrl/squad/remove/$squadId';
@@ -47,5 +50,5 @@ class ApiConfig {
   static String voteSquadUrl() => '$apiUrl/vote/squad';
   static String voteQuestUrl() => '$apiUrl/vote/quest';
 
-  static String killPlayerUrl(int id) => '$apiUrl/kill/$id';
+  static String killPlayerUrl(int playerId) => '$apiUrl/kill/$playerId';
 }
