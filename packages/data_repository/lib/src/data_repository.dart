@@ -35,10 +35,12 @@ class DataRepository implements IDataRepository {
   Future<void> joinRoom({required int roomId}) async {
     try {
       await _rtuRepository.connect(roomId: roomId);
+      subscribePlayersList();
       int playerId = await _restRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
     } on Exception catch (_) {
+      unsubscribePlayersList();
       _rtuRepository.dispose();
     }
   }
@@ -76,6 +78,7 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> leaveMatchup() async {
+    unsubscribePlayersList();
     _rtuRepository.dispose();
     await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
@@ -110,6 +113,8 @@ class DataRepository implements IDataRepository {
   @override
   void handleGameStarted({required void Function() handler}) {
     _rtuRepository.handleGameStarted(startGameHandler: () async {
+      subscribeQuestsSummary();
+      subscribeCurrentSquad();
       await _fetchTeamRole();
       handler();
     });
@@ -117,6 +122,9 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> leaveGame() async {
+    unsubscribePlayersList();
+    unsubscribeQuestsSummary();
+    unsubscribeCurrentSquad();
     _rtuRepository.dispose();
     await _restRepository.leaveGame(
       playerId: _cache.currentPlayerId,
