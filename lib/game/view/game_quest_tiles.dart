@@ -37,35 +37,23 @@ class _QuestTile extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        questInfo.isDoubleFail // TODO remkae this circles to less redundant
-            ? CircleAvatar(
-                radius: 27,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: appearance.bgColor,
-                  child: IconButton(
-                    iconSize: 36,
-                    color: Colors.white,
-                    icon: Icon(appearance.iconData),
-                    onPressed: () {
-                      // TODO !! quest info
-                    },
-                  ),
-                ),
-              )
-            : CircleAvatar(
-                radius: 30,
-                backgroundColor: appearance.bgColor,
-                child: IconButton(
-                  iconSize: 40,
-                  color: Colors.white,
-                  icon: Icon(appearance.iconData),
-                  onPressed: () {
-                    // TODO !! quest info
-                  },
-                ),
-              ),
+        CircleAvatar(
+          radius: 30,
+          backgroundColor:
+              questInfo.isDoubleFail ? Colors.white : appearance.bgColor,
+          child: CircleAvatar(
+            radius: 28,
+            backgroundColor: appearance.bgColor,
+            child: IconButton(
+              iconSize: 40,
+              color: Colors.white,
+              icon: Icon(appearance.iconData),
+              onPressed: () {
+                // TODO !! quest info
+              },
+            ),
+          ),
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
