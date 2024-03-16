@@ -60,6 +60,14 @@
   "squad": "Squad:",
   
   "questInfo": "Quest",
+  "requiredPlayersNumber": "Squad size",
+  "isDoubleFail": "For the mission to fail\nat least two 'Failure'\nvotes are needed.",
+  "questStatus_upcoming": "This is a future quest",
+  "questStatus_ongoing": "Current quest",
+  "questStatus_rejected": "Squad was rejected",
+  "questStatus_successful": "Ended with Success",
+  "questStatus_failed": "Ended with Failure",
+  "questStatus_error": "<error quest state>",
 
 
   "evilCourtiers_noOberon": "Evil courtiers (except Oberon):",
