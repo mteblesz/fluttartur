@@ -170,6 +170,7 @@ class DataRepository implements IDataRepository {
 
 //------------------------------ game misc -------------------------------------
 
+  // TODO it this needed?
   @override
   Future<List<Player>> getPlayers() {
     return _restRepository.getPlayers(roomId: _cache.currentRoomId);
@@ -197,6 +198,11 @@ class DataRepository implements IDataRepository {
   void subscribeQuestsSummary() => _rtuRepository.subscribeQuestsSummary();
   @override
   void unsubscribeQuestsSummary() => _rtuRepository.unsubscribeQuestsSummary();
+
+  @override
+  Future<QuestInfo> getQuestInfo({required int squadId}) {
+    return _restRepository.getQuestInfo(squadId: squadId);
+  }
 
 //----------------------------------------------------------------------------
 

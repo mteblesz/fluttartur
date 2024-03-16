@@ -48,9 +48,7 @@ class _QuestTile extends StatelessWidget {
               iconSize: 40,
               color: Colors.white,
               icon: Icon(appearance.iconData),
-              onPressed: () {
-                // TODO !! quest info
-              },
+              onPressed: () => pushQuestInfoDialog(context, questInfo),
             ),
           ),
         ),

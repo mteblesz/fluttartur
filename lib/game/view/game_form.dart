@@ -1,6 +1,7 @@
 import 'package:data_repository/data_repository.dart';
 import 'package:fluttartur/fluttartur_icons_icons.dart';
 import 'package:fluttartur/game/cubit/game_cubit.dart';
+import 'package:fluttartur/game/view/dialogs/quest_info_dialog.dart';
 import 'package:fluttartur/game/view/quest_page/quest_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class GameForm extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO change this to duration.zero (must get fresh player, cache gives old)
     Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(seconds: 1), //TODO remove those delays
       //() => pushCharacterInfoDialog(context), // TODO uncomment
     );
     return BlocListener<GameCubit, GameState>(

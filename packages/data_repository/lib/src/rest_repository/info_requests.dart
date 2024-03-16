@@ -72,4 +72,18 @@ extension InfoRequests on RestRepository {
   Future<List<Player>> getGoodPlayers({required int roomId}) {
     return _getPlayerListFromUrl(url: RestConfig.getGoodPlayersUrl(roomId));
   }
+
+  Future<QuestInfo> getQuestInfo({required int squadId}) async {
+    final response = await HttpSender.get(
+      Uri.parse(RestConfig.getQuestBySquadIdUrl(squadId)),
+      headers: getAuthHeaders(),
+    );
+
+    if (response.statusCode != 200) {
+      throw GetQuestInfoFailure(response.statusCode, response.body);
+    }
+    Map<String, dynamic> jsonBody = jsonDecode(response.body);
+
+    return QuestInfoDto.fromJson(jsonBody).toQuestInfo();
+  }
 }

@@ -42,6 +42,7 @@ abstract class IDataRepository {
   void subscribeQuestsSummary();
   void unsubscribeQuestsSummary();
 
+  Future<QuestInfo> getQuestInfo({required int squadId});
 //----------------------------------------------------------------------------
 
   // -------------
