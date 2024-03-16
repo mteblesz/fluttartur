@@ -95,15 +95,15 @@ class GameCubit extends Cubit<GameState> {
         }
         break;
       case GameStatus.questVoting:
-        if (squad.isSuccessfull == null) return;
+        if (squad.isSuccessful == null) return;
         emit(state.copyWith(
             questStatuses: state.insertToQuestStatuses(
-          squad.isSuccessfull == true
+          squad.isSuccessful == true
               ? QuestStatus.successful
               : QuestStatus.failed,
         )));
 
-        emit(state.copyWith(lastQuestOutcome: squad.isSuccessfull));
+        emit(state.copyWith(lastQuestOutcome: squad.isSuccessful));
         emit(state.copyWith(status: GameStatus.questResults));
         break;
       case GameStatus.questResults:
