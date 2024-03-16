@@ -68,7 +68,9 @@
   "questStatus_successful": "Ended with Success",
   "questStatus_failed": "Ended with Failure",
   "questStatus_error": "<error quest state>",
-
+  "questVotes": "Outcome",
+  "leader": "Leader",
+  "squadVotingInfo": "Squad acceptance",
 
   "evilCourtiers_noOberon": "Evil courtiers (except Oberon):",
   "evilCourtiers_noMordred": "Evil courtiers (except Mordred):",

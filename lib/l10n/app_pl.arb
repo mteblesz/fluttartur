@@ -68,6 +68,9 @@
   "questStatus_successful": "Zakończone sukcesem",
   "questStatus_failed": "Zakończone porażką",
   "questStatus_error": "<błąd stanu zadania>",
+  "questVotes": "Wynik",
+  "leader": "Przywódca",
+  "squadVotingInfo": "Głosy na drużynę",
 
   "evilCourtiers_noOberon": "Źli dworzanie (bez Oberona):",
   "evilCourtiers_noMordred": "Źli dworzanie (bez Mordreda):",

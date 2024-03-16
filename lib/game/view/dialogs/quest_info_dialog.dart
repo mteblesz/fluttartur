@@ -5,6 +5,7 @@ import 'package:fluttartur/widgets/rounded_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttartur/fluttartur_icons_icons.dart';
 
 Future<void> pushQuestInfoDialog(
     BuildContext gameContext, QuestInfoShort questInfo) {
@@ -57,12 +58,18 @@ class _DialogContent extends StatelessWidget {
             color: appearance.bgColor,
             thickness: 6,
           ),
-          _ShortQuestInfo(questInfo: questInfo),
-          questInfo.squadId == null
-              ? const SizedBox.shrink()
-              : _FullQuestInfo(
-                  squadId: questInfo.squadId!,
-                ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                _ShortQuestInfo(questInfo: questInfo),
+                questInfo.squadId == null
+                    ? const SizedBox.shrink()
+                    : _FullQuestInfo(
+                        squadId: questInfo.squadId!,
+                      ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -145,18 +152,79 @@ class _FullQuestInfoState extends State<_FullQuestInfo> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? CircularProgressIndicator()
-        : SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // leader text
+        ? const CircularProgressIndicator()
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // quest votes
+              loadedInfo.questVoteSuccessCount == null
+                  ? const SizedBox.shrink()
+                  : Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                                "${AppLocalizations.of(context)!.questVotes}: "),
+                            ..._getSecretVotesCardsLine(
+                                loadedInfo.requiredPlayersNumber,
+                                loadedInfo.questVoteSuccessCount!),
+                          ],
+                        ),
+                        loadedInfo.status == QuestStatus.successful
+                            ? const SizedBox.shrink()
+                            : Row(
+                                children: [
+                                  Text(AppLocalizations.of(context)!.success),
+                                ],
+                              ),
+                        loadedInfo.status == QuestStatus.failed
+                            ? const SizedBox.shrink()
+                            : Row(
+                                children: [
+                                  Text(AppLocalizations.of(context)!.fail),
+                                ],
+                              ),
+                      ],
+                    ),
 
-                // members list
+              // leader text
+              Text(
+                "${AppLocalizations.of(context)!.leader}: ${loadedInfo.leader.nick}",
+              ),
 
-                // secret votes
-              ],
-            ),
+              // members list
+              Wrap(children: <Widget>[
+                Text("${AppLocalizations.of(context)!.squad} "),
+                ...loadedInfo.members.map((member) => Text(member.nick)),
+              ]),
+
+              // squad votes
+              Text("${AppLocalizations.of(context)!.squadVotingInfo} "),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      const Icon(Icons.thumb_up,
+                          color: Color.fromARGB(255, 60, 188, 202)),
+                      ...loadedInfo.squadVoteInfo
+                          .where((vote) => vote.value == true)
+                          .map((vote) => Text(vote.voterNick)),
+                    ],
+                  ),
+                  const Divider(),
+                  Column(
+                    children: [
+                      const Icon(Icons.thumb_down,
+                          color: Color.fromARGB(255, 130, 34, 203)),
+                      ...loadedInfo.squadVoteInfo
+                          .where((vote) => vote.value == false)
+                          .map((vote) => Text(vote.voterNick)),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           );
   }
 }
@@ -177,5 +245,35 @@ String _getQuestStatuusString(BuildContext context, QuestStatus status) {
       return localizations.questStatus_failed;
     default:
       return localizations.questStatus_error;
+  }
+}
+
+List<Widget> _getSecretVotesCardsLine(int membersCount, int successCount) {
+  final List<Widget> cards = [];
+  for (int i = 0; i < successCount; i++) {
+    cards.add(const _VoteCard(value: true));
+  }
+  for (int i = 0; i < membersCount - successCount; i++) {
+    cards.add(const _VoteCard(value: false));
+  }
+  cards.shuffle();
+  return cards;
+}
+
+class _VoteCard extends StatelessWidget {
+  const _VoteCard({required this.value});
+  final bool value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Icon(
+          value ? FluttarturIcons.crown : FluttarturIcons.crossed_swords,
+          color: value ? Colors.green.shade50 : Colors.red.shade700,
+        ),
+      ),
+    );
   }
 }
