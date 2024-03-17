@@ -13,16 +13,24 @@ part 'team_wrap.dart';
 part 'game_buttons.dart';
 part 'game_quest_tiles.dart';
 
-class GameForm extends StatelessWidget {
+class GameForm extends StatefulWidget {
   const GameForm({super.key});
+  @override
+  State<GameForm> createState() => _GameFormState();
+}
+
+class _GameFormState extends State<GameForm> {
+  @override
+  void initState() {
+    super.initState();
+    // Show dialog after widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      pushCharacterInfoDialog(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO change this to duration.zero (must get fresh player, cache gives old)
-    Future.delayed(
-      const Duration(seconds: 1), //TODO remove those delays
-      //() => pushCharacterInfoDialog(context), // TODO uncomment
-    );
     return BlocListener<GameCubit, GameState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) => listenGameCubit(context, state),
@@ -33,7 +41,7 @@ class GameForm extends StatelessWidget {
           Expanded(
             child: _TeamWrap(),
           ),
-          //_GameButtons(),
+          _GameButtons(),
         ],
       ),
     );
