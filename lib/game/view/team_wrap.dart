@@ -6,30 +6,34 @@ class _TeamWrap extends StatelessWidget {
     return Expanded(
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              OutlinedText(AppLocalizations.of(context)!.court,
-                  style: const TextStyle(fontSize: 30)),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: _PlayerListView(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                OutlinedText(AppLocalizations.of(context)!.court,
+                    style: const TextStyle(fontSize: 30)),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: _PlayerListView(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              OutlinedText(AppLocalizations.of(context)!.squad,
-                  style: const TextStyle(fontSize: 30)),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: //_SquadListView(), //TODO uncomment
-                      const Text("<members list>"), //TODO remove
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                OutlinedText(AppLocalizations.of(context)!.squad,
+                    style: const TextStyle(fontSize: 30)),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: //_SquadListView(), //TODO uncomment
+                        const Text("<members list>"), //TODO remove
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
