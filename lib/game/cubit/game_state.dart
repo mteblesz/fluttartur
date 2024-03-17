@@ -17,14 +17,6 @@ enum GameStatus {
   gameResults,
 }
 
-enum QuestStatus {
-  success,
-  fail,
-  ongoing,
-  upcoming,
-  error,
-}
-
 class GameState extends Equatable {
   const GameState({
     this.status = GameStatus.squadChoice,

@@ -1,4 +1,4 @@
-import 'package:data_repository/models/models.dart';
+import 'package:data_repository/model/model.dart';
 
 import 'player_info_dto.dart';
 
@@ -28,7 +28,7 @@ class RoomInfoDto {
 
   Room toRoom() {
     return Room(
-      id: roomId.toString(),
+      roomId: roomId,
       status: RoomStatus.values.byName(status),
       currentSquadId: currentSquadId?.toString(),
     );

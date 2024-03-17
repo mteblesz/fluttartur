@@ -7,11 +7,6 @@ abstract class DataRepoFailure implements Exception {
   late String message;
 }
 
-class GetRoomFailure extends DataRepoFailure {
-  GetRoomFailure(int code, [String? body])
-      : super("retirieve room", code, body);
-}
-
 class CreateRoomFailure extends DataRepoFailure {
   CreateRoomFailure(int code, [String? body])
       : super("create room", code, body);
@@ -33,4 +28,27 @@ class RemovePlayerFailure extends DataRepoFailure {
 
 class StartGameFailure extends DataRepoFailure {
   StartGameFailure(int code, [String? body]) : super("start game", code, body);
+}
+
+class GetRoomFailure extends DataRepoFailure {
+  GetRoomFailure(int code, [String? body])
+      : super("retirieve room", code, body);
+}
+
+class GetRoleFailure extends DataRepoFailure {
+  GetRoleFailure(int code, [String? body]) : super("start game", code, body);
+}
+
+class GetFilteredPlayersListFailure extends DataRepoFailure {
+  GetFilteredPlayersListFailure(int code, [String? body])
+      : super("start game", code, body);
+}
+
+class GetPlayersListFailure extends DataRepoFailure {
+  GetPlayersListFailure(int code, [String? body])
+      : super("start game", code, body);
+}
+
+class LeaveGameFailure extends DataRepoFailure {
+  LeaveGameFailure(int code, [String? body]) : super("start game", code, body);
 }
