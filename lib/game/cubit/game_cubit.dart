@@ -145,21 +145,6 @@ class GameCubit extends Cubit<GameState> {
   Future<void> killPlayer({required Player player}) async {
     //await _dataRepository.updateMerlinKilled(player.role == "good_merlin");
   }
-
-  Future<List<Player>> listOfGoodPlayers() async {
-    return await _dataRepository.playersList();
-  }
-
-  //--------------------------------quest info logic----------------------------
-
-  Future<List<bool>>? questVotesInfo(int questNumber) async {
-    final questStatus = state.questStatuses[questNumber - 1];
-    if (questStatus != QuestStatus.successful &&
-        questStatus != QuestStatus.failed) {
-      return List<bool>.empty();
-    }
-    return await _dataRepository.questVotesInfo(questNumber);
-  }
 }
 
 class MembersLimitExceededFailure implements Exception {

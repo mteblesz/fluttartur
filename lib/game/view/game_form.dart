@@ -41,7 +41,7 @@ class _GameFormState extends State<GameForm> {
           Expanded(
             child: _TeamWrap(),
           ),
-          _GameButtons(),
+          //_GameButtons(), // TODO uncomment
         ],
       ),
     );
