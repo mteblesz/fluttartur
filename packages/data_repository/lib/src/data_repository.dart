@@ -68,9 +68,6 @@ class DataRepository implements IDataRepository {
 
   @override
   Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
-  // TODO jak stream pusty to api call o info,
-  // albo najpirw dodawac do streama po api callu a potem subskryowac,
-  // albo na serwerze kolejnosc cos nie cos?
   @override
   void subscribePlayersList() => _rtuRepository.subscribePlayersList();
   @override

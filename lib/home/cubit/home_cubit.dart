@@ -17,7 +17,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
-    // TODO to be done by a BLoC event maybe?
     _dataRepository.handlePlayerRemoval(handler: () => _goToLobby());
     _dataRepository.handleGameStarted(handler: () => goToGame());
     emit(state.copyWith(
@@ -32,7 +31,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// directs to game pages
   void goToGame() {
-    // TODO push some notification to the user instead this:
+    // TODO !!! push some notification to the user instead this:
     _dataRepository.handlePlayerLeftGame(handler: (p) => leaveGame());
     emit(state.copyWith(status: HomeStatus.inGame));
   }

@@ -37,8 +37,7 @@ extension InfoRequests on RestRepository {
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw GetFilteredPlayersListFailure(
-          response.statusCode, response.body); // TODO add propper exceptions
+      throw GetFilteredPlayersListFailure(response.statusCode, response.body);
     }
     List<dynamic> jsonBody = jsonDecode(response.body);
 
