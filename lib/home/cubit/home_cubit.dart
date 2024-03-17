@@ -18,7 +18,7 @@ class HomeCubit extends Cubit<HomeState> {
   /// directs to matchup page
   void goToMatchup({required bool isHost}) {
     _dataRepository.handlePlayerRemoval(handler: () => _goToLobby());
-    _dataRepository.handleGameStarted(handler: () => goToGame());
+    _dataRepository.handleGameStarted(handler: () => _goToGame());
     emit(state.copyWith(
         status: isHost ? HomeStatus.inMathupIsHost : HomeStatus.inMathup));
   }
@@ -30,11 +30,15 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// directs to game pages
-  void goToGame() {
-    // TODO !!! push some notification to the user instead this:
-    _dataRepository.handlePlayerLeftGame(handler: (p) => leaveGame());
+  void _goToGame() {
+    _dataRepository.handlePlayerLeftGame(
+        handler: (p) =>
+            // triggers dalog //TODO if player comes back emit false
+            emit(state.copyWith(playerLeftGame: true, message: p.nick)));
     emit(state.copyWith(status: HomeStatus.inGame));
   }
+
+  void resetPlayerLeftGameFlag() => emit(state.copyWith(playerLeftGame: false));
 
   /// directs back to lobby
   void leaveGame() async {

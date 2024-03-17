@@ -72,6 +72,8 @@
   "leader": "Leader",
   "squadVotingInfo": "Squad acceptance",
 
+  "playerLeft": "left game",
+
   "evilCourtiers_noOberon": "Evil courtiers (except Oberon):",
   "evilCourtiers_noMordred": "Evil courtiers (except Mordred):",
   "goodKnight": "a common knight",
