@@ -44,8 +44,8 @@ class _TeamWrap extends StatelessWidget {
 class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Player>>(
-      future: context.read<IDataRepository>().getPlayers(),
+    return StreamBuilder<List<Player>>(
+      stream: context.read<IDataRepository>().streamPlayersList(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
