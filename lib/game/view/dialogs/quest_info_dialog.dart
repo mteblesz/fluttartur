@@ -315,7 +315,7 @@ class _SquadLine extends StatelessWidget {
                 children: <Widget>[
                   ...loadedInfo.members.map((member) => Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Text(member.nick),
+                        child: Text('${member.nick},'),
                       )),
                 ],
               ),
@@ -387,7 +387,7 @@ class _SquadAcceptanceVoters extends StatelessWidget {
                   .where((vote) => vote.value == showPositiveVotes)
                   .map((vote) => Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Text(vote.voterNick),
+                        child: Text('${vote.voterNick},'),
                       )),
             ],
           ),
