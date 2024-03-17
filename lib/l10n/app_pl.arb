@@ -62,13 +62,13 @@
 
   "questInfo": "Misja",
   "requiredPlayersNumber": "Wielkość drużyny",
-  "isDoubleFail": "Aby ta misja się nie powiodła,\ntrzeba co najmniej dwa głosy 'Porażka'.","questStatus_upcoming": "To jest przyszłe zadanie",
+  "isDoubleFail": "Potrzeba co najmniej dwa głosy 'Porażka', aby ta misja się nie powiodła.",
   "questStatus_ongoing": "Obecna misja",
   "questStatus_rejected": "Drużyna odrzucona",
   "questStatus_successful": "Zakończone sukcesem",
   "questStatus_failed": "Zakończone porażką",
   "questStatus_error": "<błąd stanu zadania>",
-  "questVotes": "Wynik",
+  "questVotes": "Głosy (przetasowane)",
   "leader": "Przywódca",
   "squadVotingInfo": "Głosy na drużynę",
 

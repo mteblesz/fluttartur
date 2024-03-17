@@ -35,43 +35,48 @@ class _DialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appearance = QuestTileAppearance.fromStatus(questInfo.status);
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Icon(appearance.iconData),
-              Text(
-                  "${AppLocalizations.of(context)!.questInfo} #${questInfo.questNumber}",
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  )),
-              Icon(appearance.iconData),
-            ],
-          ),
-          RoundedDivider(
-            color: appearance.bgColor,
-            thickness: 6,
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                _ShortQuestInfo(questInfo: questInfo),
-                questInfo.squadId == null
-                    ? const SizedBox.shrink()
-                    : _FullQuestInfo(
+    final dividerColor =
+        QuestTileAppearance.fromStatus(questInfo.status).bgColor;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Icon(QuestTileAppearance.fromStatus(questInfo.status).iconData),
+            Text(
+                "${AppLocalizations.of(context)!.questInfo} #${questInfo.questNumber}",
+                style: const TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                )),
+            Icon(QuestTileAppearance.fromStatus(questInfo.status).iconData),
+          ],
+        ),
+        RoundedDivider(
+          padding: const EdgeInsets.all(8.0),
+          color: dividerColor,
+          thickness: 6,
+        ),
+        questInfo.squadId == null
+            ? _ShortQuestInfo(questInfo: questInfo)
+            :
+            // weird setup below  Expanded -> SingleChildScrollView
+            // allows to scroll contents without scrolling children above
+            Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _ShortQuestInfo(questInfo: questInfo),
+                      _FullQuestInfo(
                         squadId: questInfo.squadId!,
+                        dividerColor: dividerColor,
                       ),
-              ],
-            ),
-          ),
-        ],
-      ),
+                    ],
+                  ),
+                ),
+              ),
+      ],
     );
   }
 }
@@ -83,13 +88,13 @@ class _ShortQuestInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          _getQuestStatuusString(context, questInfo.status),
+          _getQuestStatusString(context, questInfo.status),
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 20,
             fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.bold,
           ),
         ),
         Row(
@@ -113,11 +118,12 @@ class _ShortQuestInfo extends StatelessWidget {
             : Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  AppLocalizations.of(context)!.isDoubleFail,
+                  "* ${AppLocalizations.of(context)!.isDoubleFail} *",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
       ],
@@ -126,8 +132,9 @@ class _ShortQuestInfo extends StatelessWidget {
 }
 
 class _FullQuestInfo extends StatefulWidget {
-  const _FullQuestInfo({required this.squadId});
+  const _FullQuestInfo({required this.squadId, required this.dividerColor});
   final int squadId;
+  final Color dividerColor;
 
   @override
   State<_FullQuestInfo> createState() => _FullQuestInfoState();
@@ -154,82 +161,40 @@ class _FullQuestInfoState extends State<_FullQuestInfo> {
     return isLoading
         ? const CircularProgressIndicator()
         : Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              // quest votes
+              _SmallDivider(color: widget.dividerColor),
               loadedInfo.questVoteSuccessCount == null
                   ? const SizedBox.shrink()
                   : Column(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                                "${AppLocalizations.of(context)!.questVotes}: "),
-                            ..._getSecretVotesCardsLine(
-                                loadedInfo.requiredPlayersNumber,
-                                loadedInfo.questVoteSuccessCount!),
-                          ],
+                        _QuestOutcome(
+                          loadedInfo: loadedInfo,
                         ),
-                        loadedInfo.status == QuestStatus.successful
-                            ? const SizedBox.shrink()
-                            : Row(
-                                children: [
-                                  Text(AppLocalizations.of(context)!.success),
-                                ],
-                              ),
-                        loadedInfo.status == QuestStatus.failed
-                            ? const SizedBox.shrink()
-                            : Row(
-                                children: [
-                                  Text(AppLocalizations.of(context)!.fail),
-                                ],
-                              ),
+                        _SmallDivider(color: widget.dividerColor),
                       ],
                     ),
-
-              // leader text
-              Text(
-                "${AppLocalizations.of(context)!.leader}: ${loadedInfo.leader.nick}",
-              ),
-
-              // members list
-              Wrap(children: <Widget>[
-                Text("${AppLocalizations.of(context)!.squad} "),
-                ...loadedInfo.members.map((member) => Text(member.nick)),
-              ]),
-
-              // squad votes
-              Text("${AppLocalizations.of(context)!.squadVotingInfo} "),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      const Icon(Icons.thumb_up,
-                          color: Color.fromARGB(255, 60, 188, 202)),
-                      ...loadedInfo.squadVoteInfo
-                          .where((vote) => vote.value == true)
-                          .map((vote) => Text(vote.voterNick)),
-                    ],
-                  ),
-                  const Divider(),
-                  Column(
-                    children: [
-                      const Icon(Icons.thumb_down,
-                          color: Color.fromARGB(255, 130, 34, 203)),
-                      ...loadedInfo.squadVoteInfo
-                          .where((vote) => vote.value == false)
-                          .map((vote) => Text(vote.voterNick)),
-                    ],
-                  ),
-                ],
-              ),
+              _SquadLine(loadedInfo: loadedInfo),
+              _SmallDivider(color: widget.dividerColor),
+              _SquadVotingOutcome(loadedInfo: loadedInfo),
             ],
           );
   }
 }
 
-String _getQuestStatuusString(BuildContext context, QuestStatus status) {
+class _SmallDivider extends StatelessWidget {
+  const _SmallDivider({required this.color});
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return RoundedDivider(
+      padding: const EdgeInsets.all(8.0),
+      color: color,
+      thickness: 3,
+    );
+  }
+}
+
+String _getQuestStatusString(BuildContext context, QuestStatus status) {
   final localizations = AppLocalizations.of(context)!;
 
   switch (status) {
@@ -245,6 +210,30 @@ String _getQuestStatuusString(BuildContext context, QuestStatus status) {
       return localizations.questStatus_failed;
     default:
       return localizations.questStatus_error;
+  }
+}
+
+class _QuestOutcome extends StatelessWidget {
+  const _QuestOutcome({required this.loadedInfo});
+  final QuestInfo loadedInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "${AppLocalizations.of(context)!.questVotes}: ",
+          style: const TextStyle(fontSize: 18),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ..._getSecretVotesCardsLine(loadedInfo.requiredPlayersNumber,
+                loadedInfo.questVoteSuccessCount!),
+          ],
+        ),
+      ],
+    );
   }
 }
 
@@ -267,13 +256,143 @@ class _VoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          value ? FluttarturIcons.crown : FluttarturIcons.crossed_swords,
-          color: value ? Colors.green.shade50 : Colors.red.shade700,
+      color: value ? Colors.green.shade700 : Colors.red.shade700,
+      child: SizedBox(
+        height: 50,
+        width: 37,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Icon(
+            value ? FluttarturIcons.crown : FluttarturIcons.crossed_swords,
+            size: 22,
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _SquadLine extends StatelessWidget {
+  const _SquadLine({required this.loadedInfo});
+  final QuestInfo loadedInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              "${AppLocalizations.of(context)!.leader}:  ",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Icon(Icons.star, size: 20),
+            Text(
+              " ${loadedInfo.leader.nick}",
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              "${AppLocalizations.of(context)!.squad} ",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Expanded(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: <Widget>[
+                  ...loadedInfo.members.map((member) => Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(member.nick),
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _SquadVotingOutcome extends StatelessWidget {
+  const _SquadVotingOutcome({required this.loadedInfo});
+  final QuestInfo loadedInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "${AppLocalizations.of(context)!.squadVotingInfo}: ",
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        _SquadAcceptanceVoters(
+          showPositiveVotes: true,
+          squadVoteInfos: loadedInfo.squadVoteInfo,
+        ),
+        const SizedBox(height: 10),
+        _SquadAcceptanceVoters(
+          showPositiveVotes: false,
+          squadVoteInfos: loadedInfo.squadVoteInfo,
+        ),
+      ],
+    );
+  }
+}
+
+class _SquadAcceptanceVoters extends StatelessWidget {
+  const _SquadAcceptanceVoters({
+    required this.showPositiveVotes,
+    required this.squadVoteInfos,
+  });
+  final bool showPositiveVotes;
+  final List<VoteInfo> squadVoteInfos;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        showPositiveVotes
+            ? const Icon(
+                Icons.thumb_up,
+                size: 25,
+                color: Color.fromARGB(255, 60, 188, 202),
+              )
+            : const Icon(
+                Icons.thumb_down,
+                size: 25,
+                color: Color.fromARGB(255, 130, 34, 203),
+              ),
+        Expanded(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              ...squadVoteInfos
+                  .where((vote) => vote.value == showPositiveVotes)
+                  .map((vote) => Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(vote.voterNick),
+                      )),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
