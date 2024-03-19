@@ -33,15 +33,18 @@ class LoginForm extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Column(
-                          children: [
-                            _EmailInput(),
-                            const SizedBox(height: 8),
-                            _PasswordInput(),
-                          ],
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Column(
+                            children: [
+                              _EmailInput(),
+                              const SizedBox(height: 8),
+                              _PasswordInput(),
+                            ],
+                          ),
                         ),
                       ),
                     ),

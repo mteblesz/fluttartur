@@ -9,6 +9,7 @@
 
   "singup": "Signup",  
   "invalidPassword": "invalid password",
+  "singupInvalidPassword": "must be 8 characters long, icluding letters and numbers",
   "confirmPassword": "confirm password",
   "passwordsDoNotMatch": "passwords do not match",
 
@@ -18,12 +19,17 @@
   "createRoom": "Create Room",
   "roomID": "Room ID",
 
-  "matchup": "Room",
-  "copyRoomsId": "Copy room's ID",
-  "leaveRoom": "Leave room",
   "enterYourNick": "Enter your nick",
   "nick": "nick",
   "confirm": "Confirm",
+  "nickTooShort": "Nick is too short",
+  "nickTooLong": "Nick is too long",
+  "nickHasINvalidCharacters": "Nick has invalid characters",
+  "nickInvalid": "Nick is empty",
+
+  "matchup": "Room",
+  "copyRoomsId": "Copy room's ID",
+  "leaveRoom": "Leave room",
   "roleDefinitionsPage": "Add roles",
   "startGame": "Start game",  
   "remove": "Remove",
