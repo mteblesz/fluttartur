@@ -9,6 +9,7 @@
 
   "singup": "Rejestracja",  
   "invalidPassword": "niepoprawne hasło",
+  "singupInvalidPassword": "haslo musi mieć 8 znaków, w tym litery i cyfry",
   "confirmPassword": "potwierdź hasło",
   "passwordsDoNotMatch": "hasła są różne",
 
@@ -18,12 +19,17 @@
   "roomID": "ID Pokoju",
   "logOut": "Wyloguj się",
 
-  "matchup": "Pokój",
-  "copyRoomsId": "Skopiuj ID pokoju",
-  "leaveRoom": "Opuść pokój",
   "enterYourNick": "Wprowadź nick",
   "nick": "nick",
   "confirm": "Zatwierdź",
+  "nickTooShort": "Nick jest za krótki",
+  "nickTooLong": "Nick jest za długi",
+  "nickHasINvalidCharacters": "Nick zawiera niedozwolone znaki",
+  "nickInvalid": "Nick jest pusty",
+
+  "matchup": "Pokój",
+  "copyRoomsId": "Skopiuj ID pokoju",
+  "leaveRoom": "Opuść pokój",
   "roleDefinitionsPage": "Dodaj postacie",
   "startGame": "Rozpocznij grę",  
   "remove": "Wyrzuć",

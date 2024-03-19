@@ -23,7 +23,7 @@ class NickFormState extends Equatable {
     return NickFormState(
       nick: nick ?? this.nick,
       status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: errorMessage, // always reset errorMessage
     );
   }
 }

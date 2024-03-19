@@ -87,7 +87,7 @@ class _PasswordInput extends StatelessWidget {
             labelText: AppLocalizations.of(context)!.password,
             helperText: '',
             errorText: state.password.invalid
-                ? AppLocalizations.of(context)!.invalidPassword
+                ? AppLocalizations.of(context)!.singupInvalidPassword
                 : null,
           ),
         );
