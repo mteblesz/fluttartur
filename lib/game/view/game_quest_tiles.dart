@@ -33,39 +33,25 @@ class _QuestTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appearance = _QuestTileAppearance.fromStatus(questInfo.status);
+    final appearance = QuestTileAppearance.fromStatus(questInfo.status);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        questInfo.isDoubleFail // TODO remkae this circles to less redundant
-            ? CircleAvatar(
-                radius: 27,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: appearance.bgColor,
-                  child: IconButton(
-                    iconSize: 36,
-                    color: Colors.white,
-                    icon: Icon(appearance.iconData),
-                    onPressed: () {
-                      // TODO !! quest info
-                    },
-                  ),
-                ),
-              )
-            : CircleAvatar(
-                radius: 30,
-                backgroundColor: appearance.bgColor,
-                child: IconButton(
-                  iconSize: 40,
-                  color: Colors.white,
-                  icon: Icon(appearance.iconData),
-                  onPressed: () {
-                    // TODO !! quest info
-                  },
-                ),
-              ),
+        CircleAvatar(
+          radius: 30,
+          backgroundColor:
+              questInfo.isDoubleFail ? Colors.white : appearance.bgColor,
+          child: CircleAvatar(
+            radius: 28,
+            backgroundColor: appearance.bgColor,
+            child: IconButton(
+              iconSize: 40,
+              color: Colors.white,
+              icon: Icon(appearance.iconData),
+              onPressed: () => pushQuestInfoDialog(context, questInfo),
+            ),
+          ),
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -85,37 +71,37 @@ class _QuestTile extends StatelessWidget {
   }
 }
 
-class _QuestTileAppearance {
+class QuestTileAppearance {
   final Color bgColor;
   final IconData iconData;
 
-  _QuestTileAppearance(this.bgColor, this.iconData);
+  QuestTileAppearance(this.bgColor, this.iconData);
 
-  factory _QuestTileAppearance.fromStatus(QuestStatus questStatus) {
+  factory QuestTileAppearance.fromStatus(QuestStatus questStatus) {
     switch (questStatus) {
       case QuestStatus.successful:
-        return _QuestTileAppearance(
+        return QuestTileAppearance(
           Colors.green.shade700,
           FluttarturIcons.crown,
         );
       case QuestStatus.failed:
-        return _QuestTileAppearance(
+        return QuestTileAppearance(
           Colors.red.shade700,
           FluttarturIcons.crossed_swords,
         );
       case QuestStatus.ongoing:
-        return _QuestTileAppearance(
+        return QuestTileAppearance(
           const Color.fromARGB(255, 64, 134, 169),
           FluttarturIcons.group,
         );
       case QuestStatus.upcoming:
-        return _QuestTileAppearance(
+        return QuestTileAppearance(
           const Color.fromARGB(255, 13, 66, 110),
           FluttarturIcons.locked_fortress,
         );
       case QuestStatus.rejected: // should not appear in list, equal to error
       case QuestStatus.error:
-        return _QuestTileAppearance(
+        return QuestTileAppearance(
           const Color.fromARGB(255, 35, 35, 35),
           Icons.error_outline,
         );

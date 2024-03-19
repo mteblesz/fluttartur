@@ -10,7 +10,7 @@ class QuestInfo {
   final List<Player> members;
   final List<VoteInfo> squadVoteInfo;
 
-  /// May be null as this class might represent quad that did not get voted to a quest
+  /// May be null as this class might represent squad that did not get voted to a quest
   final int? questVoteSuccessCount;
 
   const QuestInfo({
@@ -24,4 +24,23 @@ class QuestInfo {
     required this.squadVoteInfo,
     this.questVoteSuccessCount,
   });
+
+  int get totalPlayers => members.length;
+  static QuestInfo get empty {
+    return const QuestInfo(
+      squadId: 0,
+      questNumber: 0,
+      squadNumber: 0,
+      requiredPlayersNumber: 0,
+      status: QuestStatus.error,
+      leader: Player.empty,
+      members: [],
+      squadVoteInfo: [],
+      questVoteSuccessCount: null,
+    );
+  }
+
+  bool get isEmpty => this == QuestInfo.empty;
+
+  bool get isNotEmpty => this != QuestInfo.empty;
 }

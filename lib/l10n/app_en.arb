@@ -64,7 +64,21 @@
   "fail": "Fail",
   "court": "Court:",
   "squad": "Squad:",
+  
+  "questInfo": "Quest",
+  "requiredPlayersNumber": "Squad size",
+  "isDoubleFail": "For this quest to fail\nthe Evil Team needs\nat least two 'Failure' votes.",
+  "questStatus_upcoming": "This is a future quest",
+  "questStatus_ongoing": "Current quest",
+  "questStatus_rejected": "Squad was rejected",
+  "questStatus_successful": "Ended with Success",
+  "questStatus_failed": "Ended with Failure",
+  "questStatus_error": "<error quest state>",
+  "questVotes": "Votes (shuffled)",
+  "leader": "Leader",
+  "squadVotingInfo": "Squad acceptance",
 
+  "playerLeft": "left game",
 
   "evilCourtiers_noOberon": "Evil courtiers (except Oberon):",
   "evilCourtiers_noMordred": "Evil courtiers (except Mordred):",

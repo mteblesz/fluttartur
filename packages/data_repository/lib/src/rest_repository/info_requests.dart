@@ -37,8 +37,7 @@ extension InfoRequests on RestRepository {
       headers: getAuthHeaders(),
     );
     if (response.statusCode != 200) {
-      throw GetFilteredPlayersListFailure(
-          response.statusCode, response.body); // TODO add propper exceptions
+      throw GetFilteredPlayersListFailure(response.statusCode, response.body);
     }
     List<dynamic> jsonBody = jsonDecode(response.body);
 
@@ -71,5 +70,19 @@ extension InfoRequests on RestRepository {
 
   Future<List<Player>> getGoodPlayers({required int roomId}) {
     return _getPlayerListFromUrl(url: RestConfig.getGoodPlayersUrl(roomId));
+  }
+
+  Future<QuestInfo> getQuestInfo({required int squadId}) async {
+    final response = await HttpSender.get(
+      Uri.parse(RestConfig.getQuestBySquadIdUrl(squadId)),
+      headers: getAuthHeaders(),
+    );
+
+    if (response.statusCode != 200) {
+      throw GetQuestInfoFailure(response.statusCode, response.body);
+    }
+    Map<String, dynamic> jsonBody = jsonDecode(response.body);
+
+    return QuestInfoDto.fromJson(jsonBody).toQuestInfo();
   }
 }

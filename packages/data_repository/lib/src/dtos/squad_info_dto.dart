@@ -4,7 +4,7 @@ import 'player_info_dto.dart';
 class SquadInfoDto {
   int squadId;
   int questNumber;
-  int squadFailsToEvilWinCount;
+  int rejectionsLeftToEvilWin;
   int requiredPlayersNumber;
   SquadStatus status;
   PlayerInfoDto leader;
@@ -13,7 +13,7 @@ class SquadInfoDto {
   SquadInfoDto({
     required this.squadId,
     required this.questNumber,
-    required this.squadFailsToEvilWinCount,
+    required this.rejectionsLeftToEvilWin,
     required this.requiredPlayersNumber,
     required this.status,
     required this.leader,
@@ -24,7 +24,7 @@ class SquadInfoDto {
     return SquadInfoDto(
       squadId: json['squadId'],
       questNumber: json['questNumber'],
-      squadFailsToEvilWinCount: json['squadFailsToEvilWinCount'],
+      rejectionsLeftToEvilWin: json['rejectionsLeftToEvilWin'],
       requiredPlayersNumber: json['requiredPlayersNumber'],
       status: SquadStatus.values[json['status']],
       leader: PlayerInfoDto.fromJson(json['leader']),
@@ -35,14 +35,14 @@ class SquadInfoDto {
   }
 
   Squad toSquad() {
-    return Squad.empty; // TODO
-    // squadId: squadId,
-    // questNumber: questNumber,
-    // squadFailsToEvilWinCount: squadFailsToEvilWinCount,
-    // requiredPlayersNumber: requiredPlayersNumber,
-    // status: status,
-    // leader: leader.toPlayer(),
-    // members: members.map((member) => member.toPlayer()).toList(),
-    //);
+    return Squad(
+      squadId: squadId,
+      questNumber: questNumber,
+      rejectionsLeftToEvilWin: rejectionsLeftToEvilWin,
+      requiredPlayersNumber: requiredPlayersNumber,
+      status: status,
+      leader: leader.toPlayer(),
+      members: members.map((member) => member.toPlayer()).toList(),
+    );
   }
 }

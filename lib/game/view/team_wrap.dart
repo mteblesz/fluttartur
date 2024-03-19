@@ -12,8 +12,10 @@ class _TeamWrap extends StatelessWidget {
               children: [
                 OutlinedText(AppLocalizations.of(context)!.court,
                     style: const TextStyle(fontSize: 30)),
-                SingleChildScrollView(
-                  child: _PlayerListView(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: _PlayerListView(),
+                  ),
                 ),
               ],
             ),
@@ -24,9 +26,11 @@ class _TeamWrap extends StatelessWidget {
               children: [
                 OutlinedText(AppLocalizations.of(context)!.squad,
                     style: const TextStyle(fontSize: 30)),
-                SingleChildScrollView(
-                  child: //_SquadListView(), //TODO uncomment
-                      const Text("<members list>"), //TODO remove
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: //_SquadListView(), //TODO uncomment
+                        const Text("<members list>"), //TODO remove
+                  ),
                 ),
               ],
             ),
@@ -40,8 +44,8 @@ class _TeamWrap extends StatelessWidget {
 class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Player>>(
-      future: context.read<IDataRepository>().getPlayers(),
+    return StreamBuilder<List<Player>>(
+      stream: context.read<IDataRepository>().streamPlayersList(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();

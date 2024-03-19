@@ -154,8 +154,8 @@ class _InfoForEvilPlayers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          AppLocalizations.of(gameContext)!.evilCourtiers,
-          style: const TextStyle(fontSize: 15),
+          "${AppLocalizations.of(gameContext)!.evilCourtiers}:",
+          style: const TextStyle(fontSize: 16),
         ),
         Center(
           child: FutureBuilder<List<Player>>(
@@ -173,7 +173,7 @@ class _InfoForEvilPlayers extends StatelessWidget {
                   ...evilPlayers.map(
                     (player) => Text("${player.nick}, ",
                         style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         )),
                   ),
@@ -197,8 +197,8 @@ class _InfoForMerlin extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          AppLocalizations.of(gameContext)!.evilCourtiers,
-          style: const TextStyle(fontSize: 15),
+          '${AppLocalizations.of(gameContext)!.evilCourtiers}:',
+          style: const TextStyle(fontSize: 16),
         ),
         Center(
           child: FutureBuilder<List<Player>>(
@@ -217,7 +217,7 @@ class _InfoForMerlin extends StatelessWidget {
                   ...evilPlayers.map(
                     (player) => Text("${player.nick}, ",
                         style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         )),
                   ),

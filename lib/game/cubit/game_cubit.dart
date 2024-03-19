@@ -95,15 +95,15 @@ class GameCubit extends Cubit<GameState> {
         }
         break;
       case GameStatus.questVoting:
-        if (squad.isSuccessfull == null) return;
+        if (squad.isSuccessful == null) return;
         emit(state.copyWith(
             questStatuses: state.insertToQuestStatuses(
-          squad.isSuccessfull == true
+          squad.isSuccessful == true
               ? QuestStatus.successful
               : QuestStatus.failed,
         )));
 
-        emit(state.copyWith(lastQuestOutcome: squad.isSuccessfull));
+        emit(state.copyWith(lastQuestOutcome: squad.isSuccessful));
         emit(state.copyWith(status: GameStatus.questResults));
         break;
       case GameStatus.questResults:
@@ -144,21 +144,6 @@ class GameCubit extends Cubit<GameState> {
 
   Future<void> killPlayer({required Player player}) async {
     //await _dataRepository.updateMerlinKilled(player.role == "good_merlin");
-  }
-
-  Future<List<Player>> listOfGoodPlayers() async {
-    return await _dataRepository.playersList();
-  }
-
-  //--------------------------------quest info logic----------------------------
-
-  Future<List<bool>>? questVotesInfo(int questNumber) async {
-    final questStatus = state.questStatuses[questNumber - 1];
-    if (questStatus != QuestStatus.successful &&
-        questStatus != QuestStatus.failed) {
-      return List<bool>.empty();
-    }
-    return await _dataRepository.questVotesInfo(questNumber);
   }
 }
 

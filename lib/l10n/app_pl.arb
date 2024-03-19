@@ -65,6 +65,21 @@
   "court": "Dworzanie:",
   "squad": "Drużyna:",
 
+
+  "questInfo": "Misja",
+  "requiredPlayersNumber": "Wielkość drużyny",
+  "isDoubleFail": "Potrzeba co najmniej dwa głosy 'Porażka', aby ta misja się nie powiodła.",
+  "questStatus_ongoing": "Obecna misja",
+  "questStatus_rejected": "Drużyna odrzucona",
+  "questStatus_successful": "Zakończone sukcesem",
+  "questStatus_failed": "Zakończone porażką",
+  "questStatus_error": "<błąd stanu zadania>",
+  "questVotes": "Głosy (przetasowane)",
+  "leader": "Przywódca",
+  "squadVotingInfo": "Głosy na drużynę",
+
+  "playerLeft": "opuścił/a grę",
+
   "evilCourtiers_noOberon": "Źli dworzanie (bez Oberona):",
   "evilCourtiers_noMordred": "Źli dworzanie (bez Mordreda):",
   "goodKnight": "zwykły rycerz",
