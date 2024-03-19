@@ -14,17 +14,23 @@ class LanguageChangeButton extends StatelessWidget {
           Language("🇵🇱", "pl"),
         ]
             .map(
-              (lang) => TextButton(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                onPressed: () =>
-                    Provider.of<LocaleNotifier>(context, listen: false)
-                        .setLocale(Locale(lang.languageCode)),
-                child: Text(
-                  lang.flag,
-                  style: const TextStyle(fontSize: 30),
+              (lang) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: () =>
+                      Provider.of<LocaleNotifier>(context, listen: false)
+                          .setLocale(Locale(lang.languageCode)),
+                  child: Text(
+                    lang.flag,
+                    style: const TextStyle(
+                      fontFamily: 'NotoColorEmojiFlags',
+                      fontSize: 35,
+                    ),
+                  ),
                 ),
               ),
             )
