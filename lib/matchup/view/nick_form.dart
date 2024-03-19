@@ -6,7 +6,8 @@ void _showNickDialog(BuildContext context) {
     context: context,
     builder: (BuildContext dialogContext) {
       return BlocProvider(
-        create: (_) => NickFormCubit(context.read<IDataRepository>()),
+        create: (_) => NickFormCubit(
+            context.read<IDataRepository>(), AppLocalizations.of(context)!),
         child: _NickDialog(),
       );
     },
