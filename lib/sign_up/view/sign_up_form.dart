@@ -27,17 +27,20 @@ class SignUpForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Column(
-                    children: [
-                      _EmailInput(),
-                      const SizedBox(height: 8),
-                      _PasswordInput(),
-                      const SizedBox(height: 8),
-                      _ConfirmPasswordInput(),
-                    ],
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 300),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      children: [
+                        _EmailInput(),
+                        const SizedBox(height: 8),
+                        _PasswordInput(),
+                        const SizedBox(height: 8),
+                        _ConfirmPasswordInput(),
+                      ],
+                    ),
                   ),
                 ),
               ),

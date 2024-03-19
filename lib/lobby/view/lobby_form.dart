@@ -21,8 +21,8 @@ class LobbyForm extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   const SizedBox(height: 8),
-                  SizedBox(
-                    width: 250,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 250),
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
