@@ -36,7 +36,7 @@ class QuestInfoDto {
       members: (json['members'] as List)
           .map((e) => PlayerInfoDto.fromJson(e))
           .toList(),
-      squadVoteInfo: (json['voteInfo'] as List)
+      squadVoteInfo: (json['squadVoteInfo'] as List)
           .map((e) => VoteInfoDto.fromJson(e))
           .toList(),
       questVoteSuccessCount: json['questVoteSuccessCount'],

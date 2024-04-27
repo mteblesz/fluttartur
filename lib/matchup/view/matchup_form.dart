@@ -9,12 +9,25 @@ import 'package:fluttartur/widgets/widgets.dart';
 
 part 'nick_form.dart';
 
-class MatchupForm extends StatelessWidget {
+class MatchupForm extends StatefulWidget {
   const MatchupForm({super.key});
 
   @override
+  State<MatchupForm> createState() => _MatchupFormState();
+}
+
+class _MatchupFormState extends State<MatchupForm> {
+  @override
+  void initState() {
+    super.initState();
+    // Show dialog after widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showNickDialog(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => _showNickDialog(context));
     return Column(
       children: [
         __AddPlayerButtonDebug(),
