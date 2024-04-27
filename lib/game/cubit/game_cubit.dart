@@ -9,14 +9,6 @@ class GameCubit extends Cubit<GameState> {
 
   GameCubit(this._dataRepository) : super(const GameState());
 
-  Stream<List<Player>> streamPlayersList() {
-    return _dataRepository.streamPlayersList();
-  }
-
-  Stream<List<Player>> streamMembersList() {
-    return _dataRepository.streamPlayersList(); // TODO
-  }
-
   Future<List<Player>> getEvilPlayers() {
     return _dataRepository.getEvilPlayers();
   }
@@ -25,53 +17,8 @@ class GameCubit extends Cubit<GameState> {
     return _dataRepository.getMerlinAndMorgana();
   }
 
-  bool squadFullSize(int playersCount, int questNumber) {
-    return true; // TODO wrong wrong
-  }
-
-  bool isTwoFailsQuest(int playersCount, int questNumber) {
-    return false; // TODO wrong wrong
-  }
-
-  //--------------------------------leader's logic------------------------------
-
-  /// add player to squad
-  Future<void> addMember({required Player player}) async {
-    //if (!_dataRepository.currentPlayer.isLeader) return;
-    if (state.status != GameStatus.squadChoice) return;
-
-    if (state.isSquadFull) return;
-
-    await _dataRepository.addMember(
-      questNumber: state.questNumber,
-      playerId: player.playerId,
-      nick: player.nick,
-    );
-
-    final isSquadFull = true;
-    emit(state.copyWith(isSquadFull: isSquadFull));
-  }
-
-  /// remove player from squad
-  Future<void> removeMember({required Player member}) async {
-    //if (!_dataRepository.currentPlayer.isLeader) return;
-    if (state.status != GameStatus.squadChoice) return;
-
-    await _dataRepository.removeMember(
-      questNumber: state.questNumber,
-      memberId: member.playerId,
-    );
-
-    emit(state.copyWith(isSquadFull: false));
-  }
-
-  Future<void> submitSquad() async {
-    final isSquadRequiredSize = true;
-    if (!isSquadRequiredSize) return;
-    await _dataRepository.submitSquad();
-  }
-
-  //--------------------------------players's logic-----------------------------
+  //--------------------------------------------------------------
+  //-------------------------------------------------------------
 
   Future<void> voteSquad(bool vote) async {
     await _dataRepository.voteSquad(vote);
