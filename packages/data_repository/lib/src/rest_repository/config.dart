@@ -43,8 +43,9 @@ class RestConfig {
   static String leaveGameUrl(int playerId) => '$apiUrl/game/leave/$playerId';
   static String getPlayersUrl(int roomId) => '$apiUrl/game/players/$roomId';
 
-  static String addMemberUrl(int squadId) => '$apiUrl/squad/add/$squadId';
-  static String removeMemberUrl(int squadId) => '$apiUrl/squad/remove/$squadId';
+  static String addMemberUrl(int playerId) => '$apiUrl/squad/add/$playerId';
+  static String removeMemberUrl(int playerId) =>
+      '$apiUrl/squad/remove/$playerId';
   static String submitSquadUrl(int squadId) => '$apiUrl/squad/submit/$squadId';
 
   static String voteSquadUrl() => '$apiUrl/vote/squad';

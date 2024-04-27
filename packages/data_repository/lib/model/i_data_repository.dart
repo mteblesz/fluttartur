@@ -41,23 +41,16 @@ abstract class IDataRepository {
   Stream<List<QuestInfoShort>> streamQuestsSummary();
   void subscribeQuestsSummary();
   void unsubscribeQuestsSummary();
-
   Future<QuestInfo> getQuestInfo({required int squadId});
+
+  int get currentPlayerId;
+  Future<void> addMember({required int playerId});
+  Future<void> removeMember({required int playerIdOfMember});
+
 //----------------------------------------------------------------------------
 
   // -------------
   // TODO old stuff for backwards-compatibility during changes (to be removed)
-
-  Stream<List<Player>> streamMembersList();
-  Future<void> addMember({
-    required int questNumber,
-    required int playerId,
-    required String nick,
-  });
-  Future<void> removeMember({
-    required int questNumber,
-    required int memberId,
-  });
 
   Future<void> submitSquad();
 
