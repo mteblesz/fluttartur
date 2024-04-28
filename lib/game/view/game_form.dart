@@ -5,7 +5,6 @@ import 'package:fluttartur/game/cubit/court_cubit.dart';
 import 'package:fluttartur/game/view/dialogs/quest_info_dialog.dart';
 import 'package:fluttartur/game/view/quest_page/quest_page.dart';
 import 'package:fluttartur/home/home.dart';
-import 'package:fluttartur/utils/pair.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

@@ -43,50 +43,56 @@ class _TeamWrap extends StatelessWidget {
 class _PlayerListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CourtCubit, CourtState>(builder: (context, state) {
-      return state.courtiers.isEmpty
-          ? Text(AppLocalizations.of(context)!.courtIsEmpty)
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ...state.courtiers.map(
-                  (courtier) => _CourtierCard(
-                    courtier: courtier,
-                    onCourtierTap: (int id) {
-                      if (!courtier.isMember) {
-                        context.read<CourtCubit>().addMember(playerId: id);
-                      } else {
-                        context.read<CourtCubit>().removeMember(playerId: id);
-                      }
-                    },
+    return BlocBuilder<CourtCubit, CourtState>(
+      builder: (context, state) {
+        return state.courtiers.isEmpty
+            ? Text(AppLocalizations.of(context)!.courtIsEmpty)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ...state.courtiers.map(
+                    (courtier) => _CourtierCard(
+                      courtier: courtier,
+                      onCourtierTap: (int id) {
+                        if (!courtier.isMember) {
+                          context.read<CourtCubit>().addMember(playerId: id);
+                        } else {
+                          context.read<CourtCubit>().removeMember(playerId: id);
+                        }
+                      },
+                    ),
                   ),
-                ),
-              ],
-            );
-    });
+                ],
+              );
+      },
+    );
   }
 }
 
 class _SquadListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CourtCubit, CourtState>(builder: (context, state) {
-      return state.courtiers.isEmpty
-          ? Text(AppLocalizations.of(context)!.squadIsEmpty)
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                ...state.courtiers.where((courtier) => courtier.isMember).map(
-                      (courtier) => _CourtierCard(
-                        courtier: courtier,
-                        onCourtierTap: (int id) {
-                          context.read<CourtCubit>().removeMember(playerId: id);
-                        },
+    return BlocBuilder<CourtCubit, CourtState>(
+      builder: (context, state) {
+        return state.courtiers.isEmpty
+            ? Text(AppLocalizations.of(context)!.squadIsEmpty)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  ...state.courtiers.where((courtier) => courtier.isMember).map(
+                        (courtier) => _CourtierCard(
+                          courtier: courtier,
+                          onCourtierTap: (int id) {
+                            context
+                                .read<CourtCubit>()
+                                .removeMember(playerId: id);
+                          },
+                        ),
                       ),
-                    ),
-              ],
-            );
-    });
+                ],
+              );
+      },
+    );
   }
 }
 
