@@ -6,7 +6,7 @@ class _QuestTiles extends StatelessWidget {
     return ColoredBox(
       color: const Color.fromARGB(172, 63, 63, 63),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(5.0),
         child: StreamBuilder<List<QuestInfoShort>>(
             stream: context.read<IDataRepository>().streamQuestsSummary(),
             builder: (context, snapshot) {

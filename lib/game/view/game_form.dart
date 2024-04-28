@@ -5,6 +5,7 @@ import 'package:fluttartur/game/cubit/court_cubit.dart';
 import 'package:fluttartur/game/view/dialogs/quest_info_dialog.dart';
 import 'package:fluttartur/game/view/quest_page/quest_page.dart';
 import 'package:fluttartur/home/home.dart';
+import 'package:fluttartur/utils/pair.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,7 +16,8 @@ import 'dialogs/player_left_dialog.dart';
 
 part 'team_wrap.dart';
 part 'game_buttons.dart';
-part 'game_quest_tiles.dart';
+part 'quest_tiles.dart';
+part 'rejection_countdown.dart';
 
 class GameForm extends StatefulWidget {
   const GameForm({super.key});
@@ -46,7 +48,7 @@ class _GameFormState extends State<GameForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _QuestTiles(),
-            //_SquadRejectionsCountDown(), //TODO
+            _RejectionCountdown(),
             Expanded(
               child: _TeamWrap(),
             ),

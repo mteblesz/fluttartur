@@ -11,7 +11,7 @@ class CourtState extends Equatable {
 
   const CourtState({
     this.squadId = -1,
-    this.rejectionsLeftToEvilWin = -1,
+    this.rejectionsLeftToEvilWin = 5,
     this.requiredMembersNumber = 0,
     this.membersCount = 0,
     this.squadStatus = SquadStatus.unknown,
