@@ -167,7 +167,6 @@ class DataRepository implements IDataRepository {
 
 //------------------------------ game misc -------------------------------------
 
-  // TODO it this needed?
   @override
   Future<List<Player>> getPlayers() {
     return _restRepository.getPlayers(roomId: _cache.currentRoomId);
@@ -201,23 +200,30 @@ class DataRepository implements IDataRepository {
     return _restRepository.getQuestInfo(squadId: squadId);
   }
 
-//----------------------------------------------------------------------------
+//--------------------------------- Court -------------------------------------------
 
   @override
-  Stream<List<Player>> streamMembersList() {
-    return streamPlayersList(); // TODO
+  int get currentPlayerId => _cache.currentPlayerId;
+
+  @override
+  Future<void> addMember({required int playerId}) async {
+    await _restRepository.addMember(playerId: playerId);
+  }
+
+  @override
+  Future<void> removeMember({required int playerIdOfMember}) async {
+    await _restRepository.removeMember(playerId: playerIdOfMember);
+  }
+
+  @override
+  Future<void> submitSquad({required int squadId}) {
+    throw UnimplementedError();
+    // TODO TODO
   }
 //----------------------------------------------------------------------------
 
   // ----------------------------------------------------------------------
   //  old stuff for backwards-compatibility during changes (to be removed)
-
-  @override
-  Future<void> addMember(
-      {required int questNumber, required int playerId, required String nick}) {
-    // : implement addMember
-    throw UnimplementedError();
-  }
 
   @override
   Future<bool> isCurrentPlayerAMember() {
@@ -226,20 +232,8 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> removeMember({required int questNumber, required int memberId}) {
-    // : implement removeMember
-    throw UnimplementedError();
-  }
-
-  @override
   Stream<bool?> streamMerlinKilled() {
     // : implement streamMerlinKilled
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> submitSquad() {
-    // : implement submitSquad
     throw UnimplementedError();
   }
 

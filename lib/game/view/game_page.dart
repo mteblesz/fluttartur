@@ -1,4 +1,5 @@
 import 'package:fluttartur/game/cubit/game_cubit.dart';
+import 'package:fluttartur/game/cubit/court_cubit.dart';
 import 'package:fluttartur/game/view/game_form.dart';
 import 'package:fluttartur/home/home.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,10 @@ class GamePage extends StatelessWidget {
           ),
           body: BlocProvider(
             create: (_) => GameCubit(context.read<IDataRepository>()),
-            child: const GameForm(),
+            child: BlocProvider(
+              create: (_) => CourtCubit(context.read<IDataRepository>()),
+              child: const GameForm(),
+            ),
           ),
         ),
       ],

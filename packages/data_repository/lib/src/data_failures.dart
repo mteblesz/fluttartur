@@ -57,3 +57,17 @@ class GetQuestInfoFailure extends DataRepoFailure {
   GetQuestInfoFailure(int code, [String? body])
       : super("get quest info", code, body);
 }
+
+class AddMemberFailure extends DataRepoFailure {
+  AddMemberFailure(int code, [String? body]) : super("add member", code, body);
+}
+
+class RemoveMemberFailure extends DataRepoFailure {
+  RemoveMemberFailure(int code, [String? body])
+      : super("remove member", code, body);
+}
+
+class SubmitSquadFailure extends DataRepoFailure {
+  SubmitSquadFailure(int code, [String? body])
+      : super("submit squad", code, body);
+}

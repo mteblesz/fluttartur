@@ -67,7 +67,7 @@
 
 
   "questInfo": "Misja",
-  "requiredPlayersNumber": "Wielkość drużyny",
+  "requiredMembersNumber": "Wielkość drużyny",
   "isDoubleFail": "Potrzeba co najmniej dwa głosy 'Porażka', aby ta misja się nie powiodła.",
   "questStatus_ongoing": "Obecna misja",
   "questStatus_rejected": "Drużyna odrzucona",

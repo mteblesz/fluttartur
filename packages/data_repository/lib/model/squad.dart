@@ -7,7 +7,7 @@ class Squad extends Equatable {
   final int squadId;
   final int questNumber;
   final int rejectionsLeftToEvilWin;
-  final int requiredPlayersNumber;
+  final int requiredMembersNumber;
   final SquadStatus status;
   final Player leader;
   final List<Player> members;
@@ -16,7 +16,7 @@ class Squad extends Equatable {
     required this.squadId,
     required this.questNumber,
     required this.rejectionsLeftToEvilWin,
-    required this.requiredPlayersNumber,
+    required this.requiredMembersNumber,
     required this.status,
     required this.leader,
     required this.members,
@@ -27,7 +27,7 @@ class Squad extends Equatable {
     squadId: -1,
     questNumber: 0,
     rejectionsLeftToEvilWin: 0,
-    requiredPlayersNumber: 0,
+    requiredMembersNumber: 0,
     status: SquadStatus.unknown,
     leader: Player.empty,
     members: [],
@@ -40,7 +40,7 @@ class Squad extends Equatable {
         squadId,
         questNumber,
         rejectionsLeftToEvilWin,
-        requiredPlayersNumber,
+        requiredMembersNumber,
         status,
         leader,
         members,
@@ -48,7 +48,7 @@ class Squad extends Equatable {
 
   bool get isUnknown => status == SquadStatus.unknown;
   bool get isUpcoming => status == SquadStatus.upcoming;
-  bool get isSquadVoting => status == SquadStatus.squadVoting;
+  bool get isSquadChoice => status == SquadStatus.squadChoice;
   bool get isSubmitted => status == SquadStatus.submitted;
   bool get isApproved => status == SquadStatus.approved;
   bool get isRejected => status == SquadStatus.rejected;

@@ -61,7 +61,7 @@ class _QuestTile extends StatelessWidget {
               style: const TextStyle(fontSize: 18),
             ),
             Text(
-              "${questInfo.requiredPlayersNumber}",
+              "${questInfo.requiredMembersNumber}",
               style: const TextStyle(fontSize: 20),
             ),
           ],

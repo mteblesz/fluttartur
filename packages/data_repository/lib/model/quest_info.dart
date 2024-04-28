@@ -4,7 +4,7 @@ class QuestInfo {
   final int squadId;
   final int questNumber;
   final int squadNumber;
-  final int requiredPlayersNumber;
+  final int requiredMembersNumber;
   final QuestStatus status;
   final Player leader;
   final List<Player> members;
@@ -17,7 +17,7 @@ class QuestInfo {
     required this.squadId,
     required this.questNumber,
     required this.squadNumber,
-    required this.requiredPlayersNumber,
+    required this.requiredMembersNumber,
     required this.status,
     required this.leader,
     required this.members,
@@ -31,7 +31,7 @@ class QuestInfo {
       squadId: 0,
       questNumber: 0,
       squadNumber: 0,
-      requiredPlayersNumber: 0,
+      requiredMembersNumber: 0,
       status: QuestStatus.error,
       leader: Player.empty,
       members: [],

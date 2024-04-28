@@ -5,7 +5,7 @@ class SquadInfoDto {
   int squadId;
   int questNumber;
   int rejectionsLeftToEvilWin;
-  int requiredPlayersNumber;
+  int requiredMembersNumber;
   SquadStatus status;
   PlayerInfoDto leader;
   List<PlayerInfoDto> members;
@@ -14,7 +14,7 @@ class SquadInfoDto {
     required this.squadId,
     required this.questNumber,
     required this.rejectionsLeftToEvilWin,
-    required this.requiredPlayersNumber,
+    required this.requiredMembersNumber,
     required this.status,
     required this.leader,
     required this.members,
@@ -25,7 +25,7 @@ class SquadInfoDto {
       squadId: json['squadId'],
       questNumber: json['questNumber'],
       rejectionsLeftToEvilWin: json['rejectionsLeftToEvilWin'],
-      requiredPlayersNumber: json['requiredPlayersNumber'],
+      requiredMembersNumber: json['requiredMembersNumber'],
       status: SquadStatus.values[json['status']],
       leader: PlayerInfoDto.fromJson(json['leader']),
       members: (json['members'] as List)
@@ -39,7 +39,7 @@ class SquadInfoDto {
       squadId: squadId,
       questNumber: questNumber,
       rejectionsLeftToEvilWin: rejectionsLeftToEvilWin,
-      requiredPlayersNumber: requiredPlayersNumber,
+      requiredMembersNumber: requiredMembersNumber,
       status: status,
       leader: leader.toPlayer(),
       members: members.map((member) => member.toPlayer()).toList(),
