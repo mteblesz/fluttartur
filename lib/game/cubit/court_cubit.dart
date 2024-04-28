@@ -25,7 +25,7 @@ class CourtCubit extends Cubit<CourtState> {
   }
 
   Future<void> addMember({required int playerId}) async {
-    //if (!state.isLeader) return;
+    if (!state.isLeader) return;
     if (state.squadStatus != SquadStatus.squadChoice) return;
     if (state.membersCount >= state.requiredMembersNumber) return;
 
@@ -33,7 +33,7 @@ class CourtCubit extends Cubit<CourtState> {
   }
 
   Future<void> removeMember({required int playerId}) async {
-    //if (!state.isLeader) return;
+    if (!state.isLeader) return;
     if (state.squadStatus != SquadStatus.squadChoice) return;
     if (state.membersCount <= 0) return;
 
