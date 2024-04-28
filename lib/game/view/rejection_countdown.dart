@@ -1,7 +1,6 @@
 part of 'game_form.dart';
 
 class _RejectionCountdown extends StatelessWidget {
-  static const int numberOfCircles = 5;
   static List<CircleAppearance> defaultCircleAppearances = [
     CircleAppearance.normal(),
     CircleAppearance.normal(),
@@ -16,9 +15,11 @@ class _RejectionCountdown extends StatelessWidget {
       color: const Color.fromARGB(172, 63, 63, 63),
       child: BlocBuilder<CourtCubit, CourtState>(
         builder: (context, state) {
-          final circleAppearances =
-              makeAppearances(state.rejectionsLeftToEvilWin);
-
+          List<CircleAppearance> circleAppearances = [
+            ...List.filled(
+                state.prevRejectionCount, CircleAppearance.rejected()),
+            ...defaultCircleAppearances.sublist(state.prevRejectionCount)
+          ];
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -28,15 +29,6 @@ class _RejectionCountdown extends StatelessWidget {
         },
       ),
     );
-  }
-
-  List<CircleAppearance> makeAppearances(int rejectionsLeftToEvilWin) {
-    final rejectionsCount = numberOfCircles - rejectionsLeftToEvilWin;
-    List<CircleAppearance> circleAppreances = [
-      ...List.filled(rejectionsCount, CircleAppearance.rejected()),
-      ...defaultCircleAppearances.sublist(rejectionsCount)
-    ];
-    return circleAppreances;
   }
 }
 

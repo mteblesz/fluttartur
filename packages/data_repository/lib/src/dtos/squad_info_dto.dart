@@ -4,7 +4,7 @@ import 'player_info_dto.dart';
 class SquadInfoDto {
   int squadId;
   int questNumber;
-  int rejectionsLeftToEvilWin;
+  int prevRejectionCount;
   int requiredMembersNumber;
   SquadStatus status;
   PlayerInfoDto leader;
@@ -13,7 +13,7 @@ class SquadInfoDto {
   SquadInfoDto({
     required this.squadId,
     required this.questNumber,
-    required this.rejectionsLeftToEvilWin,
+    required this.prevRejectionCount,
     required this.requiredMembersNumber,
     required this.status,
     required this.leader,
@@ -24,7 +24,7 @@ class SquadInfoDto {
     return SquadInfoDto(
       squadId: json['squadId'],
       questNumber: json['questNumber'],
-      rejectionsLeftToEvilWin: json['rejectionsLeftToEvilWin'],
+      prevRejectionCount: json['prevRejectionCount'],
       requiredMembersNumber: json['requiredMembersNumber'],
       status: SquadStatus.values[json['status']],
       leader: PlayerInfoDto.fromJson(json['leader']),
@@ -38,7 +38,7 @@ class SquadInfoDto {
     return Squad(
       squadId: squadId,
       questNumber: questNumber,
-      rejectionsLeftToEvilWin: rejectionsLeftToEvilWin,
+      prevRejectionCount: prevRejectionCount,
       requiredMembersNumber: requiredMembersNumber,
       status: status,
       leader: leader.toPlayer(),

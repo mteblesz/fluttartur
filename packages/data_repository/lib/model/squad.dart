@@ -6,7 +6,7 @@ import 'player.dart';
 class Squad extends Equatable {
   final int squadId;
   final int questNumber;
-  final int rejectionsLeftToEvilWin;
+  final int prevRejectionCount;
   final int requiredMembersNumber;
   final SquadStatus status;
   final Player leader;
@@ -15,7 +15,7 @@ class Squad extends Equatable {
   const Squad({
     required this.squadId,
     required this.questNumber,
-    required this.rejectionsLeftToEvilWin,
+    required this.prevRejectionCount,
     required this.requiredMembersNumber,
     required this.status,
     required this.leader,
@@ -26,7 +26,7 @@ class Squad extends Equatable {
   static const empty = Squad(
     squadId: -1,
     questNumber: 0,
-    rejectionsLeftToEvilWin: 0,
+    prevRejectionCount: 0,
     requiredMembersNumber: 0,
     status: SquadStatus.unknown,
     leader: Player.empty,
@@ -39,7 +39,7 @@ class Squad extends Equatable {
   List<Object?> get props => [
         squadId,
         questNumber,
-        rejectionsLeftToEvilWin,
+        prevRejectionCount,
         requiredMembersNumber,
         status,
         leader,
