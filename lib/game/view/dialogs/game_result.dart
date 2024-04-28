@@ -138,8 +138,7 @@ class _KillingMerlinBox extends StatelessWidget {
                       style: const TextStyle(fontSize: 20)),
                   const SizedBox(height: 10),
                   FutureBuilder<List<Player>>(
-                    future:
-                        gameContext.read<IDataRepository>().getGoodPlayers(),
+                    future: gameContext.read<GameCubit>().listOfGoodPlayers(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();

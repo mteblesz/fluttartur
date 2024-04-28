@@ -42,7 +42,7 @@ class RoleTeamMapping {
 enum SquadStatus {
   unknown,
   upcoming,
-  squadChoice,
+  squadVoting,
   submitted,
   approved,
   rejected,
@@ -68,7 +68,7 @@ class SquadQuestStatusMapping {
     SquadStatus.failed: QuestStatus.failed,
     SquadStatus.unknown: QuestStatus.error,
     SquadStatus.upcoming: QuestStatus.upcoming,
-    SquadStatus.squadChoice: QuestStatus.ongoing,
+    SquadStatus.squadVoting: QuestStatus.ongoing,
     SquadStatus.submitted: QuestStatus.ongoing,
     SquadStatus.approved: QuestStatus.ongoing,
     SquadStatus.rejected: QuestStatus.rejected,

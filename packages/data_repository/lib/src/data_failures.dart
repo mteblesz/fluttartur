@@ -36,7 +36,7 @@ class GetRoomFailure extends DataRepoFailure {
 }
 
 class GetRoleFailure extends DataRepoFailure {
-  GetRoleFailure(int code, [String? body]) : super("get role", code, body);
+  GetRoleFailure(int code, [String? body]) : super("start game", code, body);
 }
 
 class GetFilteredPlayersListFailure extends DataRepoFailure {
@@ -50,24 +50,5 @@ class GetPlayersListFailure extends DataRepoFailure {
 }
 
 class LeaveGameFailure extends DataRepoFailure {
-  LeaveGameFailure(int code, [String? body]) : super("leave game", code, body);
-}
-
-class GetQuestInfoFailure extends DataRepoFailure {
-  GetQuestInfoFailure(int code, [String? body])
-      : super("get quest info", code, body);
-}
-
-class AddMemberFailure extends DataRepoFailure {
-  AddMemberFailure(int code, [String? body]) : super("add member", code, body);
-}
-
-class RemoveMemberFailure extends DataRepoFailure {
-  RemoveMemberFailure(int code, [String? body])
-      : super("remove member", code, body);
-}
-
-class SubmitSquadFailure extends DataRepoFailure {
-  SubmitSquadFailure(int code, [String? body])
-      : super("submit squad", code, body);
+  LeaveGameFailure(int code, [String? body]) : super("start game", code, body);
 }

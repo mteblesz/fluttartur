@@ -3,14 +3,14 @@ import '../../model/model.dart';
 class QuestInfoShortDto {
   int? squadId;
   int questNumber;
-  int requiredMembersNumber;
+  int requiredPlayersNumber;
   bool isDoubleFail;
   SquadStatus status;
 
   QuestInfoShortDto({
     this.squadId,
     required this.questNumber,
-    required this.requiredMembersNumber,
+    required this.requiredPlayersNumber,
     required this.isDoubleFail,
     required this.status,
   });
@@ -19,7 +19,7 @@ class QuestInfoShortDto {
     return QuestInfoShortDto(
       squadId: json['squadId'],
       questNumber: json['questNumber'],
-      requiredMembersNumber: json['requiredMembersNumber'],
+      requiredPlayersNumber: json['requiredPlayersNumber'],
       isDoubleFail: json['isDoubleFail'],
       status: SquadStatus.values[json['status']],
     );
@@ -29,7 +29,7 @@ class QuestInfoShortDto {
     return QuestInfoShort(
       squadId: squadId,
       questNumber: questNumber,
-      requiredMembersNumber: requiredMembersNumber,
+      requiredPlayersNumber: requiredPlayersNumber,
       isDoubleFail: isDoubleFail,
       status: SquadQuestStatusMapping.map(status),
     );

@@ -68,6 +68,9 @@ class DataRepository implements IDataRepository {
 
   @override
   Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
+  // TODO jak stream pusty to api call o info,
+  // albo najpirw dodawac do streama po api callu a potem subskryowac,
+  // albo na serwerze kolejnosc cos nie cos?
   @override
   void subscribePlayersList() => _rtuRepository.subscribePlayersList();
   @override
@@ -195,39 +198,60 @@ class DataRepository implements IDataRepository {
   @override
   void unsubscribeQuestsSummary() => _rtuRepository.unsubscribeQuestsSummary();
 
-  @override
-  Future<QuestInfo> getQuestInfo({required int squadId}) {
-    return _restRepository.getQuestInfo(squadId: squadId);
-  }
-
-//--------------------------------- Court -------------------------------------------
+//----------------------------------------------------------------------------
 
   @override
-  int get currentPlayerId => _cache.currentPlayerId;
-
-  @override
-  Future<void> addMember({required int playerId}) async {
-    await _restRepository.addMember(playerId: playerId);
-  }
-
-  @override
-  Future<void> removeMember({required int playerIdOfMember}) async {
-    await _restRepository.removeMember(playerId: playerIdOfMember);
-  }
-
-  @override
-  Future<void> submitSquad({required int squadId}) {
-    throw UnimplementedError();
-    // TODO TODO
+  Stream<List<Player>> streamMembersList() {
+    return streamPlayersList(); // TODO
   }
 //----------------------------------------------------------------------------
+
+  @override
+  Future<List<Player>> playersList() {
+    // : implement playersList
+    throw UnimplementedError();
+  }
 
   // ----------------------------------------------------------------------
   //  old stuff for backwards-compatibility during changes (to be removed)
 
   @override
+  int currentSquadId = -1;
+
+  @override
+  Future<void> addMember(
+      {required int questNumber, required int playerId, required String nick}) {
+    // : implement addMember
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Squad>> getApprovedSquads() {
+    // : implement getApprovedSquads
+    throw UnimplementedError();
+  }
+
+  @override
   Future<bool> isCurrentPlayerAMember() {
     // : implement isCurrentPlayerAMember
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> nextSquad({required int questNumber}) {
+    // : implement nextSquad
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<bool>> questVotesInfo(int questNumber) {
+    // : implement questVotesInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeMember({required int questNumber, required int memberId}) {
+    // : implement removeMember
     throw UnimplementedError();
   }
 
@@ -238,8 +262,70 @@ class DataRepository implements IDataRepository {
   }
 
   @override
+  Future<void> submitSquad() {
+    // : implement submitSquad
+    throw UnimplementedError();
+  }
+
+  @override
+  void subscribeCurrentSquadIdWith(
+      {required void Function(String p1) doLogic}) {
+    // : implement subscribeCurrentSquadIdWith
+  }
+
+  @override
+  void subscribeQuestVotesWith(
+      {required void Function(List<bool?> p1) doLogic}) {
+    // : implement subscribeQuestVotesWith
+  }
+
+  @override
+  void subscribeSquadIsSubmittedWith(
+      {int squadId = -1, required void Function(Squad p1) doLogic}) {
+    // : implement subscribeSquadIsSubmittedWith
+  }
+
+  @override
+  void subscribeSquadVotesWith(
+      {required void Function(Map<String, bool> p1) doLogic}) {
+    // : implement subscribeSquadVotesWith
+  }
+
+  @override
+  void unsubscribeCurrentSquadId() {
+    // : implement unsubscribeCurrentSquadId
+  }
+
+  @override
+  void unsubscribeQuestVotes() {
+    // : implement unsubscribeQuestVotes
+  }
+
+  @override
+  void unsubscribeSquadIsSubmitted() {
+    // : implement unsubscribeSquadIsSubmitted
+  }
+
+  @override
+  void unsubscribeSquadVotes() {
+    // : implement unsubscribeSquadVotes
+  }
+
+  @override
   Future<void> updateMerlinKilled(bool merlinKilled) {
     // : implement updateMerlinKilled
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateSquadIsApproved({bool isApproved = true}) {
+    // : implement updateSquadIsApproved
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateSquadIsSuccessfull({bool isSuccessfull = true}) {
+    // : implement updateSquadIsSuccessfull
     throw UnimplementedError();
   }
 

@@ -17,27 +17,19 @@ enum HomeStatus {
 class HomeState extends Equatable {
   const HomeState({
     this.status = HomeStatus.inLobby,
-    this.playerLeftGame = false,
-    this.message = "",
   });
 
   final HomeStatus status;
 
-  final bool playerLeftGame;
-  final String message;
-
   @override
-  List<Object> get props => [status, playerLeftGame, message];
+  List<Object> get props => [status];
 
   HomeState copyWith({
+    Room? room,
     HomeStatus? status,
-    bool? playerLeftGame,
-    String? message,
   }) {
     return HomeState(
       status: status ?? this.status,
-      playerLeftGame: playerLeftGame ?? this.playerLeftGame,
-      message: message ?? this.message,
     );
   }
 }
