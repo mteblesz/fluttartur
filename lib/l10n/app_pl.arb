@@ -64,6 +64,10 @@
   "fail": "Porażka",
   "court": "Dworzanie:",
   "squad": "Drużyna:",
+  "courtIsEmpty": "Dwór jest pusty",
+  "squadIsEmpty": "Drużyna jest pusta",
+  "youNeedAtLeast": "Potrzeba",
+  "thisManyMembers": "graczy",
 
 
   "questInfo": "Misja",

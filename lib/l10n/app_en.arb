@@ -64,6 +64,11 @@
   "fail": "Fail",
   "court": "Court:",
   "squad": "Squad:",
+  "courtIsEmpty": "court is empty",
+  "squadIsEmpty": "squad is empty",
+  "youNeedAtLeast": "Squad needs",
+  "thisManyMembers": "members",
+
   
   "questInfo": "Quest",
   "requiredMembersNumber": "Squad size",

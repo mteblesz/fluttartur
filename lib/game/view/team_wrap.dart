@@ -45,7 +45,7 @@ class _PlayerListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CourtCubit, CourtState>(builder: (context, state) {
       return state.courtiers.isEmpty
-          ? const Text('<court is empty>\nthis should not happen')
+          ? Text(AppLocalizations.of(context)!.courtIsEmpty)
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -68,7 +68,7 @@ class _SquadListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CourtCubit, CourtState>(builder: (context, state) {
       return state.courtiers.isEmpty
-          ? const Text('<squad is empty>') // TODO Add this text to Localization
+          ? Text(AppLocalizations.of(context)!.squadIsEmpty)
           : Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
