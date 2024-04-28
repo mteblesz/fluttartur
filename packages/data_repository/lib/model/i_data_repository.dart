@@ -41,23 +41,59 @@ abstract class IDataRepository {
   Stream<List<QuestInfoShort>> streamQuestsSummary();
   void subscribeQuestsSummary();
   void unsubscribeQuestsSummary();
-  Future<QuestInfo> getQuestInfo({required int squadId});
-
-  int get currentPlayerId;
-  Future<void> addMember({required int playerId});
-  Future<void> removeMember({required int playerIdOfMember});
-  Future<void> submitSquad({required int squadId});
 
 //----------------------------------------------------------------------------
 
   // -------------
   // TODO old stuff for backwards-compatibility during changes (to be removed)
 
+  Future<List<Player>> playersList();
+
+  Stream<List<Player>> streamMembersList();
+  Future<void> addMember({
+    required int questNumber,
+    required int playerId,
+    required String nick,
+  });
+  Future<void> removeMember({
+    required int questNumber,
+    required int memberId,
+  });
+
+  Future<void> submitSquad();
+  Future<void> updateSquadIsApproved({bool isApproved = true});
+  Future<void> nextSquad({required int questNumber});
+
+  void subscribeSquadIsSubmittedWith({
+    int squadId = -1,
+    required void Function(Squad) doLogic,
+  });
+  void unsubscribeSquadIsSubmitted();
+
+  int currentSquadId = -1;
+  void subscribeCurrentSquadIdWith({
+    required void Function(String) doLogic,
+  });
+  void unsubscribeCurrentSquadId();
+
   voteSquad(bool vote);
+  void subscribeSquadVotesWith({
+    required void Function(Map<String, bool>) doLogic,
+  });
+  void unsubscribeSquadVotes();
 
   Future<bool> isCurrentPlayerAMember();
   Future<void> voteQuest(bool vote);
+  void subscribeQuestVotesWith({
+    required void Function(List<bool?>) doLogic,
+  });
+  void unsubscribeQuestVotes();
+  Future<void> updateSquadIsSuccessfull({bool isSuccessfull = true});
+
+  Future<List<Squad>> getApprovedSquads();
 
   Stream<bool?> streamMerlinKilled();
   Future<void> updateMerlinKilled(bool merlinKilled);
+
+  Future<List<bool>> questVotesInfo(int questNumber);
 }

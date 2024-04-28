@@ -9,6 +9,14 @@ class GameCubit extends Cubit<GameState> {
 
   GameCubit(this._dataRepository) : super(const GameState());
 
+  Stream<List<Player>> streamPlayersList() {
+    return _dataRepository.streamPlayersList();
+  }
+
+  Stream<List<Player>> streamMembersList() {
+    return _dataRepository.streamPlayersList(); // TODO
+  }
+
   Future<List<Player>> getEvilPlayers() {
     return _dataRepository.getEvilPlayers();
   }
@@ -17,8 +25,53 @@ class GameCubit extends Cubit<GameState> {
     return _dataRepository.getMerlinAndMorgana();
   }
 
-  //--------------------------------------------------------------
-  //-------------------------------------------------------------
+  bool squadFullSize(int playersCount, int questNumber) {
+    return true; // TODO wrong wrong
+  }
+
+  bool isTwoFailsQuest(int playersCount, int questNumber) {
+    return false; // TODO wrong wrong
+  }
+
+  //--------------------------------leader's logic------------------------------
+
+  /// add player to squad
+  Future<void> addMember({required Player player}) async {
+    //if (!_dataRepository.currentPlayer.isLeader) return;
+    if (state.status != GameStatus.squadChoice) return;
+
+    if (state.isSquadFull) return;
+
+    await _dataRepository.addMember(
+      questNumber: state.questNumber,
+      playerId: player.playerId,
+      nick: player.nick,
+    );
+
+    final isSquadFull = true;
+    emit(state.copyWith(isSquadFull: isSquadFull));
+  }
+
+  /// remove player from squad
+  Future<void> removeMember({required Player member}) async {
+    //if (!_dataRepository.currentPlayer.isLeader) return;
+    if (state.status != GameStatus.squadChoice) return;
+
+    await _dataRepository.removeMember(
+      questNumber: state.questNumber,
+      memberId: member.playerId,
+    );
+
+    emit(state.copyWith(isSquadFull: false));
+  }
+
+  Future<void> submitSquad() async {
+    final isSquadRequiredSize = true;
+    if (!isSquadRequiredSize) return;
+    await _dataRepository.submitSquad();
+  }
+
+  //--------------------------------players's logic-----------------------------
 
   Future<void> voteSquad(bool vote) async {
     await _dataRepository.voteSquad(vote);
@@ -42,15 +95,15 @@ class GameCubit extends Cubit<GameState> {
         }
         break;
       case GameStatus.questVoting:
-        if (squad.isSuccessful == null) return;
+        if (squad.isSuccessfull == null) return;
         emit(state.copyWith(
             questStatuses: state.insertToQuestStatuses(
-          squad.isSuccessful == true
+          squad.isSuccessfull == true
               ? QuestStatus.successful
               : QuestStatus.failed,
         )));
 
-        emit(state.copyWith(lastQuestOutcome: squad.isSuccessful));
+        emit(state.copyWith(lastQuestOutcome: squad.isSuccessfull));
         emit(state.copyWith(status: GameStatus.questResults));
         break;
       case GameStatus.questResults:
@@ -91,6 +144,21 @@ class GameCubit extends Cubit<GameState> {
 
   Future<void> killPlayer({required Player player}) async {
     //await _dataRepository.updateMerlinKilled(player.role == "good_merlin");
+  }
+
+  Future<List<Player>> listOfGoodPlayers() async {
+    return await _dataRepository.playersList();
+  }
+
+  //--------------------------------quest info logic----------------------------
+
+  Future<List<bool>>? questVotesInfo(int questNumber) async {
+    final questStatus = state.questStatuses[questNumber - 1];
+    if (questStatus != QuestStatus.successful &&
+        questStatus != QuestStatus.failed) {
+      return List<bool>.empty();
+    }
+    return await _dataRepository.questVotesInfo(questNumber);
   }
 }
 

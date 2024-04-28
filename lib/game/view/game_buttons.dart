@@ -41,7 +41,7 @@ class _SubmitSquadButton extends StatelessWidget {
             child: FilledButton(
               onPressed: !state.isSquadFull
                   ? null
-                  : () => context.read<CourtCubit>().submitSquad(),
+                  : () => context.read<GameCubit>().submitSquad(),
               child: Text(AppLocalizations.of(context)!.submitSquad,
                   style: const TextStyle(fontSize: 25)),
             ),

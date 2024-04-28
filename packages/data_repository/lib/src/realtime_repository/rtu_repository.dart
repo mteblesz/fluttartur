@@ -3,7 +3,6 @@ import 'package:data_repository/src/realtime_repository/config.dart';
 import '../dtos/dtos.dart';
 import '../../model/model.dart';
 import 'package:signalr_netcore/signalr_client.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'squads_info_updates.dart';
 part 'matchup_updates.dart';
@@ -32,10 +31,8 @@ class RtuRepository {
     hubConnection.stop();
   }
 
-  // https://stackoverflow.com/a/56279276/23287406
-  BehaviorSubject<List<Player>> _playerStreamController =
-      BehaviorSubject<List<Player>>();
-  Sink<List<Player>> get _playerStreamSink => _playerStreamController.sink;
+  StreamController<List<Player>> _playerStreamController =
+      StreamController<List<Player>>();
   Stream<List<Player>> get playerStream => _playerStreamController.stream;
 
   StreamController<Squad> _currentSquadStreamController =
