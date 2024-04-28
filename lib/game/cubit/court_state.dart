@@ -2,18 +2,30 @@ part of 'court_cubit.dart';
 
 class CourtState extends Equatable {
   final int rejectionsLeftToEvilWin;
-  final int requiredPlayersNumber;
+  final int requiredMembersNumber;
+  final int membersCount;
+  final SquadStatus squadStatus;
   final List<Courtier> courtiers;
+  final bool isLeader;
 
   const CourtState({
     this.rejectionsLeftToEvilWin = 0,
-    this.requiredPlayersNumber = 0,
+    this.requiredMembersNumber = 0,
+    this.membersCount = 0,
+    this.squadStatus = SquadStatus.unknown,
     this.courtiers = const [],
+    this.isLeader = false,
   });
 
   @override
-  List<Object?> get props =>
-      [rejectionsLeftToEvilWin, requiredPlayersNumber, courtiers];
+  List<Object?> get props => [
+        rejectionsLeftToEvilWin,
+        requiredMembersNumber,
+        membersCount,
+        squadStatus,
+        courtiers,
+        isLeader,
+      ];
 
   CourtState from({
     required List<Player> players,
@@ -31,8 +43,12 @@ class CourtState extends Equatable {
         .toList();
 
     return CourtState(
-        rejectionsLeftToEvilWin: squad.rejectionsLeftToEvilWin,
-        requiredPlayersNumber: squad.requiredPlayersNumber,
-        courtiers: courtiers);
+      rejectionsLeftToEvilWin: squad.rejectionsLeftToEvilWin,
+      requiredMembersNumber: squad.requiredMembersNumber,
+      membersCount: squad.members.length,
+      squadStatus: squad.status,
+      courtiers: courtiers,
+      isLeader: squad.leader.playerId == currentPlayerId,
+    );
   }
 }

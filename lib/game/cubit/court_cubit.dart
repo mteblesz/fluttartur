@@ -26,30 +26,20 @@ class CourtCubit extends Cubit<CourtState> {
 
   /// add player to squad
   Future<void> addMember({required int playerId}) async {
-    //if (!_dataRepository.currentPlayer.isLeader) return;
-    // if (state.status != GameStatus.squadChoice) return;
+    if (!state.isLeader) return;
+    if (state.squadStatus != SquadStatus.squadChoice) return;
+    if (state.membersCount >= state.requiredMembersNumber) return;
 
-    // if (state.isSquadFull) return;
-
-    // await _dataRepository.addMember(
-    //   playerId: player.playerId,
-    // );
-
-    // final isSquadFull = true;
-    // emit(state.copyWith(isSquadFull: isSquadFull));
+    await _dataRepository.addMember(playerId: playerId);
   }
 
   /// remove player from squad
   Future<void> removeMember({required int playerId}) async {
-    //if (!_dataRepository.currentPlayer.isLeader) return;
-    //   if (state.status != GameStatus.squadChoice) return;
+    if (!state.isLeader) return;
+    if (state.squadStatus != SquadStatus.squadChoice) return;
+    if (state.membersCount <= 0) return;
 
-    //   await _dataRepository.removeMember(
-    //     questNumber: state.questNumber,
-    //     memberId: member.playerId,
-    //   );
-
-    //   emit(state.copyWith(isSquadFull: false));
+    await _dataRepository.removeMember(playerIdOfMember: playerId);
   }
 
   Future<void> submitSquad() async {

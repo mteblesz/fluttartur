@@ -50,7 +50,12 @@ class _PlayerListView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ...state.courtiers.map(
-                  (courtier) => _CourtierCard(courtier: courtier),
+                  (courtier) => _CourtierCard(
+                    courtier: courtier,
+                    onCourtierTap: (int id) {
+                      context.read<CourtCubit>().addMember(playerId: id);
+                    },
+                  ),
                 ),
               ],
             );
@@ -68,7 +73,12 @@ class _SquadListView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 ...state.courtiers.where((courtier) => courtier.isMember).map(
-                      (courtier) => _CourtierCard(courtier: courtier),
+                      (courtier) => _CourtierCard(
+                        courtier: courtier,
+                        onCourtierTap: (int id) {
+                          context.read<CourtCubit>().removeMember(playerId: id);
+                        },
+                      ),
                     ),
               ],
             );
@@ -79,15 +89,16 @@ class _SquadListView extends StatelessWidget {
 class _CourtierCard extends StatelessWidget {
   const _CourtierCard({
     required this.courtier,
+    required this.onCourtierTap,
   });
 
   final Courtier courtier;
+  final void Function(int id) onCourtierTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          context.read<CourtCubit>().removeMember(playerId: courtier.playerId),
+      onTap: () => onCourtierTap(courtier.playerId),
       child: Card(
         margin: const EdgeInsets.all(1.0),
         child: Padding(
