@@ -48,7 +48,7 @@ class Squad extends Equatable {
 
   bool get isUnknown => status == SquadStatus.unknown;
   bool get isUpcoming => status == SquadStatus.upcoming;
-  bool get isSquadVoting => status == SquadStatus.squadVoting;
+  bool get isSquadChoice => status == SquadStatus.squadChoice;
   bool get isSubmitted => status == SquadStatus.submitted;
   bool get isApproved => status == SquadStatus.approved;
   bool get isRejected => status == SquadStatus.rejected;
