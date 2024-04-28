@@ -101,11 +101,11 @@ class _ShortQuestInfo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "${AppLocalizations.of(context)!.requiredPlayersNumber}: ",
+              "${AppLocalizations.of(context)!.requiredMembersNumber}: ",
               style: const TextStyle(fontSize: 18),
             ),
             Text(
-              questInfo.requiredPlayersNumber.toString(),
+              questInfo.requiredMembersNumber.toString(),
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -228,7 +228,7 @@ class _QuestOutcome extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ..._getSecretVotesCardsLine(loadedInfo.requiredPlayersNumber,
+            ..._getSecretVotesCardsLine(loadedInfo.requiredMembersNumber,
                 loadedInfo.questVoteSuccessCount!),
           ],
         ),

@@ -66,7 +66,7 @@
   "squad": "Squad:",
   
   "questInfo": "Quest",
-  "requiredPlayersNumber": "Squad size",
+  "requiredMembersNumber": "Squad size",
   "isDoubleFail": "For this quest to fail\nthe Evil Team needs\nat least two 'Failure' votes.",
   "questStatus_upcoming": "This is a future quest",
   "questStatus_ongoing": "Current quest",
