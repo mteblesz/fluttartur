@@ -1,43 +1,36 @@
 import 'package:equatable/equatable.dart';
 
 import 'enums.dart';
+import 'player.dart';
 
 class Squad extends Equatable {
   final int squadId;
   final int questNumber;
-  final SquadStatus status; // remove guys below TODO
-  final bool isSubmitted;
-  final bool? isApproved;
-  final bool? isSuccessfull;
-  final Map<String, bool> votes; // attributed by playerId
+  final int rejectionsLeftToEvilWin;
+  final int requiredMembersNumber;
+  final SquadStatus status;
+  final Player leader;
+  final List<Player> members;
 
   const Squad({
     required this.squadId,
     required this.questNumber,
+    required this.rejectionsLeftToEvilWin,
+    required this.requiredMembersNumber,
     required this.status,
-    required this.isSubmitted,
-    this.isApproved,
-    this.isSuccessfull,
-    required this.votes,
+    required this.leader,
+    required this.members,
   });
-
-  Squad.init(this.questNumber)
-      : squadId = -1,
-        status = SquadStatus.unknown,
-        isSubmitted = false,
-        isApproved = null,
-        isSuccessfull = null,
-        votes = <String, bool>{};
 
   /// Empty Squad
   static const empty = Squad(
     squadId: -1,
     questNumber: 0,
+    rejectionsLeftToEvilWin: 0,
+    requiredMembersNumber: 0,
     status: SquadStatus.unknown,
-    isSubmitted: false,
-    isApproved: null,
-    isSuccessfull: null,
-    votes: <String, bool>{},
+    leader: Player.empty,
+    members: [],
   );
   bool get isEmpty => this == Squad.empty;
   bool get isNotEmpty => this != Squad.empty;
@@ -46,10 +39,21 @@ class Squad extends Equatable {
   List<Object?> get props => [
         squadId,
         questNumber,
+        rejectionsLeftToEvilWin,
+        requiredMembersNumber,
         status,
-        isSubmitted,
-        isApproved,
-        isSuccessfull,
-        votes
+        leader,
+        members,
       ];
+
+  bool get isUnknown => status == SquadStatus.unknown;
+  bool get isUpcoming => status == SquadStatus.upcoming;
+  bool get isSquadChoice => status == SquadStatus.squadChoice;
+  bool get isSubmitted => status == SquadStatus.submitted;
+  bool get isApproved => status == SquadStatus.approved;
+  bool get isRejected => status == SquadStatus.rejected;
+  bool get isQuestVoting => status == SquadStatus.questVoting;
+  bool get isSuccessful => status == SquadStatus.successful;
+  bool get isFailed => status == SquadStatus.failed;
+  bool get isError => status == SquadStatus.error;
 }
