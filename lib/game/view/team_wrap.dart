@@ -53,7 +53,11 @@ class _PlayerListView extends StatelessWidget {
                   (courtier) => _CourtierCard(
                     courtier: courtier,
                     onCourtierTap: (int id) {
-                      context.read<CourtCubit>().addMember(playerId: id);
+                      if (!courtier.isMember) {
+                        context.read<CourtCubit>().addMember(playerId: id);
+                      } else {
+                        context.read<CourtCubit>().removeMember(playerId: id);
+                      }
                     },
                   ),
                 ),
@@ -98,31 +102,44 @@ class _CourtierCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onCourtierTap(courtier.playerId),
-      child: Card(
-        margin: const EdgeInsets.all(1.0),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              courtier.isLeader
-                  ? const Icon(Icons.star)
-                  : const SizedBox.shrink(),
-              Flexible(
-                child: Text(
-                  courtier.nick,
-                  style: TextStyle(
-                    fontSize: 23,
-                    fontWeight:
-                        courtier.isCurrentPlayer ? FontWeight.bold : null,
-                  ),
+        onTap: () => onCourtierTap(courtier.playerId),
+        child: Stack(
+          children: [
+            Card(
+              margin: const EdgeInsets.all(1.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    courtier.isLeader
+                        ? const Icon(Icons.star)
+                        : const SizedBox.shrink(),
+                    Flexible(
+                      child: Text(
+                        courtier.nick,
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight:
+                              courtier.isCurrentPlayer ? FontWeight.bold : null,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+            courtier.isMember
+                ? Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: Colors.white, width: 1.5),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ],
+        ));
   }
 }

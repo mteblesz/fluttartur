@@ -24,18 +24,16 @@ class CourtCubit extends Cubit<CourtState> {
     });
   }
 
-  /// add player to squad
   Future<void> addMember({required int playerId}) async {
-    if (!state.isLeader) return;
+    //if (!state.isLeader) return;
     if (state.squadStatus != SquadStatus.squadChoice) return;
     if (state.membersCount >= state.requiredMembersNumber) return;
 
     await _dataRepository.addMember(playerId: playerId);
   }
 
-  /// remove player from squad
   Future<void> removeMember({required int playerId}) async {
-    if (!state.isLeader) return;
+    //if (!state.isLeader) return;
     if (state.squadStatus != SquadStatus.squadChoice) return;
     if (state.membersCount <= 0) return;
 
