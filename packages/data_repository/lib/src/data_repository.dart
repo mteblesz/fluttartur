@@ -215,6 +215,11 @@ class DataRepository implements IDataRepository {
     await _restRepository.removeMember(playerId: playerIdOfMember);
   }
 
+  @override
+  Future<void> submitSquad({required int squadId}) {
+    throw UnimplementedError();
+    // TODO TODO
+  }
 //----------------------------------------------------------------------------
 
   // ----------------------------------------------------------------------
@@ -229,12 +234,6 @@ class DataRepository implements IDataRepository {
   @override
   Stream<bool?> streamMerlinKilled() {
     // : implement streamMerlinKilled
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> submitSquad() {
-    // : implement submitSquad
     throw UnimplementedError();
   }
 

@@ -1,6 +1,7 @@
 part of 'court_cubit.dart';
 
 class CourtState extends Equatable {
+  final int squadId;
   final int rejectionsLeftToEvilWin;
   final int requiredMembersNumber;
   final int membersCount;
@@ -9,7 +10,8 @@ class CourtState extends Equatable {
   final bool isLeader;
 
   const CourtState({
-    this.rejectionsLeftToEvilWin = 0,
+    this.squadId = -1,
+    this.rejectionsLeftToEvilWin = -1,
     this.requiredMembersNumber = 0,
     this.membersCount = 0,
     this.squadStatus = SquadStatus.unknown,
@@ -19,6 +21,7 @@ class CourtState extends Equatable {
 
   @override
   List<Object?> get props => [
+        squadId,
         rejectionsLeftToEvilWin,
         requiredMembersNumber,
         membersCount,
@@ -43,6 +46,7 @@ class CourtState extends Equatable {
         .toList();
 
     return CourtState(
+      squadId: squad.squadId,
       rejectionsLeftToEvilWin: squad.rejectionsLeftToEvilWin,
       requiredMembersNumber: squad.requiredMembersNumber,
       membersCount: squad.members.length,

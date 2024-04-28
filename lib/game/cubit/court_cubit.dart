@@ -43,16 +43,9 @@ class CourtCubit extends Cubit<CourtState> {
   }
 
   Future<void> submitSquad() async {
-    //   final isSquadRequiredSize = true;
-    //   if (!isSquadRequiredSize) return;
-    //   await _dataRepository.submitSquad();
-  }
+    if (!state.isLeader) return;
+    if (state.membersCount != state.requiredMembersNumber) return;
 
-  bool squadFullSize(int playersCount, int questNumber) {
-    return true; // TODO wrong wrong
-  }
-
-  bool isTwoFailsQuest(int playersCount, int questNumber) {
-    return false; // TODO wrong wrong
+    await _dataRepository.submitSquad(squadId: state.squadId);
   }
 }

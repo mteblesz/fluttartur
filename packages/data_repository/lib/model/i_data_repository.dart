@@ -46,13 +46,12 @@ abstract class IDataRepository {
   int get currentPlayerId;
   Future<void> addMember({required int playerId});
   Future<void> removeMember({required int playerIdOfMember});
+  Future<void> submitSquad({required int squadId});
 
 //----------------------------------------------------------------------------
 
   // -------------
   // TODO old stuff for backwards-compatibility during changes (to be removed)
-
-  Future<void> submitSquad();
 
   voteSquad(bool vote);
 
