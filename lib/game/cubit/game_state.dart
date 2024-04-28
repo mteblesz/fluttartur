@@ -18,6 +18,13 @@ enum GameStatus {
 }
 
 class GameState extends Equatable {
+  final GameStatus status;
+  final int questNumber;
+  final bool lastQuestOutcome;
+  final List<QuestStatus> questStatuses; // TODO remove this?
+  final bool winningTeam;
+  final bool isSquadFull;
+
   const GameState({
     this.status = GameStatus.squadChoice,
     this.questNumber = 1,
@@ -32,13 +39,6 @@ class GameState extends Equatable {
     this.winningTeam = true,
     this.isSquadFull = false,
   });
-
-  final GameStatus status;
-  final int questNumber;
-  final bool lastQuestOutcome;
-  final List<QuestStatus> questStatuses;
-  final bool winningTeam;
-  final bool isSquadFull;
 
   @override
   List<Object> get props => [

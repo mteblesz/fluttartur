@@ -6,7 +6,7 @@ class QuestInfoDto {
   int squadId;
   int questNumber;
   int squadNumber;
-  int requiredPlayersNumber;
+  int requiredMembersNumber;
   SquadStatus status;
   PlayerInfoDto leader;
   List<PlayerInfoDto> members;
@@ -17,7 +17,7 @@ class QuestInfoDto {
     required this.squadId,
     required this.questNumber,
     required this.squadNumber,
-    required this.requiredPlayersNumber,
+    required this.requiredMembersNumber,
     required this.status,
     required this.leader,
     required this.members,
@@ -30,13 +30,13 @@ class QuestInfoDto {
       squadId: json['squadId'],
       questNumber: json['questNumber'],
       squadNumber: json['squadNumber'],
-      requiredPlayersNumber: json['requiredPlayersNumber'],
+      requiredMembersNumber: json['requiredMembersNumber'],
       status: SquadStatus.values[json['status']],
       leader: PlayerInfoDto.fromJson(json['leader']),
       members: (json['members'] as List)
           .map((e) => PlayerInfoDto.fromJson(e))
           .toList(),
-      squadVoteInfo: (json['voteInfo'] as List)
+      squadVoteInfo: (json['squadVoteInfo'] as List)
           .map((e) => VoteInfoDto.fromJson(e))
           .toList(),
       questVoteSuccessCount: json['questVoteSuccessCount'],
@@ -48,7 +48,7 @@ class QuestInfoDto {
       squadId: squadId,
       questNumber: questNumber,
       squadNumber: squadNumber,
-      requiredPlayersNumber: requiredPlayersNumber,
+      requiredMembersNumber: requiredMembersNumber,
       status: SquadQuestStatusMapping.map(status),
       leader: leader.toPlayer(),
       members: members.map((member) => member.toPlayer()).toList(),
