@@ -26,4 +26,19 @@ extension SquadRequests on RestRepository {
       throw RemoveMemberFailure(response.statusCode, response.body);
     }
   }
+
+  Future<void> submitSquad({
+    required int squadId,
+  }) async {
+    final response = await HttpSender.patch(
+      Uri.parse(
+        RestConfig.submitSquadUrl(squadId),
+      ),
+      headers: getAuthHeaders(),
+    );
+
+    if (response.statusCode != 204) {
+      throw RemoveMemberFailure(response.statusCode, response.body);
+    }
+  }
 }

@@ -8,6 +8,7 @@ class CourtState extends Equatable {
   final SquadStatus squadStatus;
   final List<Courtier> courtiers;
   final bool isLeader;
+  bool get isSquadFull => membersCount == requiredMembersNumber;
 
   const CourtState({
     this.squadId = -1,

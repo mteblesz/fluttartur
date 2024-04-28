@@ -46,4 +46,8 @@ class CourtCubit extends Cubit<CourtState> {
 
     await _dataRepository.submitSquad(squadId: state.squadId);
   }
+
+  Future<void> voteSquad(bool vote) async {
+    await _dataRepository.voteSquad(vote);
+  }
 }

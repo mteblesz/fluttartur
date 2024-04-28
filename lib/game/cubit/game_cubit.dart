@@ -20,10 +20,6 @@ class GameCubit extends Cubit<GameState> {
   //--------------------------------------------------------------
   //-------------------------------------------------------------
 
-  Future<void> voteSquad(bool vote) async {
-    await _dataRepository.voteSquad(vote);
-  }
-
   /// steering the game course through states and squad props
   Future<void> doSquadLoop(Squad squad) async {
     emit(state.copyWith(questNumber: squad.questNumber)); // update questNumber

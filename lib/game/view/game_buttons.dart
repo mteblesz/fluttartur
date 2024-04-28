@@ -3,36 +3,28 @@ part of 'game_form.dart';
 class _GameButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // streamBuilder is here to start streaming player for bussiness logic (?)
-    // TODO this /\ is stupid
-    return StreamBuilder<Player>(
-        stream: null, // TODO context.read<IDataRepository>().streamPlayer(),
-        builder: (context, snapshot) {
-          var player = snapshot.data ?? Player.empty;
-          return BlocBuilder<GameCubit, GameState>(
-              buildWhen: (previous, current) =>
-                  previous.status != current.status,
-              builder: (context, state) {
-                if (state.status == GameStatus.squadChoice &&
-                        false // TODO player.isLeader) {
-                    ) {
-                  return _SubmitSquadButton();
-                } else if (state.status == GameStatus.squadVoting) {
-                  return _VoteSquadPanel();
-                } else if (state.status == GameStatus.questVoting) {
-                  return _EmbarkmentCardIfMember();
-                } else {
-                  return const SizedBox.shrink();
-                }
-              });
-        });
+    return BlocBuilder<CourtCubit, CourtState>(
+      buildWhen: (previous, current) =>
+          previous.squadStatus != current.squadStatus,
+      builder: (context, state) {
+        if (state.isLeader && state.squadStatus == SquadStatus.squadChoice) {
+          return _SubmitSquadButton();
+        } else if (state.squadStatus == SquadStatus.submitted) {
+          return _VoteSquadPanel();
+        } else if (state.squadStatus == SquadStatus.questVoting) {
+          return _EmbarkmentCardIfMember();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 
 class _SubmitSquadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameCubit, GameState>(
+    return BlocBuilder<CourtCubit, CourtState>(
         buildWhen: (previous, current) =>
             previous.isSquadFull != current.isSquadFull,
         builder: (context, state) {
@@ -56,11 +48,11 @@ class _VoteSquadPanel extends StatefulWidget {
 }
 
 class _VoteSquadPanelState extends State<_VoteSquadPanel> {
-  bool _isDisabled = false;
+  bool isDisabled = false;
 
   void _updateIsDisabled(bool newState) {
     setState(() {
-      _isDisabled = newState;
+      isDisabled = newState;
     });
   }
 
@@ -79,12 +71,12 @@ class _VoteSquadPanelState extends State<_VoteSquadPanel> {
             children: [
               _VoteSquadButton(
                 isPositive: true,
-                isDisabled: _isDisabled,
+                isDisabled: isDisabled,
                 updateisDisabled: _updateIsDisabled,
               ),
               _VoteSquadButton(
                 isPositive: false,
-                isDisabled: _isDisabled,
+                isDisabled: isDisabled,
                 updateisDisabled: _updateIsDisabled,
               ),
             ],
@@ -114,12 +106,15 @@ class _VoteSquadButton extends StatelessWidget {
         onPressed: isDisabled
             ? null
             : () {
-                context.read<GameCubit>().voteSquad(isPositive);
+                context.read<CourtCubit>().voteSquad(isPositive);
                 updateisDisabled(!isDisabled);
               },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
-              isPositive ? Colors.green.shade700 : Colors.red.shade700),
+            isPositive
+                ? const Color.fromARGB(255, 60, 188, 202)
+                : const Color.fromARGB(255, 130, 34, 203),
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

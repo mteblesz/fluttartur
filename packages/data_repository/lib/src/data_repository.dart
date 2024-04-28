@@ -216,10 +216,22 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> submitSquad({required int squadId}) {
-    throw UnimplementedError();
-    // TODO TODO
+  Future<void> submitSquad({required int squadId}) async {
+    await _restRepository.submitSquad(squadId: squadId);
   }
+
+  @override
+  Future<void> voteSquad(bool vote) async {
+    // : implement voteSquad
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> voteQuest(bool vote) async {
+    // : implement voteQuest
+    throw UnimplementedError();
+  }
+
 //----------------------------------------------------------------------------
 
   // ----------------------------------------------------------------------
@@ -240,18 +252,6 @@ class DataRepository implements IDataRepository {
   @override
   Future<void> updateMerlinKilled(bool merlinKilled) {
     // : implement updateMerlinKilled
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> voteQuest(bool vote) {
-    // : implement voteQuest
-    throw UnimplementedError();
-  }
-
-  @override
-  voteSquad(bool vote) {
-    // : implement voteSquad
     throw UnimplementedError();
   }
 }
