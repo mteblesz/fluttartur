@@ -6,4 +6,5 @@ export 'quest_info_dto.dart';
 export 'quests_info_short_dto.dart';
 export 'squad_info_dto.dart';
 export 'vote_info_dto.dart';
+export 'cast_vote_dto.dart';
 // TODO remove all dtos that are not outgoing?

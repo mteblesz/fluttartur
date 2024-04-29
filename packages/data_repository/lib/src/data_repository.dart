@@ -59,11 +59,12 @@ class DataRepository implements IDataRepository {
   Future<void> addDummyPlayer({required String nick}) async {
     int playerId = await _restRepository.joinRoom(roomId: _cache.currentRoomId);
     await _restRepository.setNickname(
-        dto: NicknameSetDto(
-      roomId: _cache.currentRoomId,
-      playerId: playerId,
-      nick: nick,
-    ));
+      dto: NicknameSetDto(
+        roomId: _cache.currentRoomId,
+        playerId: playerId,
+        nick: nick,
+      ),
+    );
   }
 
   @override
@@ -221,27 +222,31 @@ class DataRepository implements IDataRepository {
   }
 
   @override
-  Future<void> voteSquad(bool vote) async {
-    // : implement voteSquad
-    throw UnimplementedError();
+  Future<void> voteSquad({required bool vote, required int squadId}) async {
+    await _restRepository.voteSquad(
+      dto: CastVoteDto(
+        value: vote,
+        squadId: squadId,
+        voterId: _cache.currentPlayerId,
+      ),
+    );
   }
 
   @override
-  Future<void> voteQuest(bool vote) async {
-    // : implement voteQuest
-    throw UnimplementedError();
+  Future<void> voteQuest({required bool vote, required int squadId}) async {
+    await _restRepository.voteQuest(
+      dto: CastVoteDto(
+        value: vote,
+        squadId: squadId,
+        voterId: _cache.currentPlayerId,
+      ),
+    );
   }
 
 //----------------------------------------------------------------------------
 
   // ----------------------------------------------------------------------
   //  old stuff for backwards-compatibility during changes (to be removed)
-
-  @override
-  Future<bool> isCurrentPlayerAMember() {
-    // : implement isCurrentPlayerAMember
-    throw UnimplementedError();
-  }
 
   @override
   Stream<bool?> streamMerlinKilled() {

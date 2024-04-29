@@ -70,7 +70,8 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<bool> isCurrentPlayerAMember() async {
-    return _dataRepository.isCurrentPlayerAMember();
+    return true;
+    //_dataRepository.isCurrentPlayerAMember();
   }
 
   //--------------------------------merlin killing logic------------------------

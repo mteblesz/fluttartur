@@ -71,3 +71,11 @@ class SubmitSquadFailure extends DataRepoFailure {
   SubmitSquadFailure(int code, [String? body])
       : super("submit squad", code, body);
 }
+
+class VoteSquadFailure extends DataRepoFailure {
+  VoteSquadFailure(int code, [String? body]) : super("vote squad", code, body);
+}
+
+class VoteQuestFailure extends DataRepoFailure {
+  VoteQuestFailure(int code, [String? body]) : super("vote quest", code, body);
+}

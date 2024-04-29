@@ -47,15 +47,13 @@ abstract class IDataRepository {
   Future<void> addMember({required int playerId});
   Future<void> removeMember({required int playerIdOfMember});
   Future<void> submitSquad({required int squadId});
-  Future<void> voteSquad(bool vote);
-  Future<void> voteQuest(bool vote);
+  Future<void> voteSquad({required bool vote, required int squadId});
+  Future<void> voteQuest({required bool vote, required int squadId});
 
 //----------------------------------------------------------------------------
 
   // -------------
   // TODO old stuff for backwards-compatibility during changes (to be removed)
-
-  Future<bool> isCurrentPlayerAMember();
 
   Stream<bool?> streamMerlinKilled();
   Future<void> updateMerlinKilled(bool merlinKilled);
