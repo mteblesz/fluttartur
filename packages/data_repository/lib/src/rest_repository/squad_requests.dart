@@ -16,11 +16,8 @@ extension SquadRequests on RestRepository {
     required int playerId,
   }) async {
     final response = await HttpSender.delete(
-      Uri.parse(
-        RestConfig.removeMemberUrl(playerId),
-      ),
-      headers: getAuthHeaders(),
-    );
+        Uri.parse(RestConfig.removeMemberUrl(playerId)),
+        headers: getAuthHeaders());
 
     if (response.statusCode != 204) {
       throw RemoveMemberFailure(response.statusCode, response.body);
@@ -31,14 +28,12 @@ extension SquadRequests on RestRepository {
     required int squadId,
   }) async {
     final response = await HttpSender.patch(
-      Uri.parse(
-        RestConfig.submitSquadUrl(squadId),
-      ),
+      Uri.parse(RestConfig.submitSquadUrl(squadId)),
       headers: getAuthHeaders(),
     );
 
     if (response.statusCode != 204) {
-      throw RemoveMemberFailure(response.statusCode, response.body);
+      throw SubmitSquadFailure(response.statusCode, response.body);
     }
   }
 }
