@@ -34,8 +34,11 @@ class _SubmitSquadButton extends StatelessWidget {
               onPressed: !state.isSquadFull
                   ? null
                   : () => context.read<CourtCubit>().submitSquad(),
-              child: Text(AppLocalizations.of(context)!.submitSquad,
-                  style: const TextStyle(fontSize: 25)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(AppLocalizations.of(context)!.submitSquad,
+                    style: const TextStyle(fontSize: 25)),
+              ),
             ),
           );
         });
@@ -58,31 +61,34 @@ class _VoteSquadPanelState extends State<_VoteSquadPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          Text(AppLocalizations.of(context)!.voteForThisSquad,
-              style: const TextStyle(fontSize: 30)),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _VoteSquadButton(
-                isPositive: true,
-                isDisabled: isDisabled,
-                updateisDisabled: _updateIsDisabled,
-              ),
-              _VoteSquadButton(
-                isPositive: false,
-                isDisabled: isDisabled,
-                updateisDisabled: _updateIsDisabled,
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-        ],
+    return ColoredBox(
+      color: const Color.fromARGB(210, 50, 50, 50),
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Text(AppLocalizations.of(context)!.voteForThisSquad,
+                style: const TextStyle(fontSize: 30)),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _VoteSquadButton(
+                  isPositive: true,
+                  isDisabled: isDisabled,
+                  updateisDisabled: _updateIsDisabled,
+                ),
+                _VoteSquadButton(
+                  isPositive: false,
+                  isDisabled: isDisabled,
+                  updateisDisabled: _updateIsDisabled,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -163,32 +169,36 @@ class _EmbarkmentCardState extends State<_EmbarkmentCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(AppLocalizations.of(context)!.thisSquadWasApproved,
-                    style: const TextStyle(fontSize: 25)),
-              ),
-              FilledButton(
-                onPressed: _isDisabled
-                    ? null
-                    : () => Navigator.push(
-                        // of context?
-                        context,
-                        QuestPage.route(() => _updateIsDisabled(true))),
-                child: Text(AppLocalizations.of(context)!.embark,
-                    style: const TextStyle(fontSize: 30)),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ],
+    return ColoredBox(
+      color: const Color.fromARGB(210, 50, 50, 50),
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      AppLocalizations.of(context)!.thisSquadWasApproved,
+                      style: const TextStyle(fontSize: 25)),
+                ),
+                FilledButton(
+                  onPressed: _isDisabled
+                      ? null
+                      : () => Navigator.push(
+                          // of context?
+                          context,
+                          QuestPage.route(() => _updateIsDisabled(true))),
+                  child: Text(AppLocalizations.of(context)!.embark,
+                      style: const TextStyle(fontSize: 30)),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
