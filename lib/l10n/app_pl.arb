@@ -54,7 +54,7 @@
   "exitGame": "Opuść grę",
   "submitSquad": "Zatwierdź drużynę",
   "voteForThisSquad": "Głosuj na tę drużynę",
-  "accept": "za",
+  "approve": "za",
   "reject": "przeciw",
   "thisSquadWasApproved": "Ta drużyna została zaakceptowana",
   "embark": "Wyrusz",

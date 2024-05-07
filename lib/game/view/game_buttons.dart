@@ -126,7 +126,7 @@ class _VoteSquadButton extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
               isPositive
-                  ? AppLocalizations.of(context)!.accept
+                  ? AppLocalizations.of(context)!.approve
                   : AppLocalizations.of(context)!.reject,
               style: const TextStyle(fontSize: 25)),
         ));
