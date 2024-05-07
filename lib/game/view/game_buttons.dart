@@ -11,7 +11,7 @@ class _GameButtons extends StatelessWidget {
           return _SubmitSquadButton();
         } else if (state.squadStatus == SquadStatus.submitted) {
           return _VoteSquadPanel();
-        } else if (state.squadStatus == SquadStatus.questVoting) {
+        } else if (state.squadStatus == SquadStatus.approved) {
           return _EmbarkmentCardIfMember();
         } else {
           return const SizedBox.shrink();
@@ -77,12 +77,12 @@ class _VoteSquadPanelState extends State<_VoteSquadPanel> {
                 _VoteSquadButton(
                   isPositive: true,
                   isDisabled: isDisabled,
-                  updateisDisabled: _updateIsDisabled,
+                  updateIsDisabled: _updateIsDisabled,
                 ),
                 _VoteSquadButton(
                   isPositive: false,
                   isDisabled: isDisabled,
-                  updateisDisabled: _updateIsDisabled,
+                  updateIsDisabled: _updateIsDisabled,
                 ),
               ],
             ),
@@ -97,12 +97,12 @@ class _VoteSquadPanelState extends State<_VoteSquadPanel> {
 class _VoteSquadButton extends StatelessWidget {
   const _VoteSquadButton({
     required this.isDisabled,
-    required this.updateisDisabled,
+    required this.updateIsDisabled,
     required this.isPositive,
   });
 
   final bool isDisabled;
-  final Function(bool) updateisDisabled;
+  final Function(bool) updateIsDisabled;
 
   final bool isPositive;
 
@@ -113,7 +113,7 @@ class _VoteSquadButton extends StatelessWidget {
             ? null
             : () {
                 context.read<CourtCubit>().voteSquad(isPositive);
-                updateisDisabled(!isDisabled);
+                updateIsDisabled(!isDisabled);
               },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(

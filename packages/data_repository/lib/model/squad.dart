@@ -52,7 +52,6 @@ class Squad extends Equatable {
   bool get isSubmitted => status == SquadStatus.submitted;
   bool get isApproved => status == SquadStatus.approved;
   bool get isRejected => status == SquadStatus.rejected;
-  bool get isQuestVoting => status == SquadStatus.questVoting;
   bool get isSuccessful => status == SquadStatus.successful;
   bool get isFailed => status == SquadStatus.failed;
   bool get isError => status == SquadStatus.error;

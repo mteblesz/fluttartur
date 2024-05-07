@@ -46,7 +46,6 @@ enum SquadStatus {
   submitted,
   approved,
   rejected,
-  questVoting,
   successful,
   failed,
   error,
@@ -72,7 +71,6 @@ class SquadQuestStatusMapping {
     SquadStatus.submitted: QuestStatus.ongoing,
     SquadStatus.approved: QuestStatus.ongoing,
     SquadStatus.rejected: QuestStatus.rejected,
-    SquadStatus.questVoting: QuestStatus.ongoing,
     SquadStatus.successful: QuestStatus.successful,
     SquadStatus.error: QuestStatus.error,
   };
