@@ -69,7 +69,7 @@ class _VoteSquadPanelState extends State<_VoteSquadPanel> {
           children: [
             const SizedBox(height: 10),
             Text(AppLocalizations.of(context)!.voteForThisSquad,
-                style: const TextStyle(fontSize: 30)),
+                style: const TextStyle(fontSize: 25)),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -191,8 +191,11 @@ class _EmbarkmentCardState extends State<_EmbarkmentCard> {
                           // of context?
                           context,
                           QuestPage.route(() => _updateIsDisabled(true))),
-                  child: Text(AppLocalizations.of(context)!.embark,
-                      style: const TextStyle(fontSize: 30)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(AppLocalizations.of(context)!.embark,
+                        style: const TextStyle(fontSize: 30)),
+                  ),
                 ),
                 const SizedBox(height: 10),
               ],
