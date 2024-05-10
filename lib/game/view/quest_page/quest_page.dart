@@ -1,6 +1,5 @@
 import 'dart:math';
-import 'package:data_repository/data_repository.dart';
-import 'package:data_repository/model/player.dart';
+import 'package:fluttartur/game/cubit/court_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -110,14 +109,12 @@ class _VoteQuestButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: () {
-          final playerCharacter = Team.good; // breaking
-          //context.read<IDataRepository>().currentPlayer.team;
-          // good player cant click on "fail" button
-          if (playerCharacter == 'good' && isPositive == false) return;
-          //TODO use gamecubit here (?) (reverted in commit 7ab80bc7ad378f6f6a2186bb55a544c889e04ec1)
-          //context.read<IDataRepository>().voteQuest(vote: isPositive);
-          disableEmbark();
-          Navigator.of(context).pop();
+          context.read<CourtCubit>().voteQuest(isPositive).then((hasVoted) {
+            if (hasVoted) {
+              disableEmbark();
+              Navigator.of(context).pop();
+            }
+          });
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(isPositive

@@ -51,7 +51,12 @@ class CourtCubit extends Cubit<CourtState> {
     await _dataRepository.voteSquad(vote: vote, squadId: state.squadId);
   }
 
-  Future<void> voteQuest(bool vote) async {
+  Future<bool> voteQuest(bool vote) async {
+    // good player "can't" click on <fail> button
+    if (vote == false && _dataRepository.currentTeamRole.team == Team.good) {
+      return false;
+    }
     await _dataRepository.voteQuest(vote: vote, squadId: state.squadId);
+    return true;
   }
 }
