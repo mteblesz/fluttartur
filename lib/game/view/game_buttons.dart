@@ -160,10 +160,9 @@ class _EmbarkmentCard extends StatefulWidget {
 class _EmbarkmentCardState extends State<_EmbarkmentCard> {
   bool _isDisabled = false;
 
-  void _updateIsDisabled(bool newState) {
-    // TODO move this to context?
+  void _disableUpdate() {
     setState(() {
-      _isDisabled = newState;
+      _isDisabled = true;
     });
   }
 
@@ -187,10 +186,7 @@ class _EmbarkmentCardState extends State<_EmbarkmentCard> {
                 FilledButton(
                   onPressed: _isDisabled
                       ? null
-                      : () => Navigator.push(
-                          // of context?
-                          context,
-                          QuestPage.route(() => _updateIsDisabled(true))),
+                      : () => QuestPage.pushPage(context, _disableUpdate),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Text(AppLocalizations.of(context)!.embark,

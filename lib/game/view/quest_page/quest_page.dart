@@ -4,29 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class QuestPage extends StatefulWidget {
+class QuestPage extends StatelessWidget {
   const QuestPage({super.key, required this.disableEmbark});
 
   final void Function() disableEmbark;
 
-  static Route<void> route(void Function() disableEmbark) {
-    return MaterialPageRoute<void>(
-      builder: (_) => QuestPage(disableEmbark: disableEmbark),
+  /// grants this page access to previous context (of CourtCubit) after push
+  static void pushPage(
+      BuildContext parentContext, void Function() disableEmbark) {
+    Navigator.push(
+      parentContext,
+      MaterialPageRoute<void>(
+        builder: (context) => BlocProvider.value(
+          value: BlocProvider.of<CourtCubit>(parentContext),
+          child: QuestPage(disableEmbark: disableEmbark),
+        ),
+      ),
     );
   }
-
-  @override
-  State<QuestPage> createState() => _QuestPageState();
-}
-
-class _QuestPageState extends State<QuestPage> {
-  @override
-  void initState() {
-    super.initState();
-    _disableEmbark = widget.disableEmbark;
-  }
-
-  late void Function() _disableEmbark;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +48,7 @@ class _QuestPageState extends State<QuestPage> {
               ),
               Expanded(child: Container()),
               _VoteQuestPanel(
-                disableEmbark: _disableEmbark,
+                disableEmbark: disableEmbark,
               ),
             ],
           ),
