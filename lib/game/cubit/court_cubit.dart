@@ -2,6 +2,7 @@ import 'package:data_repository/data_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fluttartur/game/model/courtier.dart';
+import 'package:flutter/foundation.dart';
 
 part 'court_state.dart';
 
@@ -53,7 +54,7 @@ class CourtCubit extends Cubit<CourtState> {
   Future<bool> voteQuest(bool vote) async {
     // good player "can't" click on <fail> button
     if (vote == false && _dataRepository.currentTeamRole.team == Team.good) {
-      return false;
+      if (!kDebugMode) return false;
     }
     await _dataRepository.voteQuest(vote: vote, squadId: state.squadId);
     return true;

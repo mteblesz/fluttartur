@@ -55,7 +55,7 @@ class _VoteSquadPanelState extends State<_VoteSquadPanel> {
 
   void _updateIsDisabled(bool newState) {
     setState(() {
-      isDisabled = newState;
+      isDisabled = !kDebugMode && newState;
     });
   }
 
@@ -162,7 +162,7 @@ class _EmbarkmentCardState extends State<_EmbarkmentCard> {
 
   void _disableUpdate() {
     setState(() {
-      _isDisabled = true;
+      //_isDisabled = true;
     });
   }
 

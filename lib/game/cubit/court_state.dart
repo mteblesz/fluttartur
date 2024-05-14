@@ -53,7 +53,7 @@ class CourtState extends Equatable {
       membersCount: squad.members.length,
       squadStatus: squad.status,
       courtiers: courtiers,
-      isLeader: squad.leader.playerId == currentPlayerId,
+      isLeader: kDebugMode || (squad.leader.playerId == currentPlayerId),
     );
   }
 }
