@@ -11,8 +11,6 @@ abstract class IDataRepository {
   Future<void> addDummyPlayer({required String nick});
 
   Stream<List<Player>> streamPlayersList();
-  void subscribePlayersList();
-  void unsubscribePlayersList();
 
   Future<void> removePlayer({required int playerId});
   Future<void> leaveMatchup();
@@ -34,12 +32,8 @@ abstract class IDataRepository {
   void handlePlayerLeftGame({required void Function(Player) handler});
 
   Stream<Squad> streamCurrentSquad();
-  void subscribeCurrentSquad();
-  void unsubscribeCurrentSquad();
 
   Stream<List<QuestInfoShort>> streamQuestsSummary();
-  void subscribeQuestsSummary();
-  void unsubscribeQuestsSummary();
   Future<QuestInfo> getQuestInfo({required int squadId});
 
   int get currentPlayerId;
@@ -49,9 +43,7 @@ abstract class IDataRepository {
   Future<void> voteSquad({required bool vote, required int squadId});
   Future<void> voteQuest({required bool vote, required int squadId});
 
-  Stream<List<QuestInfoShort>> streamEndGameInfo();
-  void subscribeEndGameInfo();
-  void unsubscribeEndGameInfo();
+  Stream<RoomStatus> streamEndGameInfo();
 
   Stream<bool?> streamMerlinKilled();
   Future<void> updateMerlinKilled(bool merlinKilled);

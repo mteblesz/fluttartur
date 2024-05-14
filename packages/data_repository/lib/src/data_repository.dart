@@ -35,12 +35,12 @@ class DataRepository implements IDataRepository {
   Future<void> joinRoom({required int roomId}) async {
     try {
       await _rtuRepository.connect(roomId: roomId);
-      subscribePlayersList();
+      _rtuRepository.subscribePlayersList();
       int playerId = await _restRepository.joinRoom(roomId: roomId);
       _cache.currentPlayerId = playerId;
       _cache.currentRoomId = roomId;
     } on Exception catch (_) {
-      unsubscribePlayersList();
+      _rtuRepository.unsubscribePlayersList();
       _rtuRepository.dispose();
     }
   }
@@ -69,14 +69,10 @@ class DataRepository implements IDataRepository {
 
   @override
   Stream<List<Player>> streamPlayersList() => _rtuRepository.playerStream;
-  @override
-  void subscribePlayersList() => _rtuRepository.subscribePlayersList();
-  @override
-  void unsubscribePlayersList() => _rtuRepository.unsubscribePlayersList();
 
   @override
   Future<void> leaveMatchup() async {
-    unsubscribePlayersList();
+    _rtuRepository.unsubscribePlayersList();
     _rtuRepository.dispose();
     await _restRepository.removePlayer(
       roomId: _cache.currentRoomId,
@@ -111,8 +107,9 @@ class DataRepository implements IDataRepository {
   @override
   void handleGameStarted({required void Function() handler}) {
     _rtuRepository.handleGameStarted(startGameHandler: () async {
-      subscribeQuestsSummary();
-      subscribeCurrentSquad();
+      _rtuRepository.subscribeQuestsSummary();
+      _rtuRepository.subscribeCurrentSquad();
+      _rtuRepository.subscribeEndGameInfo();
       await _fetchTeamRole();
       handler();
     });
@@ -120,9 +117,10 @@ class DataRepository implements IDataRepository {
 
   @override
   Future<void> leaveGame() async {
-    unsubscribePlayersList();
-    unsubscribeQuestsSummary();
-    unsubscribeCurrentSquad();
+    _rtuRepository.unsubscribePlayersList();
+    _rtuRepository.unsubscribeQuestsSummary();
+    _rtuRepository.unsubscribeCurrentSquad();
+    _rtuRepository.unsubscribeEndGameInfo();
     _rtuRepository.dispose();
     await _restRepository.leaveGame(
       playerId: _cache.currentPlayerId,
@@ -183,18 +181,10 @@ class DataRepository implements IDataRepository {
 //------------------------------ squad/quest info ------------------------------
   @override
   Stream<Squad> streamCurrentSquad() => _rtuRepository.currentSquadStream;
-  @override
-  void subscribeCurrentSquad() => _rtuRepository.subscribeCurrentSquad();
-  @override
-  void unsubscribeCurrentSquad() => _rtuRepository.unsubscribeCurrentSquad();
 
   @override
   Stream<List<QuestInfoShort>> streamQuestsSummary() =>
       _rtuRepository.questsSummaryStream;
-  @override
-  void subscribeQuestsSummary() => _rtuRepository.subscribeQuestsSummary();
-  @override
-  void unsubscribeQuestsSummary() => _rtuRepository.unsubscribeQuestsSummary();
 
   @override
   Future<QuestInfo> getQuestInfo({required int squadId}) {
@@ -246,12 +236,7 @@ class DataRepository implements IDataRepository {
 //--------------------------------- End Game -----------------------------------
 
   @override
-  Stream<List<QuestInfoShort>> streamEndGameInfo() =>
-      _rtuRepository.questsSummaryStream;
-  @override
-  void subscribeEndGameInfo() => _rtuRepository.subscribeEndGameInfo();
-  @override
-  void unsubscribeEndGameInfo() => _rtuRepository.unsubscribeEndGameInfo();
+  Stream<RoomStatus> streamEndGameInfo() => _rtuRepository.endGameInfoStream;
 
   @override
   Stream<bool?> streamMerlinKilled() {
