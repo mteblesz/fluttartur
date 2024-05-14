@@ -25,21 +25,6 @@ enum Role {
   oberon,
 }
 
-class RoleTeamMapping {
-  static Team map(Role role) => _dictionary[role]!;
-
-  static final Map<Role, Team> _dictionary = {
-    Role.goodKnight: Team.good,
-    Role.evilEntity: Team.evil,
-    Role.merlin: Team.good,
-    Role.assassin: Team.evil,
-    Role.percival: Team.good,
-    Role.morgana: Team.evil,
-    Role.mordred: Team.evil,
-    Role.oberon: Team.evil,
-  };
-}
-
 enum SquadStatus {
   unknown,
   upcoming,
