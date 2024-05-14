@@ -14,9 +14,8 @@ Future<void> pushGameResultsDialog(
       barrierDismissible: false,
       context: gameContext,
       builder: (BuildContext dialogContext) {
-        final assassinPresent = gameContext.read<GameCubit>().assassinPresent();
         return AlertDialog(
-          //title: Text(AppLocalizations.of(gameContext)!.gameResults),
+          title: Text(AppLocalizations.of(gameContext)!.gameResults),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -43,29 +42,7 @@ Future<void> pushGameResultsDialog(
               const SizedBox(height: 10),
               Text(AppLocalizations.of(gameContext)!.evilCourtiers,
                   style: const TextStyle(fontSize: 25)),
-              FutureBuilder<List<Player>>(
-                future: gameContext.read<GameCubit>().getEvilPlayers(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-                  List<Player> evilPlayers = snapshot.data ?? List.empty();
-                  return Wrap(
-                    children: <Widget>[
-                      ...evilPlayers.map(
-                        (player) => Text("${player.nick}, ",
-                            style: const TextStyle(fontSize: 18)),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              !(assassinPresent && goodWin)
-                  ? const SizedBox.shrink()
-                  : _AssassinBox(gameContext: gameContext),
+              _EvilCourtiersList(gameContext: gameContext),
             ],
           ),
           actions: [
@@ -77,117 +54,43 @@ Future<void> pushGameResultsDialog(
               child: Text(AppLocalizations.of(gameContext)!.exitGame,
                   style: const TextStyle(fontSize: 20)),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(AppLocalizations.of(gameContext)!.closeInfo,
+                  style: const TextStyle(fontSize: 20)),
+            ),
           ],
         );
       });
 }
 
-class _AssassinBox extends StatelessWidget {
-  const _AssassinBox({
-    super.key,
-    required this.gameContext,
-  });
-
+class _EvilCourtiersList extends StatelessWidget {
+  const _EvilCourtiersList({required this.gameContext});
   final BuildContext gameContext;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool?>(
-        stream: gameContext.read<GameCubit>().streamMerlinKilled(),
-        builder: (context, snapshot) {
-          final merlinKilled = snapshot.data;
-          return Column(
-            children: [
-              const SizedBox(height: 10),
-              merlinKilled == null
-                  ? _KillingMerlinBox(gameContext: gameContext)
-                  : _MerlinKilledResult(merlinKilled: merlinKilled),
-            ],
-          );
-        });
-  }
-}
-
-class _KillingMerlinBox extends StatelessWidget {
-  const _KillingMerlinBox({
-    super.key,
-    required this.gameContext,
-  });
-
-  final BuildContext gameContext;
-
-  @override
-  Widget build(BuildContext context) {
-    final isAssassin = gameContext.read<GameCubit>().isAssassin();
-    return Card(
-      color: const Color.fromARGB(118, 0, 0, 0),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: !isAssassin
-            ? Column(
-                children: [
-                  Text(AppLocalizations.of(context)!.assassinChooses,
-                      style: const TextStyle(fontSize: 20)),
-                  const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              )
-            : Column(
-                children: [
-                  Text(AppLocalizations.of(context)!.killMerlin,
-                      style: const TextStyle(fontSize: 20)),
-                  const SizedBox(height: 10),
-                  FutureBuilder<List<Player>>(
-                    future:
-                        gameContext.read<IDataRepository>().getGoodPlayers(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-                      final goodPlayers = snapshot.data ?? <Player>[];
-                      return Wrap(
-                        children: [
-                          ...goodPlayers.map(
-                            (player) => _KillingPlayerButton(
-                              player: player,
-                              gameContext: gameContext,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
-              ),
-      ),
-    );
-  }
-}
-
-class _KillingPlayerButton extends StatelessWidget {
-  const _KillingPlayerButton({
-    super.key,
-    required this.player,
-    required this.gameContext,
-  });
-
-  final Player player;
-  final BuildContext gameContext;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: FilledButton.tonal(
-        onPressed: () =>
-            gameContext.read<GameCubit>().killPlayer(player: player),
-        child: Text(player.nick),
-      ),
+    return FutureBuilder<List<Player>>(
+      future: gameContext.read<GameCubit>().getEvilPlayers(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        List<Player> evilPlayers = snapshot.data ?? List.empty();
+        return Wrap(
+          children: <Widget>[
+            ...evilPlayers.map(
+              (player) => Text("${player.nick}, ",
+                  style: const TextStyle(fontSize: 18)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

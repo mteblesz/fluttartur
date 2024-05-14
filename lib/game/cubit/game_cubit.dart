@@ -21,19 +21,17 @@ class GameCubit extends Cubit<GameState> {
     return _dataRepository.getMerlinAndMorgana();
   }
 
-  //-------------------------merlin killing logic------------------------
+  //------------------------- assassination ------------------------
 
-  bool assassinPresent() => false;
-  //_dataRepository.currentRoom.specialCharacters.contains("evil_assassin");
-
-  bool isAssassin() => false;
-  //_dataRepository.currentPlayer.role == "evil_assassin";
-
-  Stream<bool?> streamMerlinKilled() {
-    return _dataRepository.streamMerlinKilled();
+  bool isAssassin() {
+    return _dataRepository.currentTeamRole.role == Role.assassin;
   }
 
-  Future<void> killPlayer({required Player player}) async {
-    //await _dataRepository.updateMerlinKilled(player.role == "good_merlin");
+  Future<List<Player>> getGoodPlayers() {
+    return _dataRepository.getGoodPlayers();
+  }
+
+  Future<void> killPlayer({required int playerId}) async {
+    //await _dataRepository.killPlayer(playerId: playerId);
   }
 }
