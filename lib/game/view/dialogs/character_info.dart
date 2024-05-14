@@ -154,8 +154,8 @@ class _InfoForEvilPlayers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "${AppLocalizations.of(gameContext)!.evilCourtiers}:",
-          style: const TextStyle(fontSize: 16),
+          AppLocalizations.of(gameContext)!.evilCourtiers,
+          style: const TextStyle(fontSize: 18),
         ),
         Center(
           child: FutureBuilder<List<Player>>(
@@ -173,7 +173,7 @@ class _InfoForEvilPlayers extends StatelessWidget {
                   ...evilPlayers.map(
                     (player) => Text("${player.nick}, ",
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         )),
                   ),
@@ -198,7 +198,7 @@ class _InfoForMerlin extends StatelessWidget {
       children: [
         Text(
           '${AppLocalizations.of(gameContext)!.evilCourtiers}:',
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 18),
         ),
         Center(
           child: FutureBuilder<List<Player>>(
@@ -217,7 +217,7 @@ class _InfoForMerlin extends StatelessWidget {
                   ...evilPlayers.map(
                     (player) => Text("${player.nick}, ",
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         )),
                   ),
@@ -241,7 +241,7 @@ class _InfoForPercival extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(AppLocalizations.of(gameContext)!.merlinAndMorgana,
-            style: const TextStyle(fontSize: 15)),
+            style: const TextStyle(fontSize: 18)),
         Center(
           child: FutureBuilder<List<Player>>(
             future: gameContext.read<IDataRepository>().getMerlinAndMorgana(),
@@ -258,7 +258,7 @@ class _InfoForPercival extends StatelessWidget {
                   ...evilPlayers.map(
                     (player) => Text("${player.nick}, ",
                         style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         )),
                   ),
