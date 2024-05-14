@@ -40,8 +40,8 @@ class RestConfig {
   static String getQuestBySquadIdUrl(int squadId) =>
       '$apiUrl/info/quest/$squadId';
 
-  static String leaveGameUrl(int playerId) => '$apiUrl/game/leave/$playerId';
-  static String getPlayersUrl(int roomId) => '$apiUrl/game/players/$roomId';
+  static String leaveGameUrl(int playerId) => '$apiUrl/matchup/leave/$playerId';
+  static String getPlayersUrl(int roomId) => '$apiUrl/info/players/$roomId';
 
   static String addMemberUrl(int playerId) => '$apiUrl/squad/add/$playerId';
   static String removeMemberUrl(int playerId) =>
