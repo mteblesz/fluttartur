@@ -7,14 +7,13 @@ part 'court_state.dart';
 
 class CourtCubit extends Cubit<CourtState> {
   final IDataRepository _dataRepository;
-  late List<Player> players;
 
   CourtCubit(this._dataRepository) : super(const CourtState()) {
     _init();
   }
 
   Future<void> _init() async {
-    this.players = await _dataRepository.getPlayers();
+    final players = await _dataRepository.getPlayers();
     _dataRepository.streamCurrentSquad().listen((squad) {
       emit(state.from(
         players: players,
