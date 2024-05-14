@@ -9,8 +9,7 @@ class GameCubit extends Cubit<GameState> {
 
   GameCubit(this._dataRepository) : super(const GameState()) {
     _dataRepository.streamEndGameInfo().listen((status) {
-      emit(state.copyWith(
-          status: GameStatus.squadChoice)); // TODO cast from room status
+      emit(state.copyWith(status: status));
     });
   }
 

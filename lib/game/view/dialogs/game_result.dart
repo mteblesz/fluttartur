@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Future<void> pushGameResultsDialog(BuildContext gameContext) {
+Future<void> pushGameResultsDialog(
+  BuildContext gameContext, {
+  required bool goodWin,
+}) {
   return showDialog<void>(
       barrierDismissible: false,
       context: gameContext,
       builder: (BuildContext dialogContext) {
-        final outcome = gameContext.read<GameCubit>().state.winningTeam;
         final assassinPresent = gameContext.read<GameCubit>().assassinPresent();
         return AlertDialog(
           //title: Text(AppLocalizations.of(gameContext)!.gameResults),
@@ -19,18 +21,18 @@ Future<void> pushGameResultsDialog(BuildContext gameContext) {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                  outcome
+                  goodWin
                       ? FluttarturIcons.crown
                       : FluttarturIcons.crossed_swords,
                   size: 80),
               Card(
-                color: outcome ? Colors.green.shade900 : Colors.red.shade900,
+                color: goodWin ? Colors.green.shade900 : Colors.red.shade900,
                 child: Center(
                   heightFactor: 1,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      outcome
+                      goodWin
                           ? AppLocalizations.of(gameContext)!.goodTeamWon
                           : AppLocalizations.of(gameContext)!.evilTeamWon,
                       style: const TextStyle(fontSize: 30),
@@ -61,7 +63,7 @@ Future<void> pushGameResultsDialog(BuildContext gameContext) {
                   );
                 },
               ),
-              !(assassinPresent && outcome)
+              !(assassinPresent && goodWin)
                   ? const SizedBox.shrink()
                   : _AssassinBox(gameContext: gameContext),
             ],

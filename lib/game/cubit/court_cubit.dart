@@ -24,6 +24,9 @@ class CourtCubit extends Cubit<CourtState> {
     });
   }
 
+  Stream<List<QuestInfoShort>> streamQuestsSummary() =>
+      _dataRepository.streamQuestsSummary();
+
   Future<void> addMember({required int playerId}) async {
     if (!state.isLeader) return;
     if (state.squadStatus != SquadStatus.squadChoice) return;

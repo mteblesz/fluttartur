@@ -8,7 +8,7 @@ class _QuestTiles extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: StreamBuilder<List<QuestInfoShort>>(
-            stream: context.read<IDataRepository>().streamQuestsSummary(),
+            stream: context.read<CourtCubit>().streamQuestsSummary(),
             builder: (context, snapshot) {
               var questsSummary = snapshot.data;
               if (questsSummary == null) {

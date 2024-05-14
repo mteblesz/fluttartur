@@ -2,6 +2,7 @@ import 'package:data_repository/data_repository.dart';
 import 'package:fluttartur/fluttartur_icons_icons.dart';
 import 'package:fluttartur/game/cubit/game_cubit.dart';
 import 'package:fluttartur/game/cubit/court_cubit.dart';
+import 'package:fluttartur/game/view/dialogs/assassination_dialog.dart';
 import 'package:fluttartur/game/view/dialogs/quest_info_dialog.dart';
 import 'package:fluttartur/game/view/quest_page/quest_page.dart';
 import 'package:fluttartur/home/home.dart';
@@ -39,7 +40,7 @@ class _GameFormState extends State<GameForm> {
   Widget build(BuildContext context) {
     return BlocListener<GameCubit, GameState>(
       listenWhen: (previous, current) => previous.status != current.status,
-      listener: (context, state) => listenGameCubit(context, state),
+      listener: (context, state) => pushGameDialogs(context, state),
       child: BlocListener<HomeCubit, HomeState>(
         listenWhen: (previous, current) =>
             previous.playerLeftGame != current.playerLeftGame,
@@ -60,19 +61,20 @@ class _GameFormState extends State<GameForm> {
   }
 }
 
-void listenGameCubit(context, state) {
+void pushGameDialogs(context, GameState state) {
   switch (state.status) {
-    case GameStatus.squadChoice:
+    case RoomStatus.unknown:
+    case RoomStatus.matchup:
+    case RoomStatus.playing:
       break;
-    case GameStatus.squadVoting:
+    case RoomStatus.assassination:
+      pushAssassinationDialog(context);
       break;
-    case GameStatus.questVoting:
+    case RoomStatus.resultGoodWin:
+      pushGameResultsDialog(context, goodWin: true);
       break;
-    case GameStatus.questResults:
-      pushQuestResultsDialog(context);
-      break;
-    case GameStatus.gameResults:
-      pushGameResultsDialog(context);
+    case RoomStatus.resultEvilWin:
+      pushGameResultsDialog(context, goodWin: false);
       break;
   }
 }
