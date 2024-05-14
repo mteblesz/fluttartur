@@ -79,3 +79,8 @@ class VoteSquadFailure extends DataRepoFailure {
 class VoteQuestFailure extends DataRepoFailure {
   VoteQuestFailure(int code, [String? body]) : super("vote quest", code, body);
 }
+
+class KillPlayerFailure extends DataRepoFailure {
+  KillPlayerFailure(int code, [String? body])
+      : super("kill player", code, body);
+}

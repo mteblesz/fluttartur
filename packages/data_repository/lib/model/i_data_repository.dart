@@ -44,7 +44,5 @@ abstract class IDataRepository {
   Future<void> voteQuest({required bool vote, required int squadId});
 
   Stream<RoomStatus> streamEndGameInfo();
-
-  Stream<bool?> streamMerlinKilled();
-  Future<void> updateMerlinKilled(bool merlinKilled);
+  Future<void> killPlayer({required int playerId});
 }

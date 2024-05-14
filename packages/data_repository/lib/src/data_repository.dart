@@ -239,14 +239,7 @@ class DataRepository implements IDataRepository {
   Stream<RoomStatus> streamEndGameInfo() => _rtuRepository.endGameInfoStream;
 
   @override
-  Stream<bool?> streamMerlinKilled() {
-    // : implement streamMerlinKilled
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateMerlinKilled(bool merlinKilled) {
-    // : implement updateMerlinKilled
-    throw UnimplementedError();
+  Future<void> killPlayer({required int playerId}) async {
+    await _restRepository.killPlayer(playerId: playerId);
   }
 }
