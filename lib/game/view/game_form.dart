@@ -2,7 +2,7 @@ import 'package:data_repository/data_repository.dart';
 import 'package:fluttartur/fluttartur_icons_icons.dart';
 import 'package:fluttartur/game/cubit/game_cubit.dart';
 import 'package:fluttartur/game/cubit/court_cubit.dart';
-import 'package:fluttartur/game/view/dialogs/assassination_dialog.dart';
+import 'package:fluttartur/game/view/dialogs/assassination.dart';
 import 'package:fluttartur/game/view/dialogs/quest_info_dialog.dart';
 import 'package:fluttartur/game/view/quest_page/quest_page.dart';
 import 'package:fluttartur/home/home.dart';
