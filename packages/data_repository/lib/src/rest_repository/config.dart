@@ -51,5 +51,5 @@ class RestConfig {
   static String voteSquadUrl() => '$apiUrl/vote/squad';
   static String voteQuestUrl() => '$apiUrl/vote/quest';
 
-  static String killPlayerUrl(int playerId) => '$apiUrl/kill/$playerId';
+  static String killPlayerUrl() => '$apiUrl/kill';
 }

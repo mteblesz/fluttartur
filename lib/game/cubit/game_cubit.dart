@@ -32,6 +32,6 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> killPlayer({required int playerId}) async {
-    await _dataRepository.killPlayer(playerId: playerId);
+    await _dataRepository.killPlayer(targetId: playerId);
   }
 }

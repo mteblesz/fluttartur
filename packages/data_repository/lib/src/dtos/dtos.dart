@@ -8,4 +8,5 @@ export 'squad_info_dto.dart';
 export 'vote_info_dto.dart';
 export 'cast_vote_dto.dart';
 export 'end_game_info_dto.dart';
+export 'kill_player_dto.dart';
 // TODO remove all dtos that are not outgoing?

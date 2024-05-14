@@ -239,7 +239,13 @@ class DataRepository implements IDataRepository {
   Stream<RoomStatus> streamEndGameInfo() => _rtuRepository.endGameInfoStream;
 
   @override
-  Future<void> killPlayer({required int playerId}) async {
-    await _restRepository.killPlayer(playerId: playerId);
+  Future<void> killPlayer({required int targetId}) async {
+    await _restRepository.killPlayer(
+      dto: KillPlayerDto(
+        roomId: _cache.currentRoomId,
+        assassinId: _cache.currentPlayerId,
+        targetId: targetId,
+      ),
+    );
   }
 }
