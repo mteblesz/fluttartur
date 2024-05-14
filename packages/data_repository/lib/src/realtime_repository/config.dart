@@ -23,7 +23,7 @@ class RtuConfig {
   static String get ReceiveRemoval => "ReceiveRemoval";
   static String get ReceiveStartGame => "ReceiveStartGame";
   static String get ReceiveCurrentSquad => "ReceiveCurrentSquad";
-  static String get ReceiveQuestsSummary => "ReceiveSquadsSummary";
+  static String get ReceiveQuestsSummary => "ReceiveQuestsSummary";
   static String get ReceivePlayerLeft => "ReceivePlayerLeft";
   static String get ReceiveEndGameInfo => "ReceiveEndGameInfo";
 }
