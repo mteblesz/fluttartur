@@ -31,7 +31,7 @@ Future<void> pushQuestResultsDialog(BuildContext context) {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                context.read<GameCubit>().closeQuestResults();
+                //context.read<GameCubit>().closeQuestResults();
               },
               child: Text(AppLocalizations.of(context)!.closeResult,
                   style: const TextStyle(fontSize: 20)),

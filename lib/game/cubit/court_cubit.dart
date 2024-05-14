@@ -59,4 +59,8 @@ class CourtCubit extends Cubit<CourtState> {
     await _dataRepository.voteQuest(vote: vote, squadId: state.squadId);
     return true;
   }
+
+  bool isMember() {
+    return state.courtiers.any((c) => c.isCurrentPlayer && c.isMember);
+  }
 }

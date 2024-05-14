@@ -136,19 +136,9 @@ class _VoteSquadButton extends StatelessWidget {
 class _EmbarkmentCardIfMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: context.read<GameCubit>().isCurrentPlayerAMember(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-        bool isMember = snapshot.data ?? false;
-        return isMember ? _EmbarkmentCard() : const SizedBox.shrink();
-      },
-    );
+    return context.read<CourtCubit>().isMember()
+        ? _EmbarkmentCard()
+        : const SizedBox.shrink();
   }
 }
 
@@ -162,7 +152,7 @@ class _EmbarkmentCardState extends State<_EmbarkmentCard> {
 
   void _disableUpdate() {
     setState(() {
-      //_isDisabled = true;
+      _isDisabled = true && !kDebugMode;
     });
   }
 
