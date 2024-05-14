@@ -3,7 +3,8 @@ enum RoomStatus {
   matchup,
   playing,
   assassination,
-  result,
+  resultGoodWin,
+  resultEvilWin,
 }
 
 enum Team {

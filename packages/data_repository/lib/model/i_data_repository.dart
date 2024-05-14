@@ -21,7 +21,6 @@ abstract class IDataRepository {
   Future<void> startGame({required RolesDef rolesDef});
   void handleGameStarted({required void Function() handler});
 
-  // -------------
   TeamRole get currentTeamRole;
 
   Future<List<Player>> getMerlinAndMorgana();
@@ -50,10 +49,9 @@ abstract class IDataRepository {
   Future<void> voteSquad({required bool vote, required int squadId});
   Future<void> voteQuest({required bool vote, required int squadId});
 
-//----------------------------------------------------------------------------
-
-  // -------------
-  // TODO old stuff for backwards-compatibility during changes (to be removed)
+  Stream<List<QuestInfoShort>> streamEndGameInfo();
+  void subscribeEndGameInfo();
+  void unsubscribeEndGameInfo();
 
   Stream<bool?> streamMerlinKilled();
   Future<void> updateMerlinKilled(bool merlinKilled);

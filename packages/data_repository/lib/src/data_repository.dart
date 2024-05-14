@@ -180,7 +180,7 @@ class DataRepository implements IDataRepository {
     _rtuRepository.handlePlayerLeftGame(playerLeftHandler: handler);
   }
 
-//------------------------------ squad/quest info -------------------------------------
+//------------------------------ squad/quest info ------------------------------
   @override
   Stream<Squad> streamCurrentSquad() => _rtuRepository.currentSquadStream;
   @override
@@ -201,7 +201,7 @@ class DataRepository implements IDataRepository {
     return _restRepository.getQuestInfo(squadId: squadId);
   }
 
-//--------------------------------- Court -------------------------------------------
+//--------------------------------- Court --------------------------------------
 
   @override
   int get currentPlayerId => _cache.currentPlayerId;
@@ -243,10 +243,15 @@ class DataRepository implements IDataRepository {
     );
   }
 
-//----------------------------------------------------------------------------
+//--------------------------------- End Game -----------------------------------
 
-  // ----------------------------------------------------------------------
-  //  old stuff for backwards-compatibility during changes (to be removed)
+  @override
+  Stream<List<QuestInfoShort>> streamEndGameInfo() =>
+      _rtuRepository.questsSummaryStream;
+  @override
+  void subscribeEndGameInfo() => _rtuRepository.subscribeEndGameInfo();
+  @override
+  void unsubscribeEndGameInfo() => _rtuRepository.unsubscribeEndGameInfo();
 
   @override
   Stream<bool?> streamMerlinKilled() {

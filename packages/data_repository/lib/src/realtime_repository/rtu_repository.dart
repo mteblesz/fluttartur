@@ -46,4 +46,9 @@ class RtuRepository {
       StreamController<List<QuestInfoShort>>();
   Stream<List<QuestInfoShort>> get questsSummaryStream =>
       _questsSummaryStreamController.stream;
+
+  StreamController<RoomStatus> _endGameInfoStreamController =
+      StreamController<RoomStatus>();
+  Stream<RoomStatus> get endGameInfoStream =>
+      _endGameInfoStreamController.stream;
 }
