@@ -11,8 +11,9 @@ class _GameButtons extends StatelessWidget {
           return _SubmitSquadButton();
         } else if (state.squadStatus == SquadStatus.submitted) {
           return _VoteSquadPanel();
-        } else if (state.squadStatus == SquadStatus.approved) {
-          return _EmbarkmentCardIfMember();
+        } else if (state.squadStatus == SquadStatus.approved &&
+            context.read<CourtCubit>().isMember()) {
+          return _EmbarkmentCard();
         } else {
           return const SizedBox.shrink();
         }
@@ -130,15 +131,6 @@ class _VoteSquadButton extends StatelessWidget {
                   : AppLocalizations.of(context)!.reject,
               style: const TextStyle(fontSize: 25)),
         ));
-  }
-}
-
-class _EmbarkmentCardIfMember extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return context.read<CourtCubit>().isMember()
-        ? _EmbarkmentCard()
-        : const SizedBox.shrink();
   }
 }
 
